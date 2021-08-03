@@ -6,6 +6,8 @@
         <arg name="pause" default="false" />
         <arg name="world" default="$(find flipkart_simulations)/world/empty_world.world" />
 
+        <param command="$(find xacro)/xacro $(find bot_description)/urdf/bot.xacro" name="robot_description"/>
+        <node args="-param robot_description -urdf -model bot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
         <!-- include gazebo_ros launcher -->
         <include file="$(find gazebo_ros)/launch/empty_world.launch">
                 <arg name="world_name" value="$(arg world)" />
