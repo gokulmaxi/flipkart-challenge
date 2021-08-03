@@ -1,0 +1,6 @@
+[submodule "src/realsense_gazebo_plugin"]
+	path = src/realsense_gazebo_plugin
+	url = https://github.com/issaiass/realsense_gazebo_plugin
+[submodule "src/realsense2_description"]
+	path = src/realsense2_description
+	url = https://github.com/issaiass/realsense2_description

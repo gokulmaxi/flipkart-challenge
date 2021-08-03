@@ -2,11 +2,18 @@
 <sdf version='1.4'>
   <model name="arena">
     <static>true</static>
-    <pose>-3 -3 0 0 0 0</pose>
+    <pose>-1.031130 1.092014 -1.145319 0 0 0</pose>
 
-    <link name="airport_mat">
-      <pose>0 0 0.02 0 0 0</pose>
-      <visual name="mat">
+    <link name="arena">
+        <pose>0 0 0.02 0 0 0</pose>
+    <collision name="collision">
+        <geometry>
+          <mesh>
+              <uri>model://arena/meshes/arena.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    <visual name="visual">
         <geometry>
           <mesh>
                   <uri>model://arena/meshes/arena.dae</uri>
