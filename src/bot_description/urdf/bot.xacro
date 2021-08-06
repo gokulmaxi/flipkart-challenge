@@ -6,9 +6,9 @@
 <xacro:include filename="$(find bot_description)/urdf/bot.gazebo" />
 <link name="base_link">
   <inertial>
-    <origin rpy="0 0 0" xyz="1.313409255906936e-15 0.0 0.024960012166825512"/>
-    <mass value="0.6679552358753357"/>
-    <inertia ixx="0.001215" ixy="-0.0" ixz="0.0" iyy="0.001219" iyz="-0.0" izz="0.002333"/>
+    <origin rpy="0 0 0" xyz="-0.0009636587923201293 1.0904768733166021e-17 0.021032044779261124"/>
+    <mass value="0.11050949445484062"/>
+    <inertia ixx="9e-05" ixy="-0.0" ixz="-1e-06" iyy="9.3e-05" iyz="0.0" izz="0.00018"/>
   </inertial>
   <visual>
     <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -21,64 +21,81 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <geometry>
       <mesh filename="package://bot_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="wheel_2_1">
-  <inertial>
-    <origin rpy="0 0 0" xyz="-3.618764437576268e-18 0.010000000000000009 -6.938893903907228e-18"/>
-    <mass value="0.03652101459798134"/>
-    <inertia ixx="7e-06" ixy="0.0" ixz="-0.0" iyy="1.1e-05" iyz="0.0" izz="7e-06"/>
-  </inertial>
-  <visual>
-    <origin rpy="0 0 0" xyz="-0.0 -0.07239 -0.025"/>
-    <geometry>
-      <mesh filename="package://bot_description/meshes/wheel_2_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="silver"/>
-  </visual>
-  <collision>
-    <origin rpy="0 0 0" xyz="-0.0 -0.07239 -0.025"/>
-    <geometry>
-      <mesh filename="package://bot_description/meshes/wheel_2_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
 <link name="wheel_1_1">
   <inertial>
-    <origin rpy="0 0 0" xyz="-3.618764437576268e-18 -0.010000000000000009 -6.938893903907228e-18"/>
-    <mass value="0.03652101459798134"/>
-    <inertia ixx="7e-06" ixy="-0.0" ixz="-0.0" iyy="1.1e-05" iyz="0.0" izz="7e-06"/>
+    <origin rpy="0 0 0" xyz="3.469446951953614e-18 -0.009000000000000001 1.0408340855860843e-17"/>
+    <mass value="0.0243098481570003"/>
+    <inertia ixx="3e-06" ixy="0.0" ixz="0.0" iyy="6e-06" iyz="-0.0" izz="3e-06"/>
   </inertial>
   <visual>
-    <origin rpy="0 0 0" xyz="-0.0 0.07239 -0.025"/>
     <geometry>
-      <mesh filename="package://bot_description/meshes/wheel_1_1.stl" scale="0.001 0.001 0.001"/>
+      <cylinder length="0.018" radius="0.0215"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black">
+      <color rgba="0 0 0 1"/>
+    </material>
   </visual>
   <collision>
-    <origin rpy="0 0 0" xyz="-0.0 0.07239 -0.025"/>
     <geometry>
-      <mesh filename="package://bot_description/meshes/wheel_1_1.stl" scale="0.001 0.001 0.001"/>
+      <cylinder length="0.018" radius="0.0215"/>
     </geometry>
   </collision>
 </link>
 
+<link name="wheel_2_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="6.938893903907228e-18 0.009000000000000001 1.3877787807814457e-17"/>
+    <mass value="0.1"/>
+    <inertia ixx="3.239e-05" ixy="0.0" ixz="0.0" iyy="6e-06" iyz="0.0" izz="2.3e-06"/>
+  </inertial>
+  <visual>
+    <geometry>
+      <cylinder length="0.018" radius="0.0215"/>
+    </geometry>
+    <material name="black">
+      <color rgba="0 0 0 1"/>
+    </material>
+  </visual>
+  <collision>
+    <geometry>
+      <cylinder length="0.018" radius="0.0215"/>
+    </geometry>
+  </collision>
+  <!-- <visual>
+    <origin rpy="0 0 0" xyz="-0.025 -0.053 -0.0215"/>
+    <geometry>
+      <mesh filename="package://bot_description/meshes/wheel_2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.025 -0.053 -0.0215"/>
+    <geometry>
+      <mesh filename="package://bot_description/meshes/wheel_2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision> -->
+</link>
+
 <joint name="Rev1" type="continuous">
-  <origin rpy="0 0 0" xyz="0.0 0.07239 0.025"/>
+  <origin rpy="-1.5708 0 0" xyz="0.025 -0.06 0.0215"/>
   <parent link="base_link"/>
-  <child link="wheel_2_1"/>
-  <axis xyz="0.0 1.0 0.0"/>
+  <child link="wheel_1_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit effort="10000" velocity="1000"/>
+  <joint_properties damping="1.0" friction="1.0"/>
 </joint>
 
 <joint name="Rev2" type="continuous">
-  <origin rpy="0 0 0" xyz="0.0 -0.07239 0.025"/>
+  <origin rpy="-1.5708 0 0" xyz="0.025 0.06 0.0215"/>
   <parent link="base_link"/>
-  <child link="wheel_1_1"/>
-  <axis xyz="0.0 -1.0 0.0"/>
+  <child link="wheel_2_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit effort="10000" velocity="1000"/>
+  <joint_properties damping="1.0" friction="1.0"/>
 </joint>
 
 </robot>
