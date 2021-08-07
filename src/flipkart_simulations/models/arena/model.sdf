@@ -9,14 +9,14 @@
     <collision name="collision">
         <geometry>
           <mesh>
-              <uri>model://arena/meshes/arena.dae</uri>
+              <uri>model://arena/meshes/arena_v2.dae</uri>
           </mesh>
         </geometry>
       </collision>
     <visual name="visual">
         <geometry>
           <mesh>
-                  <uri>model://arena/meshes/arena.dae</uri>
+                  <uri>model://arena/meshes/arena_v2.dae</uri>
                   <lighting>1</lighting>
           </mesh>
         </geometry>

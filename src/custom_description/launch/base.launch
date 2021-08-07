@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="model" default="$(find custom_description)/urdf/base.urdf"/>
+  <arg name="model" default="$(find bot_description)/urdf/bot.xacro"/>
   <arg name="gui" default="true" />
   <arg name="rvizconfig" default="$(find custom_description)/rviz/urdf.rviz" />
 
