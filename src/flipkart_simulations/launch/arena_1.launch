@@ -28,4 +28,19 @@
                         <arg name="robot_name" value="robot2" />
                 </include>
         </group>
+                <group ns = "robot3">
+                <param name="tf_prefix" value="robot3_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot.launch">
+                        <arg name="init_pose" value="-x 2 -y 2 -z 0" />
+                        <arg name="robot_name" value="robot3" />
+                </include>
+        </group>
+                <group ns = "robot4">
+                <param name="tf_prefix" value="robot4_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot.launch">
+                        <arg name="init_pose" value="-x 2 -y 2 -z 0" />
+                        <arg name="robot_name" value="robot4" />
+                </include>
+        </group>
+
 </launch>

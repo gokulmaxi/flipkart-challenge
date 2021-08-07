@@ -17,3 +17,7 @@ gz sdf -p d435.urdf > d435.sdf         # urdf to sdf
 
 ## Group launch of robots
 [multiple controller error](https://robotics.stackexchange.com/questions/21673/tried-to-advertise-a-service-that-is-already-advertised-in-this-node-leo-contr) 
+
+##TODO
+- add coordinates to spawn 
+- add opencv to detect
