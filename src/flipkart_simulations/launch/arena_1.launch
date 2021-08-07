@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <launch>
         <!-- overwriting these args -->
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
         <arg name="world" default="$(find flipkart_simulations)/world/mini_world.world" />
-      
+
         <include file="$(find gazebo_ros)/launch/empty_world.launch">
                 <arg name="world_name" value="$(arg world)" />
                 <arg name="debug" value="$(arg debug)" />
@@ -13,6 +13,19 @@
                 <arg name="paused" value="$(arg pause)" />
                 <arg name="use_sim_time" value="true" />
         </include>
-        <param command="$(find xacro)/xacro $(find bot_description)/urdf/bot.xacro" name="robot_description" />
-        <node args="-param robot_description -urdf -model bot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
+        <!-- <node args="-param robot_description -urdf -model bot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/> -->
+        <group ns = "robot1">
+                <param name="tf_prefix" value="robot1_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot.launch">
+                        <arg name="init_pose" value="-x 1 -y 1 -z 0" />
+                        <arg name="robot_name" value="robot1" />
+                </include>
+        </group>
+        <group ns = "robot2">
+                <param name="tf_prefix" value="robot2_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot.launch">
+                        <arg name="init_pose" value="-x 2 -y 2 -z 0" />
+                        <arg name="robot_name" value="robot2" />
+                </include>
+        </group>
 </launch>
