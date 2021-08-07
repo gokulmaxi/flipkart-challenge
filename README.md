@@ -14,5 +14,6 @@ rosrun xacro xacro test_d435_camera.urdf.xacro > d435.urdf  # convert xacro to u
 gz sdf -p d435.urdf > d435.sdf         # urdf to sdf
 ```
 - detailed explaination [here](https://nu-msr.github.io/me495_site/lecture10_sdf_gazebo.html) 
-# TODO 
-- spawn four robots using groups [refer](https://www.theconstructsim.com/ros-qa-130-how-to-launch-multiple-robots-in-gazebo-simulator/)  
+
+## Group launch of robots
+[multiple controller error](https://robotics.stackexchange.com/questions/21673/tried-to-advertise-a-service-that-is-already-advertised-in-this-node-leo-contr) 
