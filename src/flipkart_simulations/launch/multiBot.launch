@@ -1,6 +1,5 @@
 <launch>
     <!-- loads xacro model into param sever-->
-    <param command="$(find xacro)/xacro $(find bot_description)/urdf/bot.xacro" name="robot_description" />
 
 
   <!-- BEGIN ROBOT 1-->
