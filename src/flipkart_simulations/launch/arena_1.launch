@@ -17,28 +17,28 @@
         <group ns = "robot1">
                 <param name="tf_prefix" value="robot1_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x 1 -y 1 -z 0" />
+                        <arg name="init_pose" value="-x -0.223826 -y -0.064987 -z 0.003568 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot1" />
                 </include>
         </group>
         <group ns = "robot2">
                 <param name="tf_prefix" value="robot2_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x 2 -y 2 -z 0" />
+                        <arg name="init_pose" value="-x -0.092107 -y -0.063868 -z 0.003566 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot2" />
                 </include>
         </group>
                 <group ns = "robot3">
-                <param name="tf_prefix" value="robot3_tf" />
+     q           <param name="tf_prefix" value="robot3_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x 2 -y 2 -z 0" />
+                        <arg name="init_pose" value="-x 0.066189 -y -0.051734 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot3" />
                 </include>
         </group>
                 <group ns = "robot4">
                 <param name="tf_prefix" value="robot4_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x 2 -y 2 -z 0" />
+                        <arg name="init_pose" value="-x 0.212891  -y -0.075720 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot4" />
                 </include>
         </group>

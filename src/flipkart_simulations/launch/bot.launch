@@ -5,7 +5,7 @@
     <!-- load robot description-->
     <param command="$(find xacro)/xacro $(find bot_description)/urdf/bot.xacro" name="robot_description" />
     <!-- spawn robot in gazebo-->
-    <node  name="spawn_urdf" args="-param robot_description -urdf -model $(arg robot_name)" pkg="gazebo_ros" type="spawn_model" ns="/$(arg robot_name)" />
+    <node  name="spawn_urdf" args="$(arg init_pose) -param robot_description -urdf -model $(arg robot_name)" pkg="gazebo_ros" type="spawn_model" ns="/$(arg robot_name)" />
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
     <!-- control manger stack-->
     <rosparam file="$(find bot_description)/config/diffdrive.yaml" command="load" ns="/$(arg robot_name)"/>

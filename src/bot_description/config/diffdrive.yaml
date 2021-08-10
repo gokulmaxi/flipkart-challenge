@@ -4,9 +4,8 @@ flipkart_drive_controller:
     
     left_wheel: 'Rev1'
     right_wheel: 'Rev2'
-    
-    wheel_separation: 0.44
-    
+   
+   
     # Odometry covariances for the encoder output of the robot. These values should
     # be tuned to your robot's sample odometry data, but these values are a good place
     # to start

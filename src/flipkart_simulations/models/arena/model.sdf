@@ -2,7 +2,7 @@
 <sdf version='1.4'>
   <model name="arena">
     <static>true</static>
-    <pose>-1.031130 1.092014 -1.145319 0 0 0</pose>
+    <pose>-1.035247 0.758715 -1.145319 0 0 0 </pose>
 
     <link name="arena">
         <pose>0 0 0.02 0 0 0</pose>
