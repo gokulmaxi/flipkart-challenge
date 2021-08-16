@@ -27,11 +27,13 @@
 
 <link name="wheel_1_1">
   <inertial>
-    <origin rpy="0 0 0" xyz="3.469446951953614e-18 -0.009000000000000001 1.0408340855860843e-17"/>
-    <mass value="0.0243098481570003"/>
-    <inertia ixx="3e-06" ixy="0.0" ixz="0.0" iyy="6e-06" iyz="-0.0" izz="3e-06"/>
+    <mass value="0.5"/>
+    <inertia ixx="0.00014299291666666666" ixy="0" ixz="0" iyy="0.00014299291666666666" iyz="0" izz="0.0002739025"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
   </inertial>
   <visual>
+    <origin rpy="-1.5708 0 0" xyz="0.025 -0.06 0.0215"/>
+
     <geometry>
       <cylinder length="0.018" radius="0.0215"/>
     </geometry>
@@ -48,11 +50,13 @@
 
 <link name="wheel_2_1">
   <inertial>
-    <origin rpy="0 0 0" xyz="6.938893903907228e-18 0.009000000000000001 1.3877787807814457e-17"/>
-    <mass value="0.1"/>
-    <inertia ixx="3.239e-05" ixy="0.0" ixz="0.0" iyy="6e-06" iyz="0.0" izz="2.3e-06"/>
+    <mass value="0.5"/>
+    <inertia ixx="0.00014299291666666666" ixy="0" ixz="0" iyy="0.00014299291666666666" iyz="0" izz="0.0002739025"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+
   </inertial>
   <visual>
+    <origin rpy="-1.5708 0 0" xyz="0.025 0.06 0.0215"/>
     <geometry>
       <cylinder length="0.018" radius="0.0215"/>
     </geometry>
@@ -81,7 +85,6 @@
 </link>
 
 <joint name="Rev1" type="continuous">
-  <origin rpy="-1.5708 0 0" xyz="0.025 -0.06 0.0215"/>
   <parent link="base_link"/>
   <child link="wheel_1_1"/>
   <axis xyz="0.0 0.0 1.0"/>
@@ -90,7 +93,6 @@
 </joint>
 
 <joint name="Rev2" type="continuous">
-  <origin rpy="-1.5708 0 0" xyz="0.025 0.06 0.0215"/>
   <parent link="base_link"/>
   <child link="wheel_2_1"/>
   <axis xyz="0.0 0.0 1.0"/>

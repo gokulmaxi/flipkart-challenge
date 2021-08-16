@@ -3,7 +3,7 @@
         <!-- overwriting these args -->
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
-        <arg name="pause" default="false" />
+        <arg name="pause" default="true" />
         <arg name="world" default="$(find flipkart_simulations)/world/mini_world.world" />
 
         <include file="$(find gazebo_ros)/launch/empty_world.launch">
