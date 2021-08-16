@@ -1,3 +1,7 @@
+robot_base_joint_publisher:
+  type: "joint_state_controller/JointStateController"
+  publish_rate: 50
+
 flipkart_drive_controller:
     type: "diff_drive_controller/DiffDriveController"
     publish_rate: 50
@@ -30,3 +34,14 @@ flipkart_drive_controller:
         max_velocity           : 2.0   # rad/s
         has_acceleration_limits: true
         max_acceleration       : 6.0   # rad/s^2
+
+/gazebo_ros_control:
+  pid_gains:
+    Rev1:
+      p: 1.0
+      i: 0.01
+      d: 10.0
+    Rev2:
+      p: 1.0
+      i: 0.01
+      d: 10.0

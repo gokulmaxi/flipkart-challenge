@@ -5,8 +5,24 @@
 
 <gazebo>
   <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-    <robotNamespace>/</robotNamespace>
-  </plugin>
+    <legacyMode>false</legacyMode>
+    <alwaysOn>true</alwaysOn>
+    <updateRate>1000.0</updateRate>
+    <leftJoint>Rev1</leftJoint>
+    <rightJoint>Rev2</rightJoint>
+    <wheelSeparation>0.5</wheelSeparation>
+    <wheelDiameter>0.2</wheelDiameter>
+    <wheelTorque>10</wheelTorque>
+    <publishTf>1</publishTf>
+    <odometryFrame>map</odometryFrame>
+    <commandTopic>cmd_vel</commandTopic>
+    <odometryTopic>odom</odometryTopic>
+    <robotBaseFrame>base_link</robotBaseFrame>
+    <wheelAcceleration>2.8</wheelAcceleration>
+    <publishWheelJointState>true</publishWheelJointState>
+    <publishWheelTF>false</publishWheelTF>
+    <odometrySource>world</odometrySource>
+    <rosDebugLevel>Debug</rosDebugLevel>  </plugin>
 </gazebo>
 <gazebo reference="base_link">
   <material>${body_color}</material>

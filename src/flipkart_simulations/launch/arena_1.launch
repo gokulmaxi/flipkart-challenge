@@ -3,16 +3,17 @@
         <!-- overwriting these args -->
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
-        <arg name="pause" default="false" />
+        <arg name="pause" default="true" />
         <arg name="world" default="$(find flipkart_simulations)/world/mini_world.world" />
       
         <include file="$(find gazebo_ros)/launch/empty_world.launch">
-                <arg name="world_name" value="$(arg world)" />
+                <!-- <arg name="world_name" value="$(arg world)" /> -->
                 <arg name="debug" value="$(arg debug)" />
                 <arg name="gui" value="$(arg gui)" />
                 <arg name="paused" value="$(arg pause)" />
                 <arg name="use_sim_time" value="true" />
         </include>
         <param command="$(find xacro)/xacro $(find bot_description)/urdf/bot.xacro" name="robot_description" />
+        <rosparam file="$(find bot_description)/config/diffdrive.yaml" command="load"/>
         <node args="-param robot_description -urdf -model bot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
 </launch>
