@@ -6,8 +6,8 @@ flipkart_drive_controller:
     type: "diff_drive_controller/DiffDriveController"
     publish_rate: 50
     
-    left_wheel: 'Rev1'
-    right_wheel: 'Rev2'
+    left_wheel: 'Rev2'
+    right_wheel: 'Rev1'
     
     wheel_separation: 0.44
     

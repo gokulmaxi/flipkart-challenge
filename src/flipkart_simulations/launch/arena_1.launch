@@ -16,4 +16,5 @@
         <param command="$(find xacro)/xacro $(find bot_description)/urdf/bot.xacro" name="robot_description" />
         <rosparam file="$(find bot_description)/config/diffdrive.yaml" command="load"/>
         <node args="-param robot_description -urdf -model bot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
+        <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="robot_base_joint_publisher flipkart_drive_controller"/>
 </launch>

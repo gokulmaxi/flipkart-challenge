@@ -5,6 +5,11 @@
 
 <gazebo>
   <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+
+  </plugin>
+</gazebo>
+<gazebo>
+  <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
     <legacyMode>false</legacyMode>
     <alwaysOn>true</alwaysOn>
     <updateRate>1000.0</updateRate>
@@ -22,7 +27,8 @@
     <publishWheelJointState>true</publishWheelJointState>
     <publishWheelTF>false</publishWheelTF>
     <odometrySource>world</odometrySource>
-    <rosDebugLevel>Debug</rosDebugLevel>  </plugin>
+    <rosDebugLevel>Debug</rosDebugLevel>
+  </plugin>
 </gazebo>
 <gazebo reference="base_link">
   <material>${body_color}</material>
