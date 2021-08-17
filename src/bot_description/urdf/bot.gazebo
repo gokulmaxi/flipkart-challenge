@@ -15,8 +15,8 @@
     <updateRate>1000.0</updateRate>
     <leftJoint>Rev1</leftJoint>
     <rightJoint>Rev2</rightJoint>
-    <wheelSeparation>0.5</wheelSeparation>
-    <wheelDiameter>0.2</wheelDiameter>
+    <wheelSeparation>0.106</wheelSeparation>
+    <wheelDiameter>0.043</wheelDiameter>
     <wheelTorque>10</wheelTorque>
     <publishTf>1</publishTf>
     <odometryFrame>map</odometryFrame>

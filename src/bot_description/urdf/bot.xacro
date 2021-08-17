@@ -27,7 +27,7 @@
 
   <link name="wheel_1_1">
     <inertial>
-      <origin rpy="-1.5708 0 0" xyz="4.469446951953614e-18 -0.059000000000000001 1.0408340855860843e-17" />
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
       <mass value="0.1" />
       <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
 
@@ -43,6 +43,7 @@
       </material>
     </visual>
     <collision>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
       <geometry>
         <cylinder length="0.018" radius="0.0215" />
       </geometry>
@@ -51,7 +52,7 @@
 
   <link name="wheel_2_1">
     <inertial>
-      <origin rpy="-1.5708 0 0" xyz="6.938893903907228e-18 0.059000000000000001 1.3877787807814457e-17" />
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
       <mass value="0.1" />
       <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
     </inertial>
@@ -65,27 +66,28 @@
       </material>
     </visual>
     <collision>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
       <geometry>
         <cylinder length="0.018" radius="0.0215" />
       </geometry>
     </collision>
   </link>
-<!-- right wheel -->
+  <!-- right wheel -->
   <joint name="Rev1" type="continuous">
     <parent link="base_link" />
     <child link="wheel_1_1" />
-    <origin rpy ="0 0 0" xyz= "0.025 -0.06 0.0215"/>
-    <axis xyz="0 1 0"/>
-        <limit effort="10000" velocity="1000" />
+    <origin rpy="0 0 0" xyz="0.025 -0.06 0.0215" />
+    <axis xyz="0 1 0" />
+    <limit effort="10000" velocity="1000" />
     <joint_properties damping="1.0" friction="1.0" />
   </joint>
-<!-- leftwheel -->
+  <!-- leftwheel -->
   <joint name="Rev2" type="continuous">
     <parent link="base_link" />
     <child link="wheel_2_1" />
-    <origin rpy ="0 0 0" xyz= "0.025 0.06 0.0215"/>
-    <axis xyz="0 1 0"/>
-        <limit effort="10000" velocity="1000" />
+    <origin rpy="0 0 0" xyz="0.025 0.06 0.0215" />
+    <axis xyz="0 1 0" />
+    <limit effort="10000" velocity="1000" />
     <joint_properties damping="1.0" friction="1.0" />
   </joint>
 

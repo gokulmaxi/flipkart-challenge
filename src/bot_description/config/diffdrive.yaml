@@ -38,10 +38,10 @@ flipkart_drive_controller:
 /gazebo_ros_control:
   pid_gains:
     Rev1:
-      p: 1.0
-      i: 0.01
-      d: 10.0
+      p: 5
+      i: 0.0025
+      d: 0
     Rev2:
-      p: 1.0
-      i: 0.01
-      d: 10.0
+      p: 5
+      i: 0.0025
+      d: 0.001
