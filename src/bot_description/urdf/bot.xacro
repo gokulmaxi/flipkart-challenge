@@ -72,6 +72,55 @@
       </geometry>
     </collision>
   </link>
+
+  <link name="wheel_1_2">
+    <inertial>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+      <mass value="0.1" />
+      <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
+
+    </inertial>
+    <visual>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+
+      <geometry>
+        <cylinder length="0.018" radius="0.0215" />
+      </geometry>
+      <material name="black">
+        <color rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+      <geometry>
+        <cylinder length="0.018" radius="0.0215" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wheel_2_2">
+    <inertial>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+      <mass value="0.1" />
+      <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
+    </inertial>
+    <visual>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+      <geometry>
+        <cylinder length="0.018" radius="0.0215" />
+      </geometry>
+      <material name="black">
+        <color rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+      <geometry>
+        <cylinder length="0.018" radius="0.0215" />
+      </geometry>
+    </collision>
+  </link>
+
   <!-- right wheel -->
   <joint name="Rev1" type="continuous">
     <parent link="base_link" />
@@ -81,11 +130,30 @@
     <limit effort="10000" velocity="1000" />
     <joint_properties damping="1.0" friction="1.0" />
   </joint>
+
+  <joint name="Rev3" type="continuous">
+    <parent link="base_link" />
+    <child link="wheel_1_2" />
+    <origin rpy="0 0 0" xyz="-0.025 0.06 0.0215" />
+    <axis xyz="0 1 0" />
+    <limit effort="10000" velocity="1000" />
+    <joint_properties damping="1.0" friction="1.0" />
+  </joint>
+
   <!-- leftwheel -->
   <joint name="Rev2" type="continuous">
     <parent link="base_link" />
     <child link="wheel_2_1" />
     <origin rpy="0 0 0" xyz="0.025 0.06 0.0215" />
+    <axis xyz="0 1 0" />
+    <limit effort="10000" velocity="1000" />
+    <joint_properties damping="1.0" friction="1.0" />
+  </joint>
+
+  <joint name="Rev4" type="continuous">
+    <parent link="base_link" />
+    <child link="wheel_2_2" />
+    <origin rpy="0 0 0" xyz="-0.025 -0.06 0.0215" />
     <axis xyz="0 1 0" />
     <limit effort="10000" velocity="1000" />
     <joint_properties damping="1.0" friction="1.0" />

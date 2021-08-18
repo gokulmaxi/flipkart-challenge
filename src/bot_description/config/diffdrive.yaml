@@ -6,8 +6,8 @@ flipkart_drive_controller:
     type: "diff_drive_controller/DiffDriveController"
     publish_rate: 50
     
-    left_wheel: 'Rev2'
-    right_wheel: 'Rev1'
+    left_wheel: ['Rev2','Rev4']
+    right_wheel: ['Rev1','Rev3']
     
     wheel_separation: 0.44
     
@@ -38,10 +38,18 @@ flipkart_drive_controller:
 /gazebo_ros_control:
   pid_gains:
     Rev1:
-      p: 5
-      i: 0.0025
+      p: 0
+      i: 0
       d: 0
     Rev2:
-      p: 5
-      i: 0.0025
-      d: 0.001
+      p: 0
+      i: 0
+      d: 0
+    Rev3:
+      p: 0
+      i: 0
+      d: 0
+    Rev4:
+      p: 0
+      i: 0
+      d: 0
