@@ -6,10 +6,10 @@ flipkart_drive_controller:
     type: "diff_drive_controller/DiffDriveController"
     publish_rate: 50
     
-    left_wheel: ['Rev2','Rev4']
-    right_wheel: ['Rev1','Rev3']
+    left_wheel: ['rear_left_joint','front_left_joint']
+    right_wheel: ['front_right_joint','rear_right_joint']
     
-    wheel_separation: 0.44
+    wheel_separation: 0.012
     
     # Odometry covariances for the encoder output of the robot. These values should
     # be tuned to your robot's sample odometry data, but these values are a good place
@@ -24,7 +24,7 @@ flipkart_drive_controller:
     linear:
       x:
         has_velocity_limits    : true
-        max_velocity           : 0.2   # m/s
+        max_velocity           : 2   # m/s
         min_velocity           : -0.2 # m/s
         has_acceleration_limits: true
         max_acceleration       : 0.6   # m/s^2
@@ -35,21 +35,21 @@ flipkart_drive_controller:
         has_acceleration_limits: true
         max_acceleration       : 6.0   # rad/s^2
 
-/gazebo_ros_control:
-  pid_gains:
-    Rev1:
-      p: 0
-      i: 0
-      d: 0
-    Rev2:
-      p: 0
-      i: 0
-      d: 0
-    Rev3:
-      p: 0
-      i: 0
-      d: 0
-    Rev4:
-      p: 0
-      i: 0
-      d: 0
+# /gazebo_ros_control:
+#   pid_gains:
+#     front_right_joint:
+#       p: 0.005
+#       i: 10
+#       d: 0
+#     front_left_joint:
+#       p: 0.005
+#       i: 10
+#       d: 0
+#     rear_right_joint:
+#       p: 0.005
+#       i: 10
+#       d: 0
+#     rear_left_joint:
+#       p: 0.005
+#       i: 10
+#       d: 0
