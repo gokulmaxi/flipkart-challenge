@@ -35,21 +35,21 @@ flipkart_drive_controller:
         has_acceleration_limits: true
         max_acceleration       : 6.0   # rad/s^2
 
-# /gazebo_ros_control:
-#   pid_gains:
-#     front_right_joint:
-#       p: 0.005
-#       i: 10
-#       d: 0
-#     front_left_joint:
-#       p: 0.005
-#       i: 10
-#       d: 0
-#     rear_right_joint:
-#       p: 0.005
-#       i: 10
-#       d: 0
-#     rear_left_joint:
-#       p: 0.005
-#       i: 10
-#       d: 0
+/gazebo_ros_control:
+  pid_gains:
+    front_right_joint:
+      p: 0.009
+      i: 8
+      d: 0
+    front_left_joint:
+      p: 0.009
+      i: 8
+      d: 0
+    rear_right_joint:
+      p: 0.009
+      i: 8
+      d: 0
+    rear_left_joint:
+      p: 0.009
+      i: 8
+      d: 0
