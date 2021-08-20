@@ -17,28 +17,28 @@
         <group ns = "robot1">
                 <param name="tf_prefix" value="robot1_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x -0.223826 -y -0.064987 -z 0.003568 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="init_pose" value="-x -0.236551 -y -0.066882 -z 0.003568 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot1" />
                 </include>
         </group>
         <group ns = "robot2">
                 <param name="tf_prefix" value="robot2_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x -0.092107 -y -0.063868 -z 0.003566 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="init_pose" value="-x -0.083721 -y -0.067027 -z 0.003566 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot2" />
                 </include>
         </group>
                 <group ns = "robot3">
      q           <param name="tf_prefix" value="robot3_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x 0.066189 -y -0.051734 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="init_pose" value="-x 0.066189 -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot3" />
                 </include>
         </group>
                 <group ns = "robot4">
                 <param name="tf_prefix" value="robot4_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
-                        <arg name="init_pose" value="-x 0.212891  -y -0.075720 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="init_pose" value="-x 0.212891  -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot4" />
                 </include>
         </group>
