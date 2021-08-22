@@ -6,21 +6,21 @@
 <xacro:include filename="$(find bot_description)/urdf/bot.gazebo" />
 <link name="base_link">
 <inertial>
-<origin rpy="0 0 0" xyz="-0.0009636587923201293 1.0904768733166021e-17 0.021032044779261124" />
+<origin rpy="0 0 0" xyz="0 0 0" />
 <mass value="0.11050949445484062" />
 <inertia ixx="9e-05" ixy="-0.0" ixz="-1e-06" iyy="9.3e-05" iyz="0.0" izz="0.00018" />
 </inertial>
 <visual>
-<origin rpy="0 0 0" xyz="0 0 0" />
+<origin rpy="0 0 0" xyz="-0.081 -0.0793 -0.043" />
 <geometry>
-<mesh filename="package://bot_description/meshes/base_link.stl" scale="0.001 0.001 0.001" />
+<mesh filename="package://bot_description/meshes/base.stl" scale="0.001 0.001 0.001" />
 </geometry>
 <material name="silver" />
 </visual>
 <collision>
-<origin rpy="0 0 0" xyz="0 0 0" />
+<origin rpy="0 0 0" xyz="-0.08 -0.0793 -0.043" />
 <geometry>
-<mesh filename="package://bot_description/meshes/base_link.stl" scale="0.001 0.001 0.001" />
+<mesh filename="package://bot_description/meshes/base.stl" scale="0.001 0.001 0.001" />
 </geometry>
 </collision>
 </link>
@@ -125,7 +125,7 @@
 <joint name="front_right_joint" type="continuous">
 <parent link="base_link" />
 <child link="front_wheel_right_link" />
-<origin rpy="0 0 0" xyz="-0.025 0.06 0.0215" />
+<origin rpy="0 0 0" xyz="-0.028 0.06 0.0215" />
 <axis xyz="0 1 0" />
 <limit effort="10000" velocity="1000" />
 <joint_properties damping="1.0" friction="1.0" />
@@ -134,7 +134,7 @@
 <joint name="front_left_joint" type="continuous">
 <parent link="base_link" />
 <child link="front_wheel_left_link" />
-<origin rpy="0 0 0" xyz="-0.025 -0.06 0.0215" />
+<origin rpy="0 0 0" xyz="-0.029 -0.06 0.0215" />
 <axis xyz="0 1 0" />
 <limit effort="10000" velocity="1000" />
 <joint_properties damping="1.0" friction="1.0" />
@@ -144,7 +144,7 @@
 <joint name="rear_right_joint" type="continuous">
 <parent link="base_link" />
 <child link="rear_wheel_right_link" />
-<origin rpy="0 0 0" xyz="0.025 0.06 0.0215" />
+<origin rpy="0 0 0" xyz="0.028 0.06 0.0215" />
 <axis xyz="0 1 0" />
 <limit effort="10000" velocity="1000" />
 <joint_properties damping="1.0" friction="1.0" />
@@ -152,7 +152,7 @@
 <joint name="rear_left_joint" type="continuous">
 <parent link="base_link" />
 <child link="rear_wheel_left_link" />
-<origin rpy="0 0 0" xyz="0.025 -0.06 0.0215" />
+<origin rpy="0 0 0" xyz="0.029 -0.06 0.0215" />
 <axis xyz="0 1 0" />
 <limit effort="10000" velocity="1000" />
 <joint_properties damping="1.0" friction="1.0" />
