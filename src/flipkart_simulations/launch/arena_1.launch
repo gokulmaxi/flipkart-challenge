@@ -19,6 +19,7 @@
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
                         <arg name="init_pose" value="-x -0.236551 -y -0.066882 -z 0.003568 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot1" />
+                        <arg name="index" value="1" />
                 </include>
         </group>
         <group ns = "robot2">
@@ -26,6 +27,8 @@
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
                         <arg name="init_pose" value="-x -0.083721 -y -0.067027 -z 0.003566 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot2" />
+                        <arg name="index" value="2" />
+
                 </include>
         </group>
                 <group ns = "robot3">
@@ -33,6 +36,8 @@
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
                         <arg name="init_pose" value="-x 0.066189 -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot3" />
+                        <arg name="index" value="3" />
+
                 </include>
         </group>
                 <group ns = "robot4">
@@ -40,6 +45,7 @@
                 <include file="$(find flipkart_simulations)/launch/bot.launch">
                         <arg name="init_pose" value="-x 0.212891  -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
                         <arg name="robot_name" value="robot4" />
+                        <arg name="index" value="4" />
                 </include>
         </group>
 

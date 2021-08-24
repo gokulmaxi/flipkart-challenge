@@ -1,161 +1,191 @@
 <?xml version="1.0"?>
 <robot name="bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<xacro:include filename="$(find bot_description)/urdf/materials.xacro" />
-<xacro:include filename="$(find bot_description)/urdf/bot.trans" />
-<xacro:include filename="$(find bot_description)/urdf/bot.gazebo" />
-<link name="base_link">
-<inertial>
-<origin rpy="0 0 0" xyz="0 0 0" />
-<mass value="0.11050949445484062" />
-<inertia ixx="9e-05" ixy="-0.0" ixz="-1e-06" iyy="9.3e-05" iyz="0.0" izz="0.00018" />
-</inertial>
-<visual>
-<origin rpy="0 0 0" xyz="-0.081 -0.0793 -0.043" />
-<geometry>
-<mesh filename="package://bot_description/meshes/base.stl" scale="0.001 0.001 0.001" />
-</geometry>
-<material name="silver" />
-</visual>
-<collision>
-<origin rpy="0 0 0" xyz="-0.08 -0.0793 -0.043" />
-<geometry>
-<mesh filename="package://bot_description/meshes/base.stl" scale="0.001 0.001 0.001" />
-</geometry>
-</collision>
-</link>
+    <xacro:include filename="$(find bot_description)/urdf/materials.xacro" />
+    <xacro:include filename="$(find bot_description)/urdf/bot.trans" />
+    <xacro:include filename="$(find bot_description)/urdf/bot.gazebo" />
+    <xacro:arg name="index" default="1" />
+    <link name="base_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <mass value="0.11050949445484062" />
+            <inertia ixx="9e-05" ixy="-0.0" ixz="-1e-06" iyy="9.3e-05" iyz="0.0" izz="0.00018" />
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="-0.081 -0.0793 -0.043" />
+            <geometry>
+                <mesh filename="package://bot_description/meshes/base.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="-0.08 -0.0793 -0.043" />
+            <geometry>
+                <mesh filename="package://bot_description/meshes/base.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="aruco_tag">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0.12" />
+            <!-- <if value="1"> -->
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_1.dae" scale="1 1 1" />
+                </geometry>
+            <!-- </if> -->
+            <!-- <if index="2">
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_2.dae" scale="1 1 1" />
+                </geometry>
+            </if>
+            <if index="3">
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_3.dae" scale="1 1 1" />
+                </geometry>
+            </if>
+            <if index="4">
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_4.dae" scale="1 1 1" />
+                </geometry>
+            </if> -->
+        </visual>
 
-<link name="front_wheel_right_link">
-<inertial>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<mass value="0.1" />
-<inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
+    </link>
+    <link name="front_wheel_right_link">
+        <inertial>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <mass value="0.1" />
+            <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
 
-</inertial>
-<visual>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
+        </inertial>
+        <visual>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
 
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-<material name="black">
-<color rgba="0 0 0 1" />
-</material>
-</visual>
-<collision>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-</collision>
-</link>
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+        </collision>
+    </link>
 
-<link name="front_wheel_left_link">
-<inertial>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<mass value="0.1" />
-<inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
-</inertial>
-<visual>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-<material name="black">
-<color rgba="0 0 0 1" />
-</material>
-</visual>
-<collision>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-</collision>
-</link>
+    <link name="front_wheel_left_link">
+        <inertial>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <mass value="0.1" />
+            <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
+        </inertial>
+        <visual>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+        </collision>
+    </link>
 
-<link name="rear_wheel_right_link">
-<inertial>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<mass value="0.1" />
-<inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
+    <link name="rear_wheel_right_link">
+        <inertial>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <mass value="0.1" />
+            <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
 
-</inertial>
-<visual>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
+        </inertial>
+        <visual>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
 
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-<material name="black">
-<color rgba="0 0 0 1" />
-</material>
-</visual>
-<collision>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-</collision>
-</link>
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+        </collision>
+    </link>
 
-<link name="rear_wheel_left_link">
-<inertial>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<mass value="0.1" />
-<inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
-</inertial>
-<visual>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-<material name="black">
-<color rgba="0 0 0 1" />
-</material>
-</visual>
-<collision>
-<origin rpy="-1.5708 0 0" xyz="0 0 0" />
-<geometry>
-<cylinder length="0.018" radius="0.0215" />
-</geometry>
-</collision>
-</link>
+    <link name="rear_wheel_left_link">
+        <inertial>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <mass value="0.1" />
+            <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
+        </inertial>
+        <visual>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.018" radius="0.0215" />
+            </geometry>
+        </collision>
+    </link>
+    <!-- aruco tags -->
+    <joint name="aruco_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="aruco_tag" />
+        <origin rpy="0 0 0" xyz="0 0 0" />
+    </joint>
+    <!-- right wheel -->
+    <joint name="front_right_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="front_wheel_right_link" />
+        <origin rpy="0 0 0" xyz="-0.028 0.06 0.0215" />
+        <axis xyz="0 1 0" />
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
 
-<!-- right wheel -->
-<joint name="front_right_joint" type="continuous">
-<parent link="base_link" />
-<child link="front_wheel_right_link" />
-<origin rpy="0 0 0" xyz="-0.028 0.06 0.0215" />
-<axis xyz="0 1 0" />
-<limit effort="10000" velocity="1000" />
-<joint_properties damping="1.0" friction="1.0" />
-</joint>
+    <joint name="front_left_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="front_wheel_left_link" />
+        <origin rpy="0 0 0" xyz="-0.029 -0.06 0.0215" />
+        <axis xyz="0 1 0" />
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
 
-<joint name="front_left_joint" type="continuous">
-<parent link="base_link" />
-<child link="front_wheel_left_link" />
-<origin rpy="0 0 0" xyz="-0.029 -0.06 0.0215" />
-<axis xyz="0 1 0" />
-<limit effort="10000" velocity="1000" />
-<joint_properties damping="1.0" friction="1.0" />
-</joint>
-
-<!-- leftwheel -->
-<joint name="rear_right_joint" type="continuous">
-<parent link="base_link" />
-<child link="rear_wheel_right_link" />
-<origin rpy="0 0 0" xyz="0.028 0.06 0.0215" />
-<axis xyz="0 1 0" />
-<limit effort="10000" velocity="1000" />
-<joint_properties damping="1.0" friction="1.0" />
-</joint>
-<joint name="rear_left_joint" type="continuous">
-<parent link="base_link" />
-<child link="rear_wheel_left_link" />
-<origin rpy="0 0 0" xyz="0.029 -0.06 0.0215" />
-<axis xyz="0 1 0" />
-<limit effort="10000" velocity="1000" />
-<joint_properties damping="1.0" friction="1.0" />
-</joint>
+    <!-- leftwheel -->
+    <joint name="rear_right_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="rear_wheel_right_link" />
+        <origin rpy="0 0 0" xyz="0.028 0.06 0.0215" />
+        <axis xyz="0 1 0" />
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
+    <joint name="rear_left_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="rear_wheel_left_link" />
+        <origin rpy="0 0 0" xyz="0.029 -0.06 0.0215" />
+        <axis xyz="0 1 0" />
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
 
 </robot>
