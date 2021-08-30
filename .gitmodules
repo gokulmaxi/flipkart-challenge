@@ -4,3 +4,9 @@
 [submodule "src/realsense2_description"]
 	path = src/realsense2_description
 	url = https://github.com/issaiass/realsense2_description
+[submodule "src/aruco_detector_ocv"]
+	path = src/aruco_detector_ocv
+	url = https://github.com/CesMak/aruco_detector_ocv.git
+[submodule "src/alfons_msgs"]
+	path = src/alfons_msgs
+	url = https://github.com/CesMak/alfons_msgs.git
