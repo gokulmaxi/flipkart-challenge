@@ -21,6 +21,8 @@ gz sdf -p d435.urdf > d435.sdf         # urdf to sdf
 
 ## hardware interface 
 [arduino hardware interface](https://github.com/joshnewans/diffdrive_arduino) 
+## camera calibiration ros
+- [camera calibiration](http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration) 
 ##TODO
 - add coordinates to spawn 
 - add opencv to detect
