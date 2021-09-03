@@ -10,6 +10,10 @@ project(flipkart_hw)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  actionlib_msgs                
+  std_msgs  
+  geometry_msgs                    
+  message_generation   
 )
 
 ## System dependencies are found with CMake's conventions
@@ -60,17 +64,20 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+  FILES
+  GoToPose.action
+ )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
+ generate_messages(
+  DEPENDENCIES
+  actionlib_msgs
+  std_msgs
+  geometry_msgs
 #   DEPENDENCIES
 #   std_msgs  # Or other packages containing msgs
-# )
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -102,6 +109,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
+  CATKIN_DEPENDS actionlib_msgs std_msgs message_runtime 
+
 #  INCLUDE_DIRS include
 #  LIBRARIES flipkart_hw
 #  CATKIN_DEPENDS roscpp rospy
