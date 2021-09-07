@@ -48,7 +48,7 @@ class GoToGoalNode:
         self.rate = rospy.Rate(rate)
         self.dT = 1 / rate
 
-        self.kP = rospy.get_param('~kP', 2.0)
+        self.kP = rospy.get_param('~kP', 3)
         self.kA = rospy.get_param('~kA', 4.5)
         self.kB = rospy.get_param('~kB', -1.5)
         self.controller.set_constants(self.kP, self.kA, self.kB)
@@ -56,7 +56,7 @@ class GoToGoalNode:
         self.controller.set_linear_tolerance(
             rospy.get_param('~linear_tolerance', 0.05))
         self.controller.set_angular_tolerance(
-            rospy.get_param('~angular_tolerance', 360/180*pi))
+            rospy.get_param('~angular_tolerance', 3/180*pi))
 
         self.controller.set_max_linear_speed(
             rospy.get_param('~max_linear_speed', 0.5))
@@ -161,8 +161,7 @@ class GoToGoalNode:
         angle_pose = pose_c.Pose_c()
         angle_pose.x = quaternion_pose.position.x
         angle_pose.y = quaternion_pose.position.y
-        angle_pose.theta = pitch
-        rospy.loginfo('theta %f',pitch)
+        angle_pose.theta = yaw
         return angle_pose
 
 
