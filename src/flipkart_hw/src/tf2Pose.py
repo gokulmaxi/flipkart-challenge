@@ -12,7 +12,7 @@ if __name__ == '__main__':
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
 
-    turtle_pose = rospy.Publisher('/turtle1/pose', Pose, queue_size=1)
+    turtle_pose = rospy.Publisher('/flipbot1/pose', Pose, queue_size=1)
 
     rate = rospy.Rate(50.0)
     while not rospy.is_shutdown():
