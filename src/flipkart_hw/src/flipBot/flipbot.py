@@ -40,6 +40,12 @@ class FlipBot:
     def angular_vel(self, goal_pose, constant=0.3):
         rospy.loginfo("Current angle --> %f required angular velocity --> %f",self.pose.theta,(self.steering_angle(goal_pose) - self.pose.theta)*0.05)
         return constant * (self.steering_angle(goal_pose) - self.pose.theta)
+    def check_angle(self,target_angle:float):
+        if(math.degrees(self.pose.theta)>target_angle-self.rotate_tolerance and math.degrees(self.pose.theta)<target_angle+self.rotate_tolerance):
+            return True
+        else:
+            return False
+
     def move_y(self,x:float,y:float,direction:bool):
         goal_pose = Pose()
         goal_pose.x = x
@@ -95,20 +101,22 @@ class FlipBot:
         # If we press control + C, the node will stop.
 
     def rotate(self,target_deg,func):
-        command =Twist()
-        stop = Twist()
-        stop.linear.x = 0
-        stop.angular.z = 0
+        rospy.loginfo("target={%F} current:{%f}", target_deg,math.degrees(self.pose.theta))
         while(True):
-            command.angular.z = -0.4
-            func(2)
-            time.sleep(0.1)
-            func(3)
-            time.sleep(1)
-            print("target={%F} current:{%f}", target_deg,math.degrees(self.pose.theta))
-            if(target_deg-self.rotate_tolerance <= math.degrees(self.pose.theta) <= target_deg+self.rotate_tolerance):
+            rospy.loginfo("target={%F} current:{%f}", target_deg,math.degrees(self.pose.theta))
+            if(self.check_angle(target_deg)):
+                func(3)
+                break
+            if(target_deg > math.degrees(self.pose.theta)):
+                func(2)
+                time.sleep(0.1)
                 func(3)
                 time.sleep(1)
-                print("reached")
-                break
-                
+            if(target_deg  < math.degrees(self.pose.theta)):
+                func(1)
+                time.sleep(0.1)
+                func(3)
+                time.sleep(1)
+
+        rospy.loginfo("reached")
+        func(3)
