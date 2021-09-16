@@ -14,7 +14,7 @@ def callback(data,args):
     jsonData = {"data": [data.linear.x, data.angular.z]}
     jsonEncoded = json.dumps(jsonData)
     (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=1)
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", jsonEncoded)
+    rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonEncoded,bot_index)
 
 
 def listener():

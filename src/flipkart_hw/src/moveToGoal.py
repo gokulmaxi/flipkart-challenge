@@ -34,9 +34,12 @@ if __name__ == '__main__':
     try:
         rospy.init_node('bot_goal_move', anonymous=True)
         x = flipbot.FlipBot(1)
-        x.move_y()
+        y = flipbot.FlipBot(2)
+        
+        x.move_y(0.46,-0.75)
         x.rotate()
-        x.move_x(1.35,-0.6)
+        x.move_x(1.5,-0.75)
+        y.move_y()
         # servo_control(1,"test/message")
     except rospy.ROSInterruptException:
         pass
