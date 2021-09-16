@@ -16,7 +16,7 @@ class FlipBot:
         self.rate = rospy.Rate(10)
         self.r2 = rospy.Rate(5)
         self.yaw = 0
-        self.rotate_tolerance= 10
+        self.rotate_tolerance= 5
     def direction(self,boolean:bool):
         if boolean:
             return 1
