@@ -7,18 +7,18 @@ from turtlesim.msg import Pose
 from tf.transformations import euler_from_quaternion
 
 if __name__ == '__main__':
-    rospy.init_node('flipbot_tf_listener')
+    rospy.init_node('flipbot_tf_listener_3')
 
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
 
-    turtle_pose = rospy.Publisher('/flipbot4/pose', Pose, queue_size=1)
+    turtle_pose = rospy.Publisher('/flipbot3/pose', Pose, queue_size=1)
 
     rate = rospy.Rate(50.0)
     while not rospy.is_shutdown():
         try:
             trans = tfBuffer.lookup_transform(
-                'usb_cam', 'marker_id4', rospy.Time())
+                'usb_cam', 'marker_id3', rospy.Time())
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
             rate.sleep()
             continue

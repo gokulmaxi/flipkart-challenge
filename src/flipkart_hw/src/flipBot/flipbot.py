@@ -16,6 +16,12 @@ class FlipBot:
         self.rate = rospy.Rate(10)
         self.r2 = rospy.Rate(5)
         self.yaw = 0
+        self.rotate_tolerance= 10
+    def direction(self,boolean:bool):
+        if boolean:
+            return 1
+        else:
+            return -1
     def update_pose(self,data:float):
         self.pose = data
         self.pose.x = round(self.pose.x, 4)
@@ -34,14 +40,14 @@ class FlipBot:
     def angular_vel(self, goal_pose, constant=0.3):
         rospy.loginfo("Current angle --> %f required angular velocity --> %f",self.pose.theta,(self.steering_angle(goal_pose) - self.pose.theta)*0.05)
         return constant * (self.steering_angle(goal_pose) - self.pose.theta)
-    def move_y(self,x:float,y:float):
+    def move_y(self,x:float,y:float,direction:bool):
         goal_pose = Pose()
         goal_pose.x = x
         goal_pose.y = y
         distance_tolerance = 0.09
         vel_msg = Twist()
         while self.euclidean_distance(goal_pose) >= distance_tolerance:
-            vel_msg.linear.x = self.linear_vel(goal_pose)
+            vel_msg.linear.x = self.linear_vel(goal_pose)*self.direction(direction)
             rospy.loginfo("linear velocity Move y --> %f goal distance --> %f",vel_msg.linear.x,self.euclidean_distance(goal_pose))
             vel_msg.linear.y = 0
             vel_msg.linear.z = 0
@@ -59,7 +65,7 @@ class FlipBot:
         self.velocity_publisher.publish(vel_msg)
              # If we press control + C, the node will stop.
 
-    def move_x(self,x:float,y:float):
+    def move_x(self,x:float,y:float,direction:bool):
         """Moves the turtle to the goal."""
         goal_pose = Pose()
         goal_pose.x = x
@@ -70,7 +76,7 @@ class FlipBot:
             # Porportional controller.
             # https://en.wikipedia.org/wiki/Proportional_control
             # Linear velocity in the x-axis.
-            vel_msg.linear.x = self.linear_vel_x(goal_pose)
+            vel_msg.linear.x = self.linear_vel_x(goal_pose)*self.direction(direction)
             vel_msg.linear.y = 0
             vel_msg.linear.z = 0
             # Angular velocity in the z-axis.
@@ -88,20 +94,21 @@ class FlipBot:
         self.velocity_publisher.publish(vel_msg)
         # If we press control + C, the node will stop.
 
-    def rotate(self):
+    def rotate(self,target_deg,func):
         command =Twist()
         stop = Twist()
         stop.linear.x = 0
         stop.angular.z = 0
         while(True):
-            target_rad = target*math.pi/180
             command.angular.z = -0.4
-            self.velocity_publisher.publish(command)
-            self.r2.sleep()
-            self.velocity_publisher.publish(stop)
+            func(2)
+            time.sleep(0.1)
+            func(3)
             time.sleep(1)
-            print("target={} current:{}", target,math.degrees(self.pose.theta))
-            if(math.degrees(self.pose.theta)>75 and math.degrees(self.pose.theta)<85):
-                self.velocity_publisher.publish(stop)
+            print("target={%F} current:{%f}", target_deg,math.degrees(self.pose.theta))
+            if(target_deg-self.rotate_tolerance <= math.degrees(self.pose.theta) <= target_deg+self.rotate_tolerance):
+                func(3)
+                time.sleep(1)
                 print("reached")
                 break
+                

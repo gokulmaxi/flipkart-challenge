@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from inspect import trace
 import string
+import time
 import rospy
 import paho.mqtt.client as paho
 import json
@@ -17,10 +18,10 @@ def servo_control(data , topic):
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", jsonEncoded)
 
 
-def rotate(data, topic):
+def rotate(data:int):
     jsonData = {"data": [0, 0, 0, data]}
     jsonEncoded = json.dumps(jsonData)
-    (rc, mid) = client.publish(topic, jsonEncoded, qos=1)
+    (rc, mid) = client.publish("flipkart/bot1", jsonEncoded, qos=1)
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", jsonEncoded)
 
 
@@ -31,13 +32,16 @@ client.loop_start()
 if __name__ == '__main__':
     try:
         rospy.init_node('bot_goal_move', anonymous=True)
-        x = flipbot.FlipBot(1)
-        y = flipbot.FlipBot(2)
-        
-        # x.move_y(0.46,-0.75)
-        # x.rotate()
-        # x.move_x(1.5,-0.75)
-        # y.move_y()
-        servo_control(1,"flipkart/bot1")
+        bot1 = flipbot.FlipBot(1)
+        bot2 = flipbot.FlipBot(2)
+        # bot1.move_y(0.42,-0.55,True)
+        # bot1.rotate(rotate)
+        # bot1.move_x(1.3,-0.55,True)
+        # time.sleep(0.5)
+        # servo_control(1,"flipkart/bot2")
+        # time.sleep(0.5)
+        # bot1.move_x(0.42,-0.55,False)
+        bot1.rotate(85,rotate)
+        # bot2.move_y(0.28,-0.75)
     except rospy.ROSInterruptException:
         pass

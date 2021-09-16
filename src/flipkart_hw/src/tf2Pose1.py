@@ -7,7 +7,7 @@ from turtlesim.msg import Pose
 from tf.transformations import euler_from_quaternion
 
 if __name__ == '__main__':
-    rospy.init_node('flipbot_tf_listener')
+    rospy.init_node('flipbot_tf_listener_1')
 
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
