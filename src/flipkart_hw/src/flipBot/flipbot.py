@@ -35,11 +35,19 @@ class FlipBot:
         return sqrt(pow((goal_pose.x - self.pose.x), 2))
     def linear_vel_x(self, goal_pose, constant=0.5):
         return constant * self.euclidean_distance_x(goal_pose)
-    def steering_angle(self, goal_pose):
+
+    def steering_angle_x(self, goal_pose):
         return atan2(goal_pose.y - self.pose.y, goal_pose.x - self.pose.x)
-    def angular_vel(self, goal_pose, constant=0.3):
-        rospy.loginfo("Current angle --> %f required angular velocity --> %f",self.pose.theta,(self.steering_angle(goal_pose) - self.pose.theta)*0.05)
-        return constant * (self.steering_angle(goal_pose) - self.pose.theta)
+    def angular_vel_x(self, goal_pose, constant=0.05):
+        rospy.loginfo("Current angle --> %f required angular velocity --> %f",self.pose.theta,(self.steering_angle_x(goal_pose) - self.pose.theta)*0.05)
+        return constant * (self.steering_angle_x(goal_pose) - self.pose.theta)
+
+    def steering_angle_y(self, goal_pose):
+        return atan2( goal_pose.y - self.pose.y,goal_pose.x - self.pose.x)
+    def angular_vel_y(self, goal_pose, constant=0.05):
+        rospy.loginfo("Current angle --> %f required angular velocity --> %f",self.pose.theta,((self.steering_angle_y(goal_pose) - self.pose.theta)-0.17)*0.05)
+        return constant * (self.steering_angle_y(goal_pose) - self.pose.theta)
+    
     def check_angle(self,target_angle:float):
         if(math.degrees(self.pose.theta)>target_angle-self.rotate_tolerance and math.degrees(self.pose.theta)<target_angle+self.rotate_tolerance):
             return True
@@ -89,6 +97,7 @@ class FlipBot:
             vel_msg.angular.x = 0
             vel_msg.angular.y = 0
             vel_msg.angular.z = 0
+            #  self.angular_vel_x(goal_pose)
             rospy.loginfo("linear velocity Move x --> %f goal distance --> %f",vel_msg.linear.x,self.euclidean_distance_x(goal_pose))
             # Publishing our vel_msg
             self.velocity_publisher.publish(vel_msg)

@@ -80,3 +80,4 @@
         <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find aruco_detector_ocv)/config/aruco_opencv.rviz"/>
     </group>
 </launch>
+
