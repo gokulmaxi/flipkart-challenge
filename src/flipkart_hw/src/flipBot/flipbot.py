@@ -2,6 +2,8 @@ import rospy
 from turtlesim.msg import Pose
 from geometry_msgs.msg import Twist
 from math import pow, atan2, sqrt
+from flipBot import pair
+
 import math
 import time
 target = 75
@@ -54,10 +56,10 @@ class FlipBot:
         else:
             return False
 
-    def move_y(self,x:float,y:float,direction:bool):
+    def move_y(self,pair:pair,direction:bool):
         goal_pose = Pose()
-        goal_pose.x = x
-        goal_pose.y = y
+        goal_pose.x = pair.x
+        goal_pose.y = pair.y
         distance_tolerance = 0.09
         vel_msg = Twist()
         while self.euclidean_distance(goal_pose) >= distance_tolerance:
@@ -79,11 +81,11 @@ class FlipBot:
         self.velocity_publisher.publish(vel_msg)
              # If we press control + C, the node will stop.
 
-    def move_x(self,x:float,y:float,direction:bool):
+    def move_x(self,pair:pair,direction:bool):
         """Moves the turtle to the goal."""
         goal_pose = Pose()
-        goal_pose.x = x
-        goal_pose.y = y
+        goal_pose.x = pair.x
+        goal_pose.y = pair.y
         distance_tolerance = 0.05
         vel_msg = Twist()
         while self.euclidean_distance_x(goal_pose) >= distance_tolerance:
@@ -109,23 +111,22 @@ class FlipBot:
         self.velocity_publisher.publish(vel_msg)
         # If we press control + C, the node will stop.
 
-    def rotate(self,target_deg,func):
-        rospy.loginfo("target={%F} current:{%f}", target_deg,math.degrees(self.pose.theta))
+    def rotate(self,target_deg,func,topic:str):
         while(True):
             rospy.loginfo("target={%F} current:{%f}", target_deg,math.degrees(self.pose.theta))
             if(self.check_angle(target_deg)):
-                func(3)
+                func(3,topic)
                 break
             if(target_deg > math.degrees(self.pose.theta)):
-                func(2)
+                func(2,topic)
                 time.sleep(0.1)
-                func(3)
+                func(3,topic)
                 time.sleep(1)
             if(target_deg  < math.degrees(self.pose.theta)):
-                func(1)
+                func(1,topic)
                 time.sleep(0.1)
-                func(3)
+                func(3,topic)
                 time.sleep(1)
 
         rospy.loginfo("reached")
-        func(3)
+        func(3,topic)

@@ -19,7 +19,7 @@ def callback(data,args):
 
 def listener():
 
-    rospy.init_node('listener_mqtt', anonymous=True)
+    rospy.init_node('listener_mqtt')
     rospy.Subscriber("/flipbot1/cmd_vel", Twist, callback,1)
     rospy.Subscriber("/flipbot2/cmd_vel", Twist, callback,2)
     rospy.Subscriber("/flipbot3/cmd_vel", Twist, callback,3)
