@@ -18,7 +18,7 @@ class FlipBot:
         self.rate = rospy.Rate(10)
         self.r2 = rospy.Rate(5)
         self.yaw = 0
-        self.rotate_tolerance= 5
+        self.rotate_tolerance= 4
     def direction(self,boolean:bool):
         if boolean:
             return 1
@@ -51,6 +51,7 @@ class FlipBot:
         return constant * (self.steering_angle_y(goal_pose) - self.pose.theta)
     
     def check_angle(self,target_angle:float):
+        time.sleep(0.2)
         if(math.degrees(self.pose.theta)>target_angle-self.rotate_tolerance and math.degrees(self.pose.theta)<target_angle+self.rotate_tolerance):
             return True
         else:
@@ -79,6 +80,9 @@ class FlipBot:
         vel_msg.linear.x = 0
         vel_msg.angular.z = 0
         self.velocity_publisher.publish(vel_msg)
+        self.velocity_publisher.publish(vel_msg)
+        self.velocity_publisher.publish(vel_msg)
+
              # If we press control + C, the node will stop.
 
     def move_x(self,pair:pair,direction:bool):
@@ -109,7 +113,8 @@ class FlipBot:
         vel_msg.linear.x = 0
         vel_msg.angular.z = 0
         self.velocity_publisher.publish(vel_msg)
-        # If we press control + C, the node will stop.
+        self.velocity_publisher.publish(vel_msg)
+        self.velocity_publisher.publish(vel_msg)
 
     def rotate(self,target_deg,func,topic:str):
         while(True):
@@ -119,7 +124,7 @@ class FlipBot:
                 break
             if(target_deg > math.degrees(self.pose.theta)):
                 func(2,topic)
-                time.sleep(0.1)
+                time.sleep(0.05)
                 func(3,topic)
                 time.sleep(1)
             if(target_deg  < math.degrees(self.pose.theta)):
