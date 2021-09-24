@@ -1,36 +1,18 @@
 <?xml version="1.0"?>
-<robot name="bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="bot"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:include filename="$(find bot_description)/urdf/materials.xacro" />
     <xacro:include filename="$(find bot_description)/urdf/bot.trans" />
     <xacro:include filename="$(find bot_description)/urdf/bot.gazebo" />
-    <xacro:macro name="bot_switch" params="index">
-            <xacro:if value="${'${index}' == '1'}">
-                <geometry>
-                    <mesh filename="package://bot_description/meshes/ID_1.dae" scale="1 1 1" />
-                </geometry>
-            </xacro:if>
-            <xacro:if value="$(index == '2')">
-                <geometry>
-                    <mesh filename="package://bot_description/meshes/ID_2.dae" scale="1 1 1" />
-                </geometry>
-            </xacro:if>
-            <xacro:if value="$(${index} == '3')">
-                <geometry>
-                    <mesh filename="package://bot_description/meshes/ID_3.dae" scale="1 1 1" />
-                </geometry>
-            </xacro:if>
-            <xacro:if value="$(index == '4')">
-                <geometry>
-                    <mesh filename="package://bot_description/meshes/ID_4.dae" scale="1 1 1" />
-                </geometry>
-            </xacro:if> 
-    </xacro:macro>
+
     <xacro:arg name="index" default='1' />
     <xacro:arg name="index_1" default='False' />
     <xacro:arg name="index_2" default='False' />
     <xacro:arg name="index_3" default='False' />
     <xacro:arg name="index_4" default='False' />
+    <link name="dummy">
+    </link>
     <link name="base_link">
         <inertial>
             <origin rpy="0 0 0" xyz="0 0 0" />
@@ -52,7 +34,7 @@
     </link>
     <link name="aruco_tag">
         <visual>
-                <origin rpy="0 0 0" xyz="0 0 0.12" />
+            <origin rpy="0 0 0" xyz="0 0 0.12" />
             <xacro:if value="$(arg index_1)">
                 <geometry>
                     <mesh filename="package://bot_description/meshes/ID_1.dae" scale="1 1 1" />
@@ -72,7 +54,7 @@
                 <geometry>
                     <mesh filename="package://bot_description/meshes/ID_4.dae" scale="1 1 1" />
                 </geometry>
-            </xacro:if> 
+            </xacro:if>
         </visual>
 
     </link>
@@ -171,6 +153,11 @@
             </geometry>
         </collision>
     </link>
+    <!-- dummy link -->
+    <joint name="dummy_joint" type="fixed">
+        <parent link="dummy"/>
+        <child link="base_link"/>
+    </joint>
     <!-- aruco tags -->
     <joint name="aruco_joint" type="fixed">
         <parent link="base_link" />
