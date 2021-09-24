@@ -4,7 +4,33 @@
     <xacro:include filename="$(find bot_description)/urdf/materials.xacro" />
     <xacro:include filename="$(find bot_description)/urdf/bot.trans" />
     <xacro:include filename="$(find bot_description)/urdf/bot.gazebo" />
-    <xacro:arg name="index" default="1" />
+    <xacro:macro name="bot_switch" params="index">
+            <xacro:if value="${'${index}' == '1'}">
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_1.dae" scale="1 1 1" />
+                </geometry>
+            </xacro:if>
+            <xacro:if value="$(index == '2')">
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_2.dae" scale="1 1 1" />
+                </geometry>
+            </xacro:if>
+            <xacro:if value="$(${index} == '3')">
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_3.dae" scale="1 1 1" />
+                </geometry>
+            </xacro:if>
+            <xacro:if value="$(index == '4')">
+                <geometry>
+                    <mesh filename="package://bot_description/meshes/ID_4.dae" scale="1 1 1" />
+                </geometry>
+            </xacro:if> 
+    </xacro:macro>
+    <xacro:arg name="index" default='1' />
+    <xacro:arg name="index_1" default='False' />
+    <xacro:arg name="index_2" default='False' />
+    <xacro:arg name="index_3" default='False' />
+    <xacro:arg name="index_4" default='False' />
     <link name="base_link">
         <inertial>
             <origin rpy="0 0 0" xyz="0 0 0" />
@@ -26,27 +52,27 @@
     </link>
     <link name="aruco_tag">
         <visual>
-            <origin rpy="0 0 0" xyz="0 0 0.12" />
-            <!-- <if value="1"> -->
+                <origin rpy="0 0 0" xyz="0 0 0.12" />
+            <xacro:if value="$(arg index_1)">
                 <geometry>
                     <mesh filename="package://bot_description/meshes/ID_1.dae" scale="1 1 1" />
                 </geometry>
-            <!-- </if> -->
-            <!-- <if index="2">
+            </xacro:if>
+            <xacro:if value="$(arg index_2)">
                 <geometry>
                     <mesh filename="package://bot_description/meshes/ID_2.dae" scale="1 1 1" />
                 </geometry>
-            </if>
-            <if index="3">
+            </xacro:if>
+            <xacro:if value="$(arg index_3)">
                 <geometry>
                     <mesh filename="package://bot_description/meshes/ID_3.dae" scale="1 1 1" />
                 </geometry>
-            </if>
-            <if index="4">
+            </xacro:if>
+            <xacro:if value="$(arg index_4)">
                 <geometry>
                     <mesh filename="package://bot_description/meshes/ID_4.dae" scale="1 1 1" />
                 </geometry>
-            </if> -->
+            </xacro:if> 
         </visual>
 
     </link>
