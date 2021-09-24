@@ -14,14 +14,11 @@
         <include>
             <uri>model://arena</uri>
         </include>
-        <!-- <include>
-            <uri>model://realsense_camera</uri>
-        </include> -->
-
+<!-- camera -->
         <include>
-            <uri>model://d435</uri>
+                <uri>model://lifecam</uri>
             <static>true</static>
-            <pose>0.374455 -1.101866 3.208785 0 1.513803 -1.570012</pose>
+            <pose>0 0 0 0 0 0</pose>
         </include>
         
 

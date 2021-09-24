@@ -7,7 +7,7 @@
 
     <arg name="image_width" default="1920" /> <!-- 640, 1920 -->
     <arg name="image_height" default="1080" /> <!-- 480, 1080 -->
-    <arg name="camera" default="/camera/color/image_raw" />
+    <arg name="camera" default="/camera/image_raw" />
     <arg name="camera_info" default="/camera/camera_info" />
     <arg name="tf_prefix" default="marker_id" />
     <arg name="show_detections" default="true" />
@@ -61,6 +61,6 @@
     </node>
 
    <group if="$(arg use_rviz)" >
-        <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find aruco_detector_ocv)/config/aruco_opencv.rviz"/>
+        <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find flipkart_simulations)/config/aruco_opencv.rviz"/>
     </group>
 </launch>
