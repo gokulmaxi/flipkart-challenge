@@ -2,7 +2,7 @@
 <sdf version="1.5">
     <model name="distorted_camera">
         <static>true</static>
-        <link name='cam_link'>
+        <link name='usb_cam'>
             <pose>0 0.002195 2.276452 -0 1.552942 0</pose>
             <inertial>
                 <mass>0.1</mass>
@@ -54,7 +54,7 @@
                     <cameraName>camera</cameraName>
                     <imageTopicName>image_raw</imageTopicName>
                     <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-                    <frameName>camera_link</frameName>
+                    <frameName>usb_cam</frameName>
                     <hackBaseline>0.07</hackBaseline>
                     <distortionK1>0.0</distortionK1>
                     <distortionK2>0.0</distortionK2>
