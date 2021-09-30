@@ -10,7 +10,7 @@
     <param command="$(find xacro)/xacro '$(find bot_description)/urdf/bot.xacro' index_1:=$(arg index_1) index_2:=$(arg index_2) index_3:=$(arg index_3) index_4:=$(arg index_4)"  name="robot_description" />
     <!-- spawn robot in gazebo-->
     <node  name="spawn_urdf" args="$(arg init_pose) -param robot_description -urdf -model $(arg robot_name)" pkg="gazebo_ros" type="spawn_model" ns="/$(arg robot_name)" />
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" ns="/$(arg robot_name)"/>
     <!-- control manger stack-->
     <rosparam file="$(find bot_description)/config/diffdrive.yaml" command="load" ns="/$(arg robot_name)"/>
     <node args="flipkart_drive_controller --namespace=/$(arg robot_name)" name="controller_spawner_$(arg robot_name)" output="screen" pkg="controller_manager" ns="/$(arg robot_name)" respawn="false" type="spawner" />
