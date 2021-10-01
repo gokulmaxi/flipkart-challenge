@@ -18,11 +18,12 @@
     <wheelSeparation>0.12</wheelSeparation>
     <wheelDiameter>0.043</wheelDiameter>
     <wheelTorque>10</wheelTorque>
-    <publishTf>1</publishTf>
+    <publishTf>0</publishTf>
+    <publishOdomTF>0</publishOdomTF>
     <odometryFrame>map</odometryFrame>
     <commandTopic>cmd_vel</commandTopic>
     <odometryTopic>odom</odometryTopic>
-    <robotBaseFrame>base_link</robotBaseFrame>
+    <robotBaseFrame>dummy</robotBaseFrame>
     <wheelAcceleration>2.8</wheelAcceleration>
     <publishWheelJointState>true</publishWheelJointState>
     <publishWheelTF>false</publishWheelTF>
