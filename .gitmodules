@@ -10,3 +10,6 @@
 [submodule "src/alfons_msgs"]
 	path = src/alfons_msgs
 	url = https://github.com/CesMak/alfons_msgs.git
+[submodule "src/robot_state_publisher"]
+	path = src/robot_state_publisher
+	url = https://github.com/ros/robot_state_publisher.git
