@@ -11,7 +11,7 @@ class FlipBot:
     def __init__(self,bot_index:int):
         self.bot_index=bot_index
         self.velocity_publisher = rospy.Publisher(
-            '/flipbot'+str(self.bot_index)+'/cmd_vel', Twist, queue_size=10)
+            '/robot'+str(self.bot_index)+'/flipkart_drive_controller/cmd_vel', Twist, queue_size=10)
         self.pose_subscriber = rospy.Subscriber(
             '/flipbot'+str(self.bot_index)+'/pose', Pose, self.update_pose)
         self.pose = Pose()
@@ -49,7 +49,7 @@ class FlipBot:
     def angular_vel_y(self, goal_pose, constant=0.05):
         rospy.loginfo("Current angle --> %f required angular velocity --> %f",self.pose.theta,((self.steering_angle_y(goal_pose) - self.pose.theta)-0.17)*0.05)
         return constant * (self.steering_angle_y(goal_pose) - self.pose.theta)
-    
+
     def check_angle(self,target_angle:float):
         time.sleep(0.2)
         if(math.degrees(self.pose.theta)>target_angle-self.rotate_tolerance and math.degrees(self.pose.theta)<target_angle+self.rotate_tolerance):
