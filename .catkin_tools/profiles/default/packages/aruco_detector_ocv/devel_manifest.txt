@@ -1,6 +1,0 @@
-aruco_detector_ocv
-/home/gokul/projects/ros/flipkart-dev/devel/.private/aruco_detector_ocv/cmake.lock /home/gokul/projects/ros/flipkart-dev/devel/./cmake.lock
-/home/gokul/projects/ros/flipkart-dev/devel/.private/aruco_detector_ocv/lib/aruco_detector_ocv/node /home/gokul/projects/ros/flipkart-dev/devel/lib/aruco_detector_ocv/node
-/home/gokul/projects/ros/flipkart-dev/devel/.private/aruco_detector_ocv/lib/pkgconfig/aruco_detector_ocv.pc /home/gokul/projects/ros/flipkart-dev/devel/lib/pkgconfig/aruco_detector_ocv.pc
-/home/gokul/projects/ros/flipkart-dev/devel/.private/aruco_detector_ocv/share/aruco_detector_ocv/cmake/aruco_detector_ocvConfig.cmake /home/gokul/projects/ros/flipkart-dev/devel/share/aruco_detector_ocv/cmake/aruco_detector_ocvConfig.cmake
-/home/gokul/projects/ros/flipkart-dev/devel/.private/aruco_detector_ocv/share/aruco_detector_ocv/cmake/aruco_detector_ocvConfig-version.cmake /home/gokul/projects/ros/flipkart-dev/devel/share/aruco_detector_ocv/cmake/aruco_detector_ocvConfig-version.cmake

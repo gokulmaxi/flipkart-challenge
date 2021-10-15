@@ -1,5 +1,0 @@
-bot_description
-/home/gokul/projects/ros/flipkart-dev/devel/.private/bot_description/cmake.lock /home/gokul/projects/ros/flipkart-dev/devel/./cmake.lock
-/home/gokul/projects/ros/flipkart-dev/devel/.private/bot_description/lib/pkgconfig/bot_description.pc /home/gokul/projects/ros/flipkart-dev/devel/lib/pkgconfig/bot_description.pc
-/home/gokul/projects/ros/flipkart-dev/devel/.private/bot_description/share/bot_description/cmake/bot_descriptionConfig-version.cmake /home/gokul/projects/ros/flipkart-dev/devel/share/bot_description/cmake/bot_descriptionConfig-version.cmake
-/home/gokul/projects/ros/flipkart-dev/devel/.private/bot_description/share/bot_description/cmake/bot_descriptionConfig.cmake /home/gokul/projects/ros/flipkart-dev/devel/share/bot_description/cmake/bot_descriptionConfig.cmake

@@ -1,5 +1,0 @@
-realsense2_description
-/home/gokul/projects/ros/flipkart/devel/.private/realsense2_description/cmake.lock /home/gokul/projects/ros/flipkart/devel/./cmake.lock
-/home/gokul/projects/ros/flipkart/devel/.private/realsense2_description/lib/pkgconfig/realsense2_description.pc /home/gokul/projects/ros/flipkart/devel/lib/pkgconfig/realsense2_description.pc
-/home/gokul/projects/ros/flipkart/devel/.private/realsense2_description/share/realsense2_description/cmake/realsense2_descriptionConfig.cmake /home/gokul/projects/ros/flipkart/devel/share/realsense2_description/cmake/realsense2_descriptionConfig.cmake
-/home/gokul/projects/ros/flipkart/devel/.private/realsense2_description/share/realsense2_description/cmake/realsense2_descriptionConfig-version.cmake /home/gokul/projects/ros/flipkart/devel/share/realsense2_description/cmake/realsense2_descriptionConfig-version.cmake

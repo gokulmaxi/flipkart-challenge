@@ -1,2 +1,0 @@
-/home/gokul/projects/ros/flipkart/devel/./cmake.lock 144
-/home/gokul/projects/ros/flipkart-dev/devel/./cmake.lock 12
