@@ -1,15 +1,9 @@
-[submodule "src/realsense_gazebo_plugin"]
-	path = src/realsense_gazebo_plugin
-	url = https://github.com/issaiass/realsense_gazebo_plugin
-[submodule "src/realsense2_description"]
-	path = src/realsense2_description
-	url = https://github.com/issaiass/realsense2_description
 [submodule "src/aruco_detector_ocv"]
-	path = src/aruco_detector_ocv
+	path = src/flipbot_deps/aruco_detector_ocv
 	url = https://github.com/CesMak/aruco_detector_ocv.git
 [submodule "src/alfons_msgs"]
 	path = src/alfons_msgs
 	url = https://github.com/CesMak/alfons_msgs.git
 [submodule "src/robot_state_publisher"]
-	path = src/robot_state_publisher
+	path = src/flipbot_deps/robot_state_publisher
 	url = https://github.com/ros/robot_state_publisher.git

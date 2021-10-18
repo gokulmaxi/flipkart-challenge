@@ -8,13 +8,13 @@
     <arg name="index_4" default="0"/>
     <!-- load robot description-->
     <param name= "tf_prefix" value="$(arg robot_name)"></param>
-    <param command="$(find xacro)/xacro '$(find bot_description)/urdf/bot.xacro' index_1:=$(arg index_1) index_2:=$(arg index_2) index_3:=$(arg index_3) index_4:=$(arg index_4)"  name="robot_description" />
+    <param command="$(find xacro)/xacro '$(find flipbot_description)/urdf/bot.xacro' index_1:=$(arg index_1) index_2:=$(arg index_2) index_3:=$(arg index_3) index_4:=$(arg index_4)"  name="robot_description" />
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" ns="/$(arg robot_name)">
             <param name="tf_prefix" value="$(arg robot_name)"/>
     </node> 
     <!-- spawn robot in gazebo-->
     <node  name="spawn_urdf" args="$(arg init_pose) -param robot_description -urdf -model $(arg robot_name)" pkg="gazebo_ros" type="spawn_model" ns="/$(arg robot_name)" />
     <!-- control manger stack 3d-->
-    <rosparam file="$(find bot_description)/config/diffdrive.yaml" command="load" ns="/$(arg robot_name)"/>
+    <rosparam file="$(find flipbot_description)/config/diffdrive.yaml" command="load" ns="/$(arg robot_name)"/>
     <node args="flipkart_drive_controller --namespace=/$(arg robot_name)" name="controller_spawner_$(arg robot_name)" output="screen" pkg="controller_manager" ns="/$(arg robot_name)" respawn="false" type="spawner" />
 </launch>

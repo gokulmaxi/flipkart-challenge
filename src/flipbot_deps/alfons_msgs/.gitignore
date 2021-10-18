@@ -1,0 +1,16 @@
+img
+logs
+build
+devel
+bin
+lib
+msg_gen
+srv_gen
+qtcreator-build
+octave-workspace
+*~
+*.backup
+*.user
+*.autosave
+*.orig
+*.rej
