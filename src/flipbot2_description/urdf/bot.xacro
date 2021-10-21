@@ -47,7 +47,7 @@
     </link>
 
 
-    <link name="aruco_tag">
+    <!-- <link name="aruco_tag">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0.12" />
             <xacro:if value="$(arg index_1)">
@@ -72,7 +72,7 @@
             </xacro:if>
         </visual>
 
-    </link>
+    </link> -->
 
     <link name="rear_wheel_right_link">
         <inertial>
@@ -177,11 +177,11 @@
         <child link="base_link"/>
     </joint>
     <!-- aruco tags -->
-    <joint name="aruco_joint" type="fixed">
+    <!-- <joint name="aruco_joint" type="fixed">
         <parent link="base_link" />
         <child link="aruco_tag" />
         <origin rpy="0 0 0" xyz="0 0 0" />
-    </joint>
+    </joint> -->
     <!-- leftwheel -->
     <joint name="right_joint" type="continuous">
         <parent link="base_link" />
