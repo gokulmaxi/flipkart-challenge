@@ -3,7 +3,7 @@
 
 <transmission name="Rev1_tran">
 <type>transmission_interface/SimpleTransmission</type>
-<joint name="front_right_joint">
+<joint name="right_joint">
 <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
 </joint>
 <actuator name="Rev1_actr">
@@ -13,7 +13,7 @@
 </transmission>
 <transmission name="Rev2_tran">
 <type>transmission_interface/SimpleTransmission</type>
-<joint name="front_left_joint">
+<joint name="left_joint">
 <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
 </joint>
 <actuator name="Rev2_actr">
@@ -21,28 +21,4 @@
 <mechanicalReduction>1</mechanicalReduction>
 </actuator>
 </transmission>
-
-<transmission name="Rev3_tran">
-<type>transmission_interface/SimpleTransmission</type>
-<joint name="rear_right_joint">
-<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-</joint>
-<actuator name="Rev3_actr">
-<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-<mechanicalReduction>1</mechanicalReduction>
-</actuator>
-</transmission>
-
-<transmission name="Rev4_tran">
-<type>transmission_interface/SimpleTransmission</type>
-<joint name="rear_left_joint">
-<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-</joint>
-<actuator name="Rev4_actr">
-<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-<mechanicalReduction>1</mechanicalReduction>
-</actuator>
-</transmission>
-
 </robot>
-

@@ -2,7 +2,7 @@
   <arg default="$(find flipbot2_description)/urdf/bot.xacro" name="model"/>
   <arg default="true" name="gui"/>
   <arg default="$(find flipbot2_description)/launch/urdf.rviz" name="rvizconfig"/>
-  <param command="$(find xacro)/xacro $(arg model)" name="robot_description"/>
+  <param command="$(find xacro)/xacro $(arg model) index_1:=1" name="robot_description"/>
   <arg name="use_gui" default="true" doc="Should the joint_state_publisher use a GUI for controlling joint states" />
 <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" unless="$(arg use_gui)" />
 <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen" if="$(arg use_gui)" />

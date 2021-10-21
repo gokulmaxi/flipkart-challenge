@@ -37,9 +37,9 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0 0 0" xyz="0 0 0 " />
+            <origin rpy="0 0 0" xyz="0 0 0.02 " />
             <geometry>
-                <box size="0.6 0.1 0.2"/>
+                <box size="0.13 0.13 0.005"/>
 
                 <!-- <mesh filename="package://flipbot_description/meshes/base.stl" scale="0.001 0.001 0.001" /> -->
             </geometry>
@@ -141,7 +141,7 @@
         <collision>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
             <geometry>
-                <cylinder length="0.018" radius="0.0215" />
+                <cylinder length="0.005" radius="0.01" />
             </geometry>
         </collision>
     </link>
@@ -165,7 +165,7 @@
         <collision>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
             <geometry>
-                <cylinder length="0.018" radius="0.0215" />
+                <cylinder length="0.005" radius="0.01" />
             </geometry>
         </collision>
     </link>

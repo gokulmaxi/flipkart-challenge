@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+        <!-- overwriting these args -->
+        <arg name="debug" default="false" />
+        <arg name="gui" default="true" />
+        <arg name="pause" default="true" />
+        <arg name="world" default="$(find flipkart_simulations)/world/mini_world.world" />
+
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+                <arg name="world_name" value="$(arg world)" />
+                <arg name="debug" value="$(arg debug)" />
+                <arg name="gui" value="$(arg gui)" />
+                <arg name="paused" value="$(arg pause)" />
+                <arg name="use_sim_time" value="true" />
+        </include>
+        <!-- <node args="-param robot_description -urdf -model bot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/> -->
+        <group ns = "robot1">
+                <param name="tf_prefix" value="robot1_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot2.launch">
+                        <arg name="init_pose" value="-x -0.236551 -y -0.066882 -z 0.003568 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="robot_name" value="robot1" />
+                        <arg name="index_1" value="1" />
+                </include>
+        </group>
+        <group ns = "robot2">
+                <param name="tf_prefix" value="robot2_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot2.launch">
+                        <arg name="init_pose" value="-x -0.083721 -y -0.067027 -z 0.003566 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="robot_name" value="robot2" />
+                        <arg name="index_2" value="1" />
+
+                </include>
+        </group>
+                <group ns = "robot3">
+                <param name="tf_prefix" value="robot3_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot2.launch">
+                        <arg name="init_pose" value="-x 0.066189 -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="robot_name" value="robot3" />
+                        <arg name="index_3" value="1" />
+
+                </include>
+        </group>
+                <group ns = "robot4">
+                <param name="tf_prefix" value="robot4_tf" />
+                <include file="$(find flipkart_simulations)/launch/bot2.launch">
+                        <arg name="init_pose" value="-x 0.212891  -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
+                        <arg name="robot_name" value="robot4" />
+                        <arg name="index_4" value="1" />
+                </include>
+        </group>
+
+</launch>

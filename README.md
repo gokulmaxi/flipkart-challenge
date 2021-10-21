@@ -27,5 +27,4 @@ gz sdf -p d435.urdf > d435.sdf         # urdf to sdf
 ## Links
 - [xacro conditional](https://get-help.robotigniteacademy.com/t/conditional-block-for-params-on-macro-xacro/3095) 
 ##TODO
-- add coordinates to spawn 
-- add opencv to detect
+- robots not moving 

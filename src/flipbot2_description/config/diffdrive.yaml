@@ -6,8 +6,8 @@ flipkart_drive_controller:
     type: "diff_drive_controller/DiffDriveController"
     publish_rate: 50
     
-    left_wheel: ['rear_left_joint','front_left_joint']
-    right_wheel: ['front_right_joint','rear_right_joint']
+    left_wheel: ['left_joint']
+    right_wheel: ['right_joint']
     
     wheel_separation: 0.12
     
@@ -36,19 +36,11 @@ flipkart_drive_controller:
 
 gazebo_ros_control:
   pid_gains:
-    front_right_joint:
+    right_joint:
       p: 0.009
       i: 8
       d: 0
-    front_left_joint:
-      p: 0.009
-      i: 8
-      d: 0
-    rear_right_joint:
-      p: 0.009
-      i: 8
-      d: 0
-    rear_left_joint:
+    left_joint:
       p: 0.009
       i: 8
       d: 0
