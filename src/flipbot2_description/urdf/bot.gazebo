@@ -8,29 +8,7 @@
 
   </plugin>
 </gazebo>
-<gazebo>
-  <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
-    <legacyMode>false</legacyMode>
-    <alwaysOn>true</alwaysOn>
-    <updateRate>1000.0</updateRate>
-    <leftJoint>left_joint</leftJoint>
-    <rightJoint>right_joint</rightJoint>
-    <wheelSeparation>0.12</wheelSeparation>
-    <wheelDiameter>0.043</wheelDiameter>
-    <wheelTorque>10</wheelTorque>
-    <publishTf>0</publishTf>
-    <publishOdomTF>0</publishOdomTF>
-    <odometryFrame>map</odometryFrame>
-    <commandTopic>cmd_vel</commandTopic>
-    <odometryTopic>odom</odometryTopic>
-    <robotBaseFrame>dummy</robotBaseFrame>
-    <wheelAcceleration>2.8</wheelAcceleration>
-    <publishWheelJointState>true</publishWheelJointState>
-    <publishWheelTF>false</publishWheelTF>
-    <odometrySource>world</odometrySource>
-    <rosDebugLevel>Debug</rosDebugLevel>
-  </plugin>
-</gazebo>
+
 <gazebo reference="base_link">
   <material>${body_color}</material>
   <mu1>0.2</mu1>

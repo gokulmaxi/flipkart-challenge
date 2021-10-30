@@ -5,20 +5,12 @@
     <xacro:include filename="$(find flipbot2_description)/urdf/materials.xacro" />
     <xacro:include filename="$(find flipbot2_description)/urdf/bot.trans" />
     <xacro:include filename="$(find flipbot2_description)/urdf/bot.gazebo" />
-
+    <xacro:include filename="$(find flipbot2_description)/urdf/inertia.xacro" />
     <xacro:arg name="index" default='1' />
     <xacro:arg name="index_1" default='False' />
     <xacro:arg name="index_2" default='False' />
     <xacro:arg name="index_3" default='False' />
     <xacro:arg name="index_4" default='False' />
-    <xacro:property name="castor_mount_link_length_width_height" value="0.1145 0.10 0.0057" />
-    <xacro:property name="castor_mount_link_length" value="0.1145" />
-    <xacro:property name="castor_mount_link_width" value="0.10" />
-    <xacro:property name="castor_mount_link_height" value="0.0057" />
-    <xacro:property name="castor_mount_link_mass" value="0.25"/> <!--0.25 kg-->
-    <xacro:property name="castor_wheel_length" value="0.049" />
-    <xacro:property name="castor_wheel_radius" value="0.07925" />
-    <xacro:property name="castor_wheel_mass" value="2"/> <!--2 kg-->
     <link name="dummy">
     </link>
 
@@ -47,7 +39,7 @@
     </link>
 
 
-    <!-- <link name="aruco_tag">
+    <link name="aruco_tag">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0.12" />
             <xacro:if value="$(arg index_1)">
@@ -72,15 +64,15 @@
             </xacro:if>
         </visual>
 
-    </link> -->
+    </link> 
 
     <link name="rear_wheel_right_link">
-        <inertial>
-            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
-            <mass value="0.1" />
-            <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
-
-        </inertial>
+      <xacro:cylinder_inertia m="0.1"
+                              r="0.0215"
+                              l="0.018"
+                              o_xyz="0.0 0.0 0.0"
+                              o_rpy="${pi/2.0} 0.0 0.0" >
+      </xacro:cylinder_inertia> 
         <visual>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
 
@@ -100,11 +92,12 @@
     </link>
 
     <link name="rear_wheel_left_link">
-        <inertial>
-            <origin rpy="-1.5708 0 0" xyz="0 0 0" />
-            <mass value="0.1" />
-            <inertia ixx="0.000014256" ixy="0.0" ixz="0.0" iyy="0.000014256" iyz="-0.0" izz="0.000023113" />
-        </inertial>
+      <xacro:cylinder_inertia m="0.1"
+                              r="0.0215"
+                              l="0.018"
+                              o_xyz="0.0 0.0 0.0"
+                              o_rpy="${pi/2.0} 0.0 0.0" >
+      </xacro:cylinder_inertia> 
         <visual>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
             <geometry>
@@ -132,7 +125,7 @@
         <visual>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
             <geometry>
-                <cylinder length="0.005" radius="0.01" />
+                <cylinder length="0.005" radius="0.008" />
             </geometry>
             <material name="black">
                 <color rgba="0 0 0 1" />
@@ -141,7 +134,7 @@
         <collision>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
             <geometry>
-                <cylinder length="0.005" radius="0.01" />
+                <cylinder length="0.005" radius="0.008" />
             </geometry>
         </collision>
     </link>
@@ -156,7 +149,7 @@
         <visual>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
             <geometry>
-                <cylinder length="0.005" radius="0.01" />
+                <cylinder length="0.005" radius="0.008" />
             </geometry>
             <material name="black">
                 <color rgba="0 0 0 1" />
@@ -165,7 +158,7 @@
         <collision>
             <origin rpy="-1.5708 0 0" xyz="0 0 0" />
             <geometry>
-                <cylinder length="0.005" radius="0.01" />
+                <cylinder length="0.005" radius="0.008" />
             </geometry>
         </collision>
     </link>

@@ -1,7 +1,15 @@
 robot_base_joint_publisher:
   type: "joint_state_controller/JointStateController"
   publish_rate: 50
-
+  extra_joints:
+      - name: caster_joint_rear
+        position: 0.01
+        velocity: 0.0
+        effort: 0.0
+      - name: caster_joint
+        position: 0.01
+        velocity: 0.0
+        effort: 0.0
 flipkart_drive_controller:
     type: "diff_drive_controller/DiffDriveController"
     publish_rate: 50
@@ -34,13 +42,3 @@ flipkart_drive_controller:
         has_acceleration_limits: true
         max_acceleration       : 6.0   # rad/s^2
 
-gazebo_ros_control:
-  pid_gains:
-    right_joint:
-      p: 0.009
-      i: 8
-      d: 0
-    left_joint:
-      p: 0.009
-      i: 8
-      d: 0
