@@ -170,11 +170,11 @@
         <child link="base_link"/>
     </joint>
     <!-- aruco tags -->
-    <!-- <joint name="aruco_joint" type="fixed">
+     <joint name="aruco_joint" type="fixed">
         <parent link="base_link" />
         <child link="aruco_tag" />
         <origin rpy="0 0 0" xyz="0 0 0" />
-    </joint> -->
+    </joint> 
     <!-- leftwheel -->
     <joint name="right_joint" type="continuous">
         <parent link="base_link" />
