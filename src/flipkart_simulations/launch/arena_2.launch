@@ -13,7 +13,6 @@
                 <arg name="paused" value="$(arg pause)" />
                 <arg name="use_sim_time" value="true" />
         </include>
-        <!-- <node args="-param robot_description -urdf -model bot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/> -->
         <group ns = "robot1">
                 <param name="tf_prefix" value="robot1_tf" />
                 <include file="$(find flipkart_simulations)/launch/bot2.launch">
@@ -48,5 +47,6 @@
                         <arg name="index_4" value="1" />
                 </include>
         </group>
-
+        <include file="$(find flipkart_simulations)/launch/detector.launch" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="usbcamstatictf" args="0 0 4 0 3.14 0 world usb_cam"/>
 </launch>
