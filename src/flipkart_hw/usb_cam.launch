@@ -6,6 +6,7 @@
     <param name="image_width" value="$(arg image_width)" />
     <param name="image_height" value="$(arg image_height)" />
     <param name="pixel_format" value="yuyv" />
+    <param name="framerate" value="60" />
     <param name="camera_frame_id" value="usb_cam" />
     <param name="io_method" value="mmap"/>
   </node>

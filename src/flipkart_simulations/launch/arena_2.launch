@@ -4,7 +4,7 @@
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="true" />
-        <arg name="world" default="$(find flipkart_simulations)/world/mini_world.world" />
+        <arg name="world" default="$(find flipkart_simulations)/world/arena2.world" />
 
         <include file="$(find gazebo_ros)/launch/empty_world.launch">
                 <arg name="world_name" value="$(arg world)" />
@@ -28,23 +28,6 @@
                         <arg name="robot_name" value="robot2" />
                         <arg name="index_2" value="1" />
 
-                </include>
-        </group>
-                <group ns = "robot3">
-                <param name="tf_prefix" value="robot3_tf" />
-                <include file="$(find flipkart_simulations)/launch/bot2.launch">
-                        <arg name="init_pose" value="-x 0.066189 -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
-                        <arg name="robot_name" value="robot3" />
-                        <arg name="index_3" value="1" />
-
-                </include>
-        </group>
-                <group ns = "robot4">
-                <param name="tf_prefix" value="robot4_tf" />
-                <include file="$(find flipkart_simulations)/launch/bot2.launch">
-                        <arg name="init_pose" value="-x 0.212891  -y -0.066969 -z 0.003569 -R 0.000020 -P 0.000028 -Y 1.563925" />
-                        <arg name="robot_name" value="robot4" />
-                        <arg name="index_4" value="1" />
                 </include>
         </group>
         <include file="$(find flipkart_simulations)/launch/detector.launch" />
