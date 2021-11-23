@@ -19,49 +19,52 @@
 \graphicspath{{./img/}}
 
 \begin{document}
-    \section{Kinematics for omniwheel }
-    Kinematics of four wheel omni wheel robot
-    \begin{equation}\label{kinematics}
-        \begin{bmatrix} 
-            \omega_1 \\
-            \omega_2 \\
-            \omega_3 \\
-            \omega_3 \\
-        \end{bmatrix} 
-        =\frac{1}{R}
-        \begin{bmatrix} 
-            \sin(\alpha_1) & \cos(\alpha_1) & R \\
-            \sin(\alpha_2) & \cos(\alpha_2) & R \\
-            \sin(\alpha_3) & \cos(\alpha_2) & R \\
-            \sin(\alpha_4) & \cos(\alpha_2) & R \\
-        \end{bmatrix} 
-        \begin{bmatrix} 
-            V_x \\ 
-            V_y \\ 
-            \theta
-        \end{bmatrix} 
-    \end{equation}
-    \subsection{Bot dimension}
-    \begin{itemize}
-        \item R (wheel radius) = 29mm
-        \item $\alpha_1 = 0 $
-        \item $\alpha_2 = \frac{\pi}{2} $
-        \item $\alpha_3 = \pi $
-        \item $\alpha_2 = \frac{3\pi}{4} $
-    \end{itemize}
-    On equating \ref{kinematics} we get
-    \begin{equation}
-        \begin{bmatrix} 
-            \omega_1 \\
-            \omega_2 \\
-            \omega_3 \\
-            \omega_3 \\
-        \end{bmatrix} 
-        = 1/R \begin{bmatrix}  
-        V_y + R \theta \\
-        V_x + R \theta \\
-        -V_y + R \theta \\
-        -V_x + R \theta \\
-        \end{bmatrix} 
-    \end{equation}
+\bibliographystyle{article}
+\section{Kinematics for omniwheel }
+Kinematics of four wheel omni wheel robot
+
+\begin{equation}\label{kinematics}   
+    \begin{bmatrix}
+		\omega_1 \\
+		\omega_2 \\
+		\omega_3 \\
+		\omega_3 \\
+	\end{bmatrix}
+	=\frac{1}{R}
+	\begin{bmatrix}
+		\sin(\alpha_1) & \cos(\alpha_1) & R \\
+		\sin(\alpha_2) & \cos(\alpha_2) & R \\
+		\sin(\alpha_3) & \cos(\alpha_2) & R \\
+		\sin(\alpha_4) & \cos(\alpha_2) & R \\
+	\end{bmatrix}
+	\begin{bmatrix}
+		V_x \\
+		V_y \\
+		\theta
+	\end{bmatrix}
+\end{equation}
+\subsection{Bot dimension}
+\begin{itemize}
+	\item R (wheel radius) = 29mm
+	\item $\alpha_1 = 0 $
+	\item $\alpha_2 = \frac{\pi}{2} $
+	\item $\alpha_3 = \pi $
+	\item $\alpha_2 = \frac{3\pi}{4} $
+\end{itemize}
+On equating \ref{kinematics} we get
+\begin{equation}
+	\begin{bmatrix}
+		\omega_1 \\
+		\omega_2 \\
+		\omega_3 \\
+		\omega_3 \\
+	\end{bmatrix}
+	= 1/R \begin{bmatrix}
+		V_y + R \theta  \\
+		V_x + R \theta  \\
+		-V_y + R \theta \\
+		-V_x + R \theta \\
+	\end{bmatrix}
+\end{equation}
+\bibliography{notes}
 \end{document}
