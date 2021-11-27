@@ -1,6 +1,6 @@
 <launch>
-    <node pkg="flipkart_hw" type="tf2Pose1.py" name="flipbot_tf_listener_1" output="screen" />
-    <node pkg="flipkart_hw" type="tf2Pose2.py" name="flipbot_tf_listener_2" output="screen" />
-    <node pkg="flipkart_hw" type="tf2Pose3.py" name="flipbot_tf_listener_3" output="screen" />
-    <node pkg="flipkart_hw" type="tf2Pose4.py" name="flipbot_tf_listener_4" output="screen" />
+    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_1" args = "1" output="screen" />
+    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_2" args = "2" output="screen" />
+    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_3" args = "3" output="screen" />
+    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_4" args = "4" output="screen" />
 </launch>

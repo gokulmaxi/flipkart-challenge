@@ -5,20 +5,23 @@ import math
 import tf2_ros
 from turtlesim.msg import Pose
 from tf.transformations import euler_from_quaternion
+import sys
 
 if __name__ == '__main__':
     rospy.init_node('flipbot_tf_listener_1')
-
+    rospy.loginfo("initiating transform look up for bot : " + str(sys.argv[1]))
+    bot_id = "marker_id"+sys.argv[1]
+    bot_publisher = "flipbot"+str(sys.argv[1])+"/pose"
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
 
-    turtle_pose = rospy.Publisher('/flipbot1/pose', Pose, queue_size=1)
+    turtle_pose = rospy.Publisher(bot_publisher, Pose, queue_size=1)
 
     rate = rospy.Rate(50.0)
     while not rospy.is_shutdown():
         try:
             trans = tfBuffer.lookup_transform(
-                'usb_cam', 'marker_id1', rospy.Time())
+                'usb_cam',bot_id, rospy.Time())
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
             rate.sleep()
             continue
