@@ -66,5 +66,12 @@ On equating \ref{kinematics} we get
 		-V_x + R \theta \\
 	\end{bmatrix}
 \end{equation}
+\section{PID tuning }
+\begin{itemize}
+        \item Increase the proportional constant by factor of 10 until you get closer oscilation to the set state
+        \item Increase the derivative constant by factor of 10 until the oscilation dampens
+        \item increase $p$ and  $d$ slowly and proportionaly until the procces state gets closer to set value
+        \item Increase $i$ slowly to get required state 
+\end{itemize}
 \bibliography{notes}
 \end{document}
