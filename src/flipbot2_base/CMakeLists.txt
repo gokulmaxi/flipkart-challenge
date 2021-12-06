@@ -10,6 +10,9 @@ project(flipbot2_base)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  geometry_msgs
+  tf2
+  tf2_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -65,7 +68,9 @@ find_package(catkin REQUIRED COMPONENTS
 #   Action1.action
 #   Action2.action
 # )
-
+# target_link_libraries(${PROJECT_NAME}_node
+#   ${catkin_LIBRARIES}
+# )
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
@@ -133,7 +138,6 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/flipbot2_base_node.cpp)
-
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -203,3 +207,6 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(tftwist src/tfLookupTwist.cpp)
+target_link_libraries(tftwist ${catkin_LIBRARIES})
