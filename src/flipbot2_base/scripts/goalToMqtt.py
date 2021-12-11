@@ -55,7 +55,7 @@ def listener(bot_no):
 
 client = paho.Client()
 client.on_publish = on_publish
-client.connect("192.168.0.164", 1883)
+client.connect("192.168.0.172", 1883)
 client.loop_start()
 if __name__ == '__main__':
     print("\nName of the bot = flibot", sys.argv[1])

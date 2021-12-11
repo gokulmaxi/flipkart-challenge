@@ -210,3 +210,5 @@ include_directories(
 
 add_executable(tftwist src/tfLookupTwist.cpp)
 target_link_libraries(tftwist ${catkin_LIBRARIES})
+add_executable(movetogoal src/moveToGoal.cpp)
+target_link_libraries(movetogoal ${catkin_LIBRARIES})

@@ -69,6 +69,7 @@
         <param name="blur_window_size" type="double" value="$(arg blur_window_size)"/>
         <param name="num_detected" type="double" value="$(arg num_detected)"/>
         <param name="min_prec_value" type="double" value="$(arg min_prec_value)"/>
+        <param name="image_fps" type="double" value="60" />
     </node>
 
    <group if="$(arg use_rviz)" >
