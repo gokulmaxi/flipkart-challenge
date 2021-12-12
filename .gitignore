@@ -54,3 +54,4 @@ CATKIN_IGNORE
 .vscode
 .catkin_tools
 *.bak
+.clangd/*

@@ -13,7 +13,7 @@
     <arg name="show_detections" default="true" />
     <arg name="marker_size" default="0.13" doc="length of the physical marker's side in meters"/>
     <arg name="dictionary_name" default="DICT_4X4_100" />
-    <arg name="blur_window_size" default="7" />
+    <arg name="blur_window_size" default="5" />
     <arg name="num_detected" default="25" /><!-- 0: do not use it, -->
     <arg name="min_prec_value" default="50" /><!-- 0: do not use it, 80 means aruco marker must be detected in 80% of the last pics to be displayed -->
  

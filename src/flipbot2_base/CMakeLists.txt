@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   tf2
   tf2_ros
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -92,10 +93,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
+generate_dynamic_reconfigure_options(
+  cfg/flipbot2.cfg
 #   cfg/DynReconf2.cfg
-# )
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -107,9 +108,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES flipbot2_base
-#  CATKIN_DEPENDS roscpp rospy
+  INCLUDE_DIRS include
+  LIBRARIES flipbot2_base
+  CATKIN_DEPENDS roscpp rospy dynamic_reconfigure
 #  DEPENDS system_lib
 )
 
@@ -120,7 +121,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -209,6 +210,8 @@ include_directories(
 # catkin_add_nosetests(test)
 
 add_executable(tftwist src/tfLookupTwist.cpp)
+# add_dependencies(flipbot2_base ${catkin_EXPORTED_TARGETS})
 target_link_libraries(tftwist ${catkin_LIBRARIES})
 add_executable(movetogoal src/moveToGoal.cpp)
 target_link_libraries(movetogoal ${catkin_LIBRARIES})
+add_dependencies(movetogoal ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
