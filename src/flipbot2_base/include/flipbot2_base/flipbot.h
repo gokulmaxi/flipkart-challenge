@@ -30,18 +30,14 @@ private:
   Goal *goal;
 
 public:
-  VelocityController(double **_linearP, double **_linearTolerance,
+  VelocityController(
                      geometry_msgs::TransformStamped *_transformPtr,flipbot2_base::flipbot2Config* _config) {
     transformPtr = _transformPtr;
     ROS_WARN("INSIDE CONSTRUCTOR");
-    this->linearP = *_linearP;
-    ROS_WARN("I %lf", *this->linearP);
-    this->linearTolerance = *_linearTolerance;
     this->config = _config;
     ROS_WARN("SIDE CONSTRUCTOR");
   }
   void setGoal(Goal _goal) { *this->goal = _goal; }
-  void setConstant(double *_linearP, double *_linearTolerance) {}
   /**
    * @brief: calculate the euclidean distance
    *
@@ -100,7 +96,7 @@ void updateTransform(geometry_msgs::TransformStamped *_transformstamped,
   while (ros::ok()) {
     try {
       *_transformstamped = tfBuffer.lookupTransform(
-          "usb_cam", "marker_id" + std::to_string(id), ros::Time(0));
+          "world", "marker_id" + std::to_string(id), ros::Time(0));
     } catch (tf2::TransformException &ex) {
       ROS_WARN("%s", ex.what());
       ros::Duration(1.0).sleep();

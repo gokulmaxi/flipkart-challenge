@@ -10,8 +10,8 @@
 geometry_msgs::Twist cmd_msg;
 geometry_msgs::TransformStamped transformStamped;
 std::vector<Goal> wayPoints = {Goal(x, 0.5)};
-double  *linear_constant = new double;
-double  *linear_tolerance = new double;
+double *linear_constant = new double;
+double *linear_tolerance = new double;
 flipbot2_base::flipbot2Config configGlobal;
 void callback(flipbot2_base::flipbot2Config config, uint32_t level);
 int main(int argc, char **argv) {
@@ -28,10 +28,9 @@ int main(int argc, char **argv) {
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config> server;
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config>::CallbackType f;
   f = boost::bind(&callback, _1, _2);
-  boost::thread thread_b(updateTransform, &transformStamped, 4);
+  boost::thread thread_b(updateTransform, &transformStamped, 2);
   server.setCallback(f);
-  VelocityController controller(&linear_constant, &linear_tolerance,
-                                &transformStamped,&configGlobal);
+  VelocityController controller(&transformStamped, &configGlobal);
   ros::Rate loop_rate(2);
   while (ros::ok()) {
     ROS_INFO("%lf", transformStamped.transform.translation.x);

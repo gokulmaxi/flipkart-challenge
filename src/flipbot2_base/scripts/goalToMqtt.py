@@ -4,12 +4,16 @@ from geometry_msgs.msg import Twist
 import paho.mqtt.client as paho
 import json
 import sys
+def constrain(val, min_val, max_val):
+    return min(max_val, max(min_val, val))
 def sign_of(value):
     if value < 0 :
         return -1
     else:
         return 1
 def translate(value, leftMin, leftMax, rightMin, rightMax):
+    if(value == 0):
+        return 0
     # Figure out how 'wide' each range is
     leftSpan = leftMax - leftMin
     rightSpan = rightMax - rightMin
@@ -20,16 +24,18 @@ def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Convert the 0-1 range into a value in the right range.
     return rightMin + (valueScaled * rightSpan)
 def omniwheel_velocity(l_x,l_y,a_z):
+    rospy.loginfo("velo")
     wheel_radius = 0.28
     w_1 = (l_y/wheel_radius) + a_z
     w_2 = (l_x/wheel_radius) + a_z
-    w_3 = (l_y/wheel_radius) + a_z
-    w_4 = (l_x/wheel_radius) + a_z
-    w_1p = translate(abs(w_1),0,2,0,255) * sign_of(w_1)
-    w_2p = translate(abs(w_2),0,2,0,255)* sign_of(w_2)
-    w_3p = translate(abs(w_3),0,2,0,255)* sign_of(w_3)
-    w_4p = translate(abs(w_4),0,2,0,255)* sign_of(w_4)
+    w_3 = (l_y/wheel_radius) - a_z
+    w_4 = (l_x/wheel_radius) - a_z
+    w_1p =constrain(translate(abs(w_1),0,2,80,190),0,255)* sign_of(w_1)
+    w_2p =constrain(translate(abs(w_2),0,2,80,190),0,255)* sign_of(w_2)
+    w_3p =constrain(translate(abs(w_3),0,2,80,190),0,255)* sign_of(w_3)
+    w_4p =constrain(translate(abs(w_4),0,2,80,190),0,255)* sign_of(w_4)
     return [w_1p,w_2p,w_3p,w_4p]
+
 
 def on_publish(client, userdata, mid):
     print("mid: "+str(mid))
