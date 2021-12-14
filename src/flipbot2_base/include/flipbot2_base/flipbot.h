@@ -5,6 +5,8 @@
 #include "tf2_ros/buffer.h"
 #include "tf2_ros/transform_listener.h"
 #include <cmath>
+#include <exception>
+#include <flipbot2_base/flipbot2Config.h>
 enum Axis { x, y };
 class Goal {
 public:
@@ -19,21 +21,27 @@ public:
     point = _point;
   }
 };
-class VelocityController : public Goal {
+class VelocityController {
 private:
-  double *linearPConstantPtr;
   double *linearTolerance;
+  double *linearP;
+  flipbot2_base::flipbot2Config* config;
   geometry_msgs::TransformStamped *transformPtr;
   Goal *goal;
 
 public:
-  VelocityController(double *_linearP, double *_linearTolerance,
-                     geometry_msgs::TransformStamped *_transformPtr) {
-    linearPConstantPtr = _linearP;
+  VelocityController(double **_linearP, double **_linearTolerance,
+                     geometry_msgs::TransformStamped *_transformPtr,flipbot2_base::flipbot2Config* _config) {
     transformPtr = _transformPtr;
-    linearTolerance = _linearTolerance;
+    ROS_WARN("INSIDE CONSTRUCTOR");
+    this->linearP = *_linearP;
+    ROS_WARN("I %lf", *this->linearP);
+    this->linearTolerance = *_linearTolerance;
+    this->config = _config;
+    ROS_WARN("SIDE CONSTRUCTOR");
   }
   void setGoal(Goal _goal) { *this->goal = _goal; }
+  void setConstant(double *_linearP, double *_linearTolerance) {}
   /**
    * @brief: calculate the euclidean distance
    *
@@ -59,7 +67,7 @@ public:
    * @return: bool
    */
   bool inTolerance() {
-    if (abs(euclidianDistance()) < *linearTolerance) {
+    if (abs(euclidianDistance()) < config->Linear_tolerance) {
       return true;
     } else {
       return false;
@@ -67,16 +75,14 @@ public:
   }
   geometry_msgs::Twist calculateVelocity() {
     geometry_msgs::Twist _twist;
-    double tolerance =3;
     if (goal->axis == x) {
-      double _linearVel = euclidianDistance();
-      _twist.linear.x = _linearVel * (tolerance);
+      double _linearVel = euclidianDistance() * config->proportional_control;
+      _twist.linear.x = _linearVel ;
     }
     if (goal->axis == y) {
       double _linearVel = euclidianDistance();
-      _twist.linear.y = _linearVel * (tolerance);
+      _twist.linear.y = _linearVel ;
     }
-
     return _twist;
   }
 };
