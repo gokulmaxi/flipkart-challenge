@@ -23,11 +23,11 @@ public:
 };
 class VelocityController {
 private:
-  double *linearTolerance;
-  double *linearP;
+  /* double *linearTolerance; */
+  /* double *linearP; */
+  Goal goal;
   flipbot2_base::flipbot2Config* config;
   geometry_msgs::TransformStamped *transformPtr;
-  Goal *goal;
 
 public:
   VelocityController(
@@ -37,7 +37,7 @@ public:
     this->config = _config;
     ROS_WARN("SIDE CONSTRUCTOR");
   }
-  void setGoal(Goal _goal) { *this->goal = _goal; }
+  void setGoal(Goal _goal) { this->goal = _goal; }
   /**
    * @brief: calculate the euclidean distance
    *
@@ -49,10 +49,10 @@ public:
   double euclidianDistance() {
     double _distance = 0.0;
     /* distance = std::sqrt(pow((start - end), 2)); */
-    if (goal->axis == x)
-      _distance = goal->point - transformPtr->transform.translation.x;
-    if (goal->axis == y)
-      _distance = goal->point - transformPtr->transform.translation.y;
+    if (goal.axis == x)
+      _distance = goal.point - transformPtr->transform.translation.x;
+    if (goal.axis == y)
+      _distance = goal.point - transformPtr->transform.translation.y;
     return _distance;
   }
   /**
@@ -71,11 +71,11 @@ public:
   }
   geometry_msgs::Twist calculateVelocity() {
     geometry_msgs::Twist _twist;
-    if (goal->axis == x) {
+    if (goal.axis == x) {
       double _linearVel = euclidianDistance() * config->proportional_control;
       _twist.linear.x = _linearVel ;
     }
-    if (goal->axis == y) {
+    if (goal.axis == y) {
       double _linearVel = euclidianDistance();
       _twist.linear.y = _linearVel ;
     }
