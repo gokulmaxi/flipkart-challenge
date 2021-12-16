@@ -16,7 +16,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         while True:
             try:
-                trans = tfBuffer.lookup_transform('marker_id2', 'usb_cam', rospy.Time())
+                trans = tfBuffer.lookup_transform('marker_id3', 'usb_cam', rospy.Time())
                 break
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
                 rate.sleep()
@@ -24,10 +24,10 @@ if __name__ == '__main__':
         static_transformStamped.header.stamp = rospy.Time.now()
         static_transformStamped.header.frame_id = "world"
         static_transformStamped.child_frame_id =  "usb_cam"
-        print("PUBLISH",trans.transform.translation.x)
-        static_transformStamped.transform.translation.x =  trans.transform.translation.x - 0.05
-        static_transformStamped.transform.translation.y = trans.transform.translation.y - 0.08
-        static_transformStamped.transform.translation.z = trans.transform.translation.z + 0.05
+        print("PUBLISH",trans.transform.translation.y)
+        static_transformStamped.transform.translation.x =  trans.transform.translation.x  - 0.1
+        static_transformStamped.transform.translation.y = trans.transform.translation.y - 0.3
+        static_transformStamped.transform.translation.z = trans.transform.translation.z  + 0.1
         static_transformStamped.transform.rotation.x = 1
         static_transformStamped.transform.rotation.y = 0
         static_transformStamped.transform.rotation.z = 0

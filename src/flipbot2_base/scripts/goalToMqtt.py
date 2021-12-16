@@ -30,10 +30,10 @@ def omniwheel_velocity(l_x,l_y,a_z):
     w_2 = (l_x/wheel_radius) + a_z
     w_3 = (l_y/wheel_radius) - a_z
     w_4 = (l_x/wheel_radius) - a_z
-    w_1p =constrain(translate(abs(w_1),0,2,80,190),0,255)* sign_of(w_1)
-    w_2p =constrain(translate(abs(w_2),0,2,80,190),0,255)* sign_of(w_2)
-    w_3p =constrain(translate(abs(w_3),0,2,80,190),0,255)* sign_of(w_3)
-    w_4p =constrain(translate(abs(w_4),0,2,80,190),0,255)* sign_of(w_4)
+    w_1p =constrain(translate(abs(w_1),0,2,100,190),0,255)* sign_of(w_1)
+    w_2p =constrain(translate(abs(w_2),0,2,180,190),0,255)* sign_of(w_2)
+    w_3p =constrain(translate(abs(w_3),0,2,180,190),0,255)* sign_of(w_3)
+    w_4p =constrain(translate(abs(w_4),0,2,180,190),0,255)* sign_of(w_4)
     return [w_1p,w_2p,w_3p,w_4p]
 
 

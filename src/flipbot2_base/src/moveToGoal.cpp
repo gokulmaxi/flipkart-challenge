@@ -9,10 +9,11 @@
 #include <tf2_ros/transform_listener.h>
 geometry_msgs::Twist cmd_msg;
 geometry_msgs::TransformStamped transformStamped;
-std::vector<Goal> wayPoints = {Goal(x, 0.5)};
+std::vector<Goal> wayPoints = {Goal(x, 1.5)};
 double *linear_constant = new double;
 double *linear_tolerance = new double;
 flipbot2_base::flipbot2Config configGlobal;
+geometry_msgs::Twist stop;
 void callback(flipbot2_base::flipbot2Config config, uint32_t level);
 int main(int argc, char **argv) {
   ros::init(argc, argv, "talker");
@@ -28,7 +29,7 @@ int main(int argc, char **argv) {
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config> server;
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config>::CallbackType f;
   f = boost::bind(&callback, _1, _2);
-  boost::thread thread_b(updateTransform, &transformStamped, 3);
+  boost::thread thread_b(updateTransform, &transformStamped, 1);
   server.setCallback(f);
   VelocityController controller(&transformStamped, &configGlobal);
   ros::Rate loop_rate(2);
@@ -40,9 +41,10 @@ int main(int argc, char **argv) {
       pub_cmdVel.publish(cmd_msg);
       loop_rate.sleep();
     }
+    pub_cmdVel.publish(stop);
     loop_rate.sleep();
+    break;
   }
-  ros::waitForShutdown();
 
   return 0;
 }

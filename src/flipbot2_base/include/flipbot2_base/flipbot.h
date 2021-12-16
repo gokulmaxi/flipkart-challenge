@@ -7,6 +7,7 @@
 #include <cmath>
 #include <exception>
 #include <flipbot2_base/flipbot2Config.h>
+#include <tf/tf.h>
 enum Axis { x, y };
 class Goal {
 public:
@@ -26,12 +27,26 @@ private:
   /* double *linearTolerance; */
   /* double *linearP; */
   Goal goal;
-  flipbot2_base::flipbot2Config* config;
+  flipbot2_base::flipbot2Config *config;
   geometry_msgs::TransformStamped *transformPtr;
+  /**
+   * @brief converts Quaternion to euler angles
+   *
+   * @return return value of yaw
+   */
+  double quatToyaw() {
+    tf::Quaternion q(
+        transformPtr->transform.rotation.x, transformPtr->transform.rotation.y,
+        transformPtr->transform.rotation.z, transformPtr->transform.rotation.w);
+    tf::Matrix3x3 m(q);
+    double roll, pitch, yaw;
+    m.getRPY(roll, pitch, yaw);
+    return yaw;
+  }
 
 public:
-  VelocityController(
-                     geometry_msgs::TransformStamped *_transformPtr,flipbot2_base::flipbot2Config* _config) {
+  VelocityController(geometry_msgs::TransformStamped *_transformPtr,
+                     flipbot2_base::flipbot2Config *_config) {
     transformPtr = _transformPtr;
     ROS_WARN("INSIDE CONSTRUCTOR");
     this->config = _config;
@@ -73,11 +88,18 @@ public:
     geometry_msgs::Twist _twist;
     if (goal.axis == x) {
       double _linearVel = euclidianDistance() * config->proportional_control;
-      _twist.linear.x = _linearVel ;
+      _twist.linear.x = _linearVel;
     }
     if (goal.axis == y) {
       double _linearVel = euclidianDistance();
-      _twist.linear.y = _linearVel ;
+      _twist.linear.y = _linearVel;
+    }
+    if (abs(quatToyaw()) > config->angular_tolerance) {
+      _twist.angular.z = quatToyaw() * config->angular_constant *
+                         -1; // to make the robot turn the opposite of yaw error
+    }
+    else{
+            _twist.angular.z = 0;
     }
     return _twist;
   }

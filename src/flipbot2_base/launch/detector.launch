@@ -31,7 +31,18 @@
     <param name="io_method" value="mmap"/>
   </node>
   </group>
-
+<group ns="usb_cam/image_raw" >
+  <rosparam param="disable_pub_plugins">
+    - 'image_transport/compressedDepth'
+    - 'image_transport/theora'
+  </rosparam>
+</group>
+<group ns="result_img" >
+  <rosparam param="disable_pub_plugins">
+    - 'image_transport/compressedDepth'
+    - 'image_transport/theora'
+  </rosparam>
+</group>
 <!-- 640x480 -->
     <group if="$(eval arg('image_width') ==640)">
 <node  name="camera_info" pkg="rostopic" type="rostopic"
