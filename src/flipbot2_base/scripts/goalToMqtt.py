@@ -9,8 +9,11 @@ def constrain(val, min_val, max_val):
 def sign_of(value):
     if value < 0 :
         return -1
+    if value == 0:
+        return 0
     else:
         return 1
+
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     if(value == 0):
         return 0
@@ -25,16 +28,11 @@ def translate(value, leftMin, leftMax, rightMin, rightMax):
     return rightMin + (valueScaled * rightSpan)
 def omniwheel_velocity(l_x,l_y,a_z):
     rospy.loginfo("velo")
-    wheel_radius = 0.28
-    w_1 = (l_y/wheel_radius) + a_z
-    w_2 = (l_x/wheel_radius) + a_z
-    w_3 = (l_y/wheel_radius) - a_z
-    w_4 = (l_x/wheel_radius) - a_z
-    w_1p =constrain(translate(abs(w_1),0,2,100,190),0,255)* sign_of(w_1)
-    w_2p =constrain(translate(abs(w_2),0,2,180,190),0,255)* sign_of(w_2)
-    w_3p =constrain(translate(abs(w_3),0,2,180,190),0,255)* sign_of(w_3)
-    w_4p =constrain(translate(abs(w_4),0,2,180,190),0,255)* sign_of(w_4)
-    return [w_1p,w_2p,w_3p,w_4p]
+
+    w_1p = -1* sign_of(a_z)
+    w_2p = 1 * sign_of(l_x)
+    w_3p = 1 * sign_of(l_y)
+    return [w_1p,w_2p,w_3p]
 
 
 def on_publish(client, userdata, mid):
@@ -44,9 +42,9 @@ def on_publish(client, userdata, mid):
 def callback(data,args):
     bot_index = args
     velocity_list = omniwheel_velocity(data.linear.x,data.linear.y,data.angular.z)
-    jsonData = {"pwm1": velocity_list[0],"pwm2":velocity_list[1],"pwm3":velocity_list[2],"pwm4":velocity_list[3]}
+    jsonData = {"angular": velocity_list[0],"linear_x":velocity_list[1]}#,"pwm3":velocity_list[2],"pwm4":velocity_list[3]}
     jsonEncoded = json.dumps(jsonData)
-    (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=1)
+    (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
     rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonEncoded,bot_index)
 
 

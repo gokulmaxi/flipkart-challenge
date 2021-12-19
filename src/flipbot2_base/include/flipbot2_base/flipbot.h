@@ -29,6 +29,7 @@ private:
   Goal goal;
   flipbot2_base::flipbot2Config *config;
   geometry_msgs::TransformStamped *transformPtr;
+  int angularPulse;
   /**
    * @brief converts Quaternion to euler angles
    *
@@ -48,6 +49,7 @@ public:
   VelocityController(geometry_msgs::TransformStamped *_transformPtr,
                      flipbot2_base::flipbot2Config *_config) {
     transformPtr = _transformPtr;
+    angularPulse = _config->angular_pulse;
     ROS_WARN("INSIDE CONSTRUCTOR");
     this->config = _config;
     ROS_WARN("SIDE CONSTRUCTOR");
@@ -87,7 +89,8 @@ public:
   geometry_msgs::Twist calculateVelocity() {
     geometry_msgs::Twist _twist;
     if (goal.axis == x) {
-      double _linearVel = euclidianDistance() * config->proportional_control;
+      double _linearVel =
+           euclidianDistance() * config->proportional_control;
       _twist.linear.x = _linearVel;
     }
     if (goal.axis == y) {
@@ -95,11 +98,17 @@ public:
       _twist.linear.y = _linearVel;
     }
     if (abs(quatToyaw()) > config->angular_tolerance) {
-      _twist.angular.z = quatToyaw() * config->angular_constant *
-                         -1; // to make the robot turn the opposite of yaw error
-    }
-    else{
-            _twist.angular.z = 0;
+      if (angularPulse == config->angular_pulse) {
+        _twist.linear.x = 0;
+        _twist.angular.z = 
+            quatToyaw() * config->angular_constant; // to make the robot turn
+                                                    // the opposite of yaw error
+        angularPulse = 0;
+      } else {
+        angularPulse++;
+      }
+    } else {
+      _twist.angular.z = 0;
     }
     return _twist;
   }
@@ -121,7 +130,7 @@ void updateTransform(geometry_msgs::TransformStamped *_transformstamped,
           "world", "marker_id" + std::to_string(id), ros::Time(0));
     } catch (tf2::TransformException &ex) {
       ROS_WARN("%s", ex.what());
-      ros::Duration(1.0).sleep();
+      ros::Duration(0.5).sleep();
       continue;
     }
   }
