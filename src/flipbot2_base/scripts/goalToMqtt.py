@@ -42,7 +42,7 @@ def on_publish(client, userdata, mid):
 def callback(data,args):
     bot_index = args
     velocity_list = omniwheel_velocity(data.linear.x,data.linear.y,data.angular.z)
-    jsonData = {"angular": velocity_list[0],"linear_x":velocity_list[1]}#,"pwm3":velocity_list[2],"pwm4":velocity_list[3]}
+    jsonData = {"angular": velocity_list[0],"linear_x":velocity_list[1],"linear_y":velocity_list[2]}#,"pwm3":velocity_list[2],"pwm4":velocity_list[3]}
     jsonEncoded = json.dumps(jsonData)
     (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
     rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonEncoded,bot_index)

@@ -50,9 +50,7 @@ public:
                      flipbot2_base::flipbot2Config *_config) {
     transformPtr = _transformPtr;
     angularPulse = _config->angular_pulse;
-    ROS_WARN("INSIDE CONSTRUCTOR");
     this->config = _config;
-    ROS_WARN("SIDE CONSTRUCTOR");
   }
   void setGoal(Goal _goal) { this->goal = _goal; }
   /**
@@ -100,9 +98,10 @@ public:
     if (abs(quatToyaw()) > config->angular_tolerance) {
       if (angularPulse == config->angular_pulse) {
         _twist.linear.x = 0;
+        _twist.linear.y = 0;
         _twist.angular.z = 
             quatToyaw() * config->angular_constant; // to make the robot turn
-                                                    // the opposite of yaw error
+                                                           // the opposite of yaw error
         angularPulse = 0;
       } else {
         angularPulse++;

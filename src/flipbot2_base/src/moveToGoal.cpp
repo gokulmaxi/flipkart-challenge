@@ -9,7 +9,7 @@
 #include <tf2_ros/transform_listener.h>
 geometry_msgs::Twist cmd_msg;
 geometry_msgs::TransformStamped transformStamped;
-std::vector<Goal> wayPoints = {Goal(x, 2)};
+std::vector<Goal> wayPoints = {Goal(x, 2)};//,Goal(y,0.5)};
 double *linear_constant = new double;
 double *linear_tolerance = new double;
 flipbot2_base::flipbot2Config configGlobal;
@@ -33,17 +33,24 @@ int main(int argc, char **argv) {
   server.setCallback(f);
   VelocityController controller(&transformStamped, &configGlobal);
   ros::Rate loop_rate(20);
-  controller.setGoal(wayPoints[0]);
   while (ros::ok()) {
+ for(Goal goal :wayPoints){
+  controller.setGoal(goal);
+  ROS_INFO("Move in %c to point %f",goal.axis,goal.point);
     ROS_INFO("%lf", transformStamped.transform.translation.x);
     while (!controller.inTolerance()) {
       cmd_msg = controller.calculateVelocity();
       pub_cmdVel.publish(cmd_msg);
       loop_rate.sleep();
+      if(controller.inTolerance()){
+        break;
+      }
     }
     pub_cmdVel.publish(stop);
     loop_rate.sleep();
   }
+ break;
+ }
 
   return 0;
 }
