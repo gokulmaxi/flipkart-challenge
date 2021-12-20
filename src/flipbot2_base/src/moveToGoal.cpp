@@ -9,7 +9,7 @@
 #include <tf2_ros/transform_listener.h>
 geometry_msgs::Twist cmd_msg;
 geometry_msgs::TransformStamped transformStamped;
-std::vector<Goal> wayPoints = {Goal(x, 2)};//,Goal(y,0.5)};
+std::vector<Goal> wayPoints = {Goal(x, 2),Goal(y,0.5),Goal(y,1.6),Goal(x,0.2)};
 double *linear_constant = new double;
 double *linear_tolerance = new double;
 flipbot2_base::flipbot2Config configGlobal;

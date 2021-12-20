@@ -97,8 +97,8 @@ public:
     }
     if (abs(quatToyaw()) > config->angular_tolerance) {
       if (angularPulse == config->angular_pulse) {
-        _twist.linear.x = 0;
-        _twist.linear.y = 0;
+        /* _twist.linear.x = 0; */
+        /* _twist.linear.y = 0; */
         _twist.angular.z = 
             quatToyaw() * config->angular_constant; // to make the robot turn
                                                            // the opposite of yaw error
