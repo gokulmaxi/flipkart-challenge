@@ -8,6 +8,8 @@
 #include <exception>
 #include <flipbot2_base/flipbot2Config.h>
 #include <tf/tf.h>
+#include <actionlib/server/simple_action_server.h>
+#include "flipbot2_base/BotGoalAction.h"
 enum Axis { x, y };
 class Goal {
 public:
@@ -27,9 +29,12 @@ private:
   /* double *linearTolerance; */
   /* double *linearP; */
   Goal goal;
+  int angularPulse; 
   flipbot2_base::flipbot2Config *config;
   geometry_msgs::TransformStamped *transformPtr;
-  int angularPulse;
+  ros::NodeHandle nh_;
+  actionlib::SimpleActionServer<flipbot2_base::BotGoalAction> as_;
+  std::string action_name_;
   /**
    * @brief converts Quaternion to euler angles
    *
@@ -47,10 +52,18 @@ private:
 
 public:
   VelocityController(geometry_msgs::TransformStamped *_transformPtr,
-                     flipbot2_base::flipbot2Config *_config) {
+                     flipbot2_base::flipbot2Config *_config,std::string name):
+    as_(nh_, name, boost::bind(& VelocityController::executeCB, this, _1), false),
+    action_name_(name) {
     transformPtr = _transformPtr;
     angularPulse = _config->angular_pulse;
     this->config = _config;
+    as_.start();
+  }
+  
+  void executeCB()
+  {
+        
   }
   void setGoal(Goal _goal) { this->goal = _goal; }
   /**
