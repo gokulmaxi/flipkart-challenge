@@ -6,6 +6,7 @@
 #include "tf2_ros/transform_listener.h"
 #include <cmath>
 #include <exception>
+#include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/flipbot2Config.h>
 #include <tf/tf.h>
 #include <actionlib/server/simple_action_server.h>
@@ -61,7 +62,7 @@ public:
     as_.start();
   }
   
-  void executeCB()
+  void executeCB(const flipbot2_base::BotGoalGoalConstPtr &goal)
   {
         
   }
