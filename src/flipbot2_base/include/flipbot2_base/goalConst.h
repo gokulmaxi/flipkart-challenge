@@ -1,4 +1,18 @@
-#include "flipbot2_base/flipbot.h"
+#include <vector>
+enum Axis { x, y };
+class Goal {
+public:
+  Axis axis;
+  float point;
+  Goal() {
+    axis = x;
+    point = 0;
+  }
+  Goal(Axis _axis, float _point) {
+    axis = _axis;
+    point = _point;
+  }
+};
 const int xPoint[14]                 = {};
 const int ypoint[14]                 = {};
 //waypoints from induct one to goals
