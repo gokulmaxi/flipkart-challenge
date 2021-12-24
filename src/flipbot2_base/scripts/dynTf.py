@@ -32,5 +32,4 @@ if __name__ == '__main__':
     static_transformStamped.transform.rotation.z = 0
     static_transformStamped.transform.rotation.w = 0
     broadcaster.sendTransform(static_transformStamped)
-    
-    
+    rospy.spin()
