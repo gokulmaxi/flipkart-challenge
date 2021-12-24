@@ -4,9 +4,12 @@
 #include <ArduinoJson.h>
 #include "motorGlobal.h"
 #include "DFRobot_AS7341.h"
+#include "Adafruit_AS7341.h"
 #include <math.h>
+#include <Wire.h>
 DFRobot_AS7341 as7341;
 // color data
+
  int red_array[] = {9, 21, 23, 13, 15, 45, 152, 152};
 
  int green_array[] = {17, 20, 21, 80, 141, 33, 21, 29};
@@ -108,8 +111,6 @@ void setup_wifi()
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
 }
-
-
 
 
 void reconnect()
