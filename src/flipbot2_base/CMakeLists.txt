@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2
   tf2_ros
   dynamic_reconfigure
+  actionlib_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -64,19 +65,21 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
+add_action_files(
+  FILES
+  BotGoal.action
 #   Action1.action
 #   Action2.action
-# )
+)
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs  # Or other packages containing msgs
+  actionlib_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -110,7 +113,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES flipbot2_base
-  CATKIN_DEPENDS roscpp rospy dynamic_reconfigure
+  CATKIN_DEPENDS roscpp rospy dynamic_reconfigure actionlib_msgs
 #  DEPENDS system_lib
 )
 

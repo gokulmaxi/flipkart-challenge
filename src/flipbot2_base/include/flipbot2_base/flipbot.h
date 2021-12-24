@@ -1,35 +1,30 @@
+#include "flipbot2_base/BotGoalAction.h"
 #include "geometry_msgs/TransformStamped.h"
 #include "geometry_msgs/Twist.h"
+#include "goalConst.h"
 #include "math.h"
 #include "ros/ros.h"
 #include "tf2_ros/buffer.h"
 #include "tf2_ros/transform_listener.h"
+#include <actionlib/server/simple_action_server.h>
 #include <cmath>
 #include <exception>
+#include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/flipbot2Config.h>
 #include <tf/tf.h>
-enum Axis { x, y };
-class Goal {
-public:
-  Axis axis;
-  float point;
-  Goal() {
-    axis = x;
-    point = 0;
-  }
-  Goal(Axis _axis, float _point) {
-    axis = _axis;
-    point = _point;
-  }
-};
 class VelocityController {
 private:
   /* double *linearTolerance; */
   /* double *linearP; */
   Goal goal;
+  int angularPulse;
   flipbot2_base::flipbot2Config *config;
   geometry_msgs::TransformStamped *transformPtr;
-  int angularPulse;
+  ros::NodeHandle nh_;
+  actionlib::SimpleActionServer<flipbot2_base::BotGoalAction> as_;
+  std::string action_name_;
+  geometry_msgs::Twist cmd_msg;
+  ros::Publisher pub_cmdVel= nh_.advertise<geometry_msgs::Twist>("flipbot1/cmd_vel", 1000);
   /**
    * @brief converts Quaternion to euler angles
    *
@@ -47,10 +42,41 @@ private:
 
 public:
   VelocityController(geometry_msgs::TransformStamped *_transformPtr,
-                     flipbot2_base::flipbot2Config *_config) {
+                     flipbot2_base::flipbot2Config *_config, std::string name)
+      : as_(nh_, name, boost::bind(&VelocityController::executeCB, this, _1),
+            false),
+        action_name_(name) {
     transformPtr = _transformPtr;
     angularPulse = _config->angular_pulse;
     this->config = _config;
+    as_.start();
+  }
+
+  void executeCB(const flipbot2_base::BotGoalGoalConstPtr &goal) {
+    bool success = true;
+    ROS_INFO("got  the goal %i", goal->index);
+    for (Goal goal : one_one_waypoint) {
+
+      if (as_.isPreemptRequested() || !ros::ok()) {
+        ROS_INFO("%s: Preempted", action_name_.c_str());
+        // set the action state to preempted
+        as_.setPreempted();
+        break;
+      }
+      ROS_INFO("execting waypoint goal %f",goal.point);
+
+  this->setGoal(goal);
+  ROS_INFO("Move in %c to point %f",goal.axis,goal.point);
+    while (!inTolerance()) {
+      cmd_msg = calculateVelocity();
+      pub_cmdVel.publish(cmd_msg);
+      /* loop_rate.sleep(); */
+      if(inTolerance()){
+        break;
+      }
+    }
+  }
+    as_.setSucceeded();
   }
   void setGoal(Goal _goal) { this->goal = _goal; }
   /**
@@ -87,8 +113,7 @@ public:
   geometry_msgs::Twist calculateVelocity() {
     geometry_msgs::Twist _twist;
     if (goal.axis == x) {
-      double _linearVel =
-           euclidianDistance() * config->proportional_control;
+      double _linearVel = euclidianDistance() * config->proportional_control;
       _twist.linear.x = _linearVel;
     }
     if (goal.axis == y) {
@@ -99,9 +124,9 @@ public:
       if (angularPulse == config->angular_pulse) {
         /* _twist.linear.x = 0; */
         /* _twist.linear.y = 0; */
-        _twist.angular.z = 
+        _twist.angular.z =
             quatToyaw() * config->angular_constant; // to make the robot turn
-                                                           // the opposite of yaw error
+                                                    // the opposite of yaw error
         angularPulse = 0;
       } else {
         angularPulse++;
