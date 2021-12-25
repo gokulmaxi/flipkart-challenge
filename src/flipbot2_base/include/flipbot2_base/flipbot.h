@@ -12,6 +12,7 @@
 #include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/flipbot2Config.h>
 #include <tf/tf.h>
+#include <algorithm>
 class VelocityController {
 private:
   /* double *linearTolerance; */
@@ -27,6 +28,7 @@ private:
   ros::Publisher pub_cmdVel =
       nh_.advertise<geometry_msgs::Twist>("flipbot1/cmd_vel", 1000);
   geometry_msgs::Twist stop;
+  int lastDest=3;
   /**
    * @brief converts Quaternion to euler angles
    *
@@ -64,13 +66,23 @@ public:
   void executeCB(const flipbot2_base::BotGoalGoalConstPtr &goal) {
     ros::Rate loop_rate(20);
     bool success = true;
+    int induct;
     ROS_INFO("got  the goal %i", goal->index);
-    int induct = findInduct();
+    if (goal->index > 0)
+      induct = findInduct();
+    if (goal->index < 0)
+      induct = findNearInduct();
     std::string goalId =
-        std::to_string(induct) + "_" + std::to_string(goal->index);
+        std::to_string(induct) + "_" + std::to_string(abs(goal->index));
     ROS_INFO("Executin plan from %s", goalId.c_str());
-    auto waypoints = umap.find(goalId);
-    for (Goal goal : waypoints->second) {
+    auto hashFound = umap.find(goalId);
+    std::vector<Goal> waypoints = hashFound->second;
+    if (goal->index < 0) {
+      std::reverse(waypoints.begin(), waypoints.end());
+      waypoints[0]=Goal(x,inductX);
+      ROS_INFO("reversing path to home");
+    }
+    for (Goal goalPoint : waypoints) {
 
       if (as_.isPreemptRequested() || !ros::ok()) {
         ROS_INFO("%s: Preempted", action_name_.c_str());
@@ -78,8 +90,8 @@ public:
         as_.setPreempted();
         break;
       }
-      this->setGoal(goal);
-      ROS_INFO("Move in %c to point %i", goal.axis, goal.point);
+      this->setGoal(goalPoint);
+      ROS_INFO("Move in %c to point %i", goalPoint.axis, goalPoint.point);
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
         pub_cmdVel.publish(cmd_msg);
@@ -89,6 +101,7 @@ public:
         }
         loop_rate.sleep();
       }
+      lastDest = goal->index;
       pub_cmdVel.publish(stop);
     }
     as_.setSucceeded();
@@ -160,6 +173,13 @@ public:
       return 2;
     }
     return 0;
+  }
+  int findNearInduct() {
+    if (transformPtr->transform.translation.y < yPoint[6])
+      return 1;
+    else {
+      return 2;
+    }
   }
 };
 /**
