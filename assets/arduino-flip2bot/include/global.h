@@ -4,9 +4,12 @@
 #include <ArduinoJson.h>
 #include "motorGlobal.h"
 #include "DFRobot_AS7341.h"
-#include "Adafruit_AS7341.h"
 #include <math.h>
 #include <Wire.h>
+
+
+Servo servo;
+
 DFRobot_AS7341 as7341;
 // color data
 
