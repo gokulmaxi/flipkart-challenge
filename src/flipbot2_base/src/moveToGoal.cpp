@@ -14,7 +14,7 @@ flipbot2_base::flipbot2Config configGlobal;
 geometry_msgs::Twist stop;
 void dynamicConfigureCb(flipbot2_base::flipbot2Config config, uint32_t level);
 int main(int argc, char **argv) {
-//node and other initialisation
+  // node and other initialisation
   ros::init(argc, argv, "talker");
   configGlobal.Linear_tolerance = *linear_tolerance;
   configGlobal.proportional_control = *linear_constant;
@@ -25,27 +25,9 @@ int main(int argc, char **argv) {
   f = boost::bind(&dynamicConfigureCb, _1, _2);
   boost::thread thread_b(updateTransform, &transformStamped, 1);
   server.setCallback(f);
-  VelocityController controller(&transformStamped, &configGlobal,"bot1");
+  VelocityController controller(&transformStamped, &configGlobal, "bot1");
   ros::Rate loop_rate(20);
- /*  while (ros::ok()) { */
- /* for(Goal goal :wayPoints){ */
- /*  controller.setGoal(goal); */
- /*  ROS_INFO("Move in %c to point %f",goal.axis,goal.point); */
- /*    ROS_INFO("%lf", transformStamped.transform.translation.x); */
- /*    while (!controller.inTolerance()) { */
- /*      cmd_msg = controller.calculateVelocity(); */
- /*      pub_cmdVel.publish(cmd_msg); */
- /*      loop_rate.sleep(); */
- /*      if(controller.inTolerance()){ */
- /*        break; */
- /*      } */
- /*    } */
- /*    pub_cmdVel.publish(stop); */
- /*    loop_rate.sleep(); */
- /*  } */
- /* break; */
- /* } */
-ros::waitForShutdown();
+  ros::waitForShutdown();
   return 0;
 }
 
@@ -54,7 +36,4 @@ void dynamicConfigureCb(flipbot2_base::flipbot2Config config, uint32_t level) {
   *linear_constant = config.proportional_control;
   *linear_tolerance = config.Linear_tolerance;
   configGlobal = config;
-}
-void actionCb(){
-
 }
