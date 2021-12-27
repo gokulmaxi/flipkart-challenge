@@ -7,12 +7,13 @@
 #include "tf2_ros/buffer.h"
 #include "tf2_ros/transform_listener.h"
 #include <actionlib/server/simple_action_server.h>
+#include <algorithm>
 #include <cmath>
 #include <exception>
 #include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/flipbot2Config.h>
+#include <string>
 #include <tf/tf.h>
-#include <algorithm>
 class VelocityController {
 private:
   /* double *linearTolerance; */
@@ -28,7 +29,8 @@ private:
   ros::Publisher pub_cmdVel =
       nh_.advertise<geometry_msgs::Twist>("flipbot1/cmd_vel", 1000);
   geometry_msgs::Twist stop;
-  int lastDest=3;
+  int lastDest = 3;
+  flipbot2_base::BotGoalResult result_;
   /**
    * @brief converts Quaternion to euler angles
    *
@@ -67,21 +69,20 @@ public:
     ros::Rate loop_rate(20);
     bool success = true;
     int induct;
+    std::string goalId;
     ROS_INFO("got  the goal %i", goal->index);
-    if (goal->index > 0)
+    if (goal->index > 0) {
       induct = findInduct();
-    if (goal->index < 0)
+      goalId = std::to_string(induct) + "_" + std::to_string(abs(goal->index));
+    }
+    if (goal->index < 0) {
       induct = findNearInduct();
-    std::string goalId =
-        std::to_string(induct) + "_" + std::to_string(abs(goal->index));
+      goalId = "r_" + std::to_string(induct) + "_" +
+               std::to_string(abs(goal->index));
+    }
     ROS_INFO("Executin plan from %s", goalId.c_str());
     auto hashFound = umap.find(goalId);
     std::vector<Goal> waypoints = hashFound->second;
-    if (goal->index < 0) {
-      std::reverse(waypoints.begin(), waypoints.end());
-      waypoints[0]=Goal(x,inductX);
-      ROS_INFO("reversing path to home");
-    }
     for (Goal goalPoint : waypoints) {
 
       if (as_.isPreemptRequested() || !ros::ok()) {
@@ -91,7 +92,7 @@ public:
         break;
       }
       this->setGoal(goalPoint);
-      ROS_INFO("Move in %c to point %i", goalPoint.axis, goalPoint.point);
+      ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis), goalPoint.point);
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
         pub_cmdVel.publish(cmd_msg);
@@ -99,12 +100,21 @@ public:
           pub_cmdVel.publish(stop);
           break;
         }
+      if (as_.isPreemptRequested() || !ros::ok()) {
+        ROS_INFO("%s: Preempted", action_name_.c_str());
+        // set the action state to preempted
+        as_.setPreempted();
+        break;
+      }
         loop_rate.sleep();
       }
       lastDest = goal->index;
       pub_cmdVel.publish(stop);
     }
-    as_.setSucceeded();
+    result_.destIndex = induct;
+    result_.inductIndex = goal->index;
+
+    as_.setSucceeded(result_);
   }
   void setGoal(Goal _goal) { this->goal = _goal; }
   /**
@@ -167,9 +177,9 @@ public:
     return _twist;
   }
   int findInduct() {
-    if (abs(transformPtr->transform.translation.y - yPoint[5]) < 0.1) {
+    if (abs(transformPtr->transform.translation.y - yPoint[4]) < 0.3) {
       return 1;
-    } else if (abs(transformPtr->transform.translation.y - yPoint[8])) {
+    } else if (abs(transformPtr->transform.translation.y - yPoint[9]) < 0.3) {
       return 2;
     }
     return 0;
@@ -180,6 +190,12 @@ public:
     else {
       return 2;
     }
+  }
+  char axisToString(Axis _axis) {
+    if (_axis == x)
+      return 'x';
+    else
+      return 'y';
   }
 };
 /**

@@ -2,7 +2,9 @@
 int32 index
 ---
 #result definition
-bool action 
+bool action
+int32 inductIndex
+int32 destIndex 
 ---
 #feedback
 string axis
