@@ -13,7 +13,9 @@
 #include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/flipbot2Config.h>
 #include <string>
+#include <strings.h>
 #include <tf/tf.h>
+#include <unistd.h>
 class VelocityController {
 private:
   /* double *linearTolerance; */
@@ -100,19 +102,13 @@ public:
           pub_cmdVel.publish(stop);
           break;
         }
-      if (as_.isPreemptRequested() || !ros::ok()) {
-        ROS_INFO("%s: Preempted", action_name_.c_str());
-        // set the action state to preempted
-        as_.setPreempted();
-        break;
-      }
         loop_rate.sleep();
       }
       lastDest = goal->index;
       pub_cmdVel.publish(stop);
     }
-    result_.destIndex = induct;
-    result_.inductIndex = goal->index;
+    result_.destIndex = goal->index;
+    result_.inductIndex = induct;
 
     as_.setSucceeded(result_);
   }
@@ -166,7 +162,7 @@ public:
         /* _twist.linear.y = 0; */
         _twist.angular.z =
             quatToyaw() * config->angular_constant; // to make the robot turn
-                                                    // the opposite of yaw error
+        ROS_WARN("Out of angular tolerance");                                          // the opposite of yaw error
         angularPulse = 0;
       } else {
         angularPulse++;
