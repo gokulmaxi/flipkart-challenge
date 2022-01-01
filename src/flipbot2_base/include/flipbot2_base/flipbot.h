@@ -12,6 +12,7 @@
 #include <exception>
 #include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/flipbot2Config.h>
+#include <flipbot2_base/BotInterupt.h>
 #include <string>
 #include <strings.h>
 #include <tf/tf.h>
