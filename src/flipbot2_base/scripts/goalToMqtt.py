@@ -66,8 +66,8 @@ def listener(bot_no):
     rospy.init_node('listener_mqtt')
     rospy.loginfo(bot_no)
     rospy.Subscriber("/flipbot"+str(bot_no)+"/cmd_vel", Twist, callback,bot_no)
-    rospy.Subscriber("/flipbot"+str(bot_no)+"/servo1", String, callback_servo,bot_no)
-    rospy.Subscriber("/flipbot"+str(bot_no)+"/colorReq1", String, callback_color,bot_no)
+    rospy.Subscriber("/flipbot"+str(bot_no)+"/servo", String, callback_servo,bot_no)
+    rospy.Subscriber("/flipbot"+str(bot_no)+"/colorReq", String, callback_color,bot_no)
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 

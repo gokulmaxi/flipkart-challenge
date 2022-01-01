@@ -1,0 +1,9 @@
+<launch>
+        <arg name="bot_no" default="1" />
+        <group ns="flipbot$(arg bot_no)">    
+                <node pkg="flipbot2_base" type="goalToMqtt.py" name="velocity_to_mqtt" args="$(arg bot_no)" output="screen" />
+                <node pkg="flipbot2_base" type="client.py" name="goal_client" args="$(arg bot_no)" output="screen" />
+                <node pkg="flipbot2_base" type="color_bridge.py" name="color_client" args="$(arg bot_no)" output="screen" />
+        </group>
+
+</launch>
