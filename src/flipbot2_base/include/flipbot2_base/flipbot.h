@@ -11,8 +11,10 @@
 #include <cmath>
 #include <exception>
 #include <flipbot2_base/BotGoalGoal.h>
-#include <flipbot2_base/flipbot2Config.h>
 #include <flipbot2_base/BotInterupt.h>
+#include <flipbot2_base/BotInteruptRequest.h>
+#include <flipbot2_base/BotInteruptResponse.h>
+#include <flipbot2_base/flipbot2Config.h>
 #include <string>
 #include <strings.h>
 #include <tf/tf.h>
@@ -31,6 +33,7 @@ private:
   geometry_msgs::Twist cmd_msg;
   ros::Publisher pub_cmdVel =
       nh_.advertise<geometry_msgs::Twist>("flipbot1/cmd_vel", 1000);
+  ros::ServiceServer service = nh_.advertiseService("add_two_ints",&VelocityController::servCallback,this);
   geometry_msgs::Twist stop;
   int lastDest = 3;
   flipbot2_base::BotGoalResult result_;
@@ -68,6 +71,14 @@ public:
     as_.shutdown();
     pub_cmdVel.shutdown();
   }
+  bool servCallback(flipbot2_base::BotInteruptRequest &req,flipbot2_base::BotInteruptResponse &res) { 
+        if(req.pause == 1){ 
+                ROS_INFO("Stoping the robot");
+        }
+        else{
+                ROS_INFO("Invalied bot interupt");
+        }
+          return true; }
   void executeCB(const flipbot2_base::BotGoalGoalConstPtr &goal) {
     ros::Rate loop_rate(20);
     bool success = true;
@@ -95,7 +106,8 @@ public:
         break;
       }
       this->setGoal(goalPoint);
-      ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis), goalPoint.point);
+      ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
+               goalPoint.point);
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
         pub_cmdVel.publish(cmd_msg);
@@ -163,7 +175,7 @@ public:
         /* _twist.linear.y = 0; */
         _twist.angular.z =
             quatToyaw() * config->angular_constant; // to make the robot turn
-        ROS_WARN("Out of angular tolerance");                                          // the opposite of yaw error
+        ROS_WARN("Out of angular tolerance");       // the opposite of yaw error
         angularPulse = 0;
       } else {
         angularPulse++;
