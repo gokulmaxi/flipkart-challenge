@@ -33,10 +33,12 @@ private:
   geometry_msgs::Twist cmd_msg;
   ros::Publisher pub_cmdVel =
       nh_.advertise<geometry_msgs::Twist>("flipbot1/cmd_vel", 1000);
-  ros::ServiceServer service = nh_.advertiseService("add_two_ints",&VelocityController::servCallback,this);
+  ros::ServiceServer service = nh_.advertiseService(
+      "add_two_ints", &VelocityController::servCallback, this);
   geometry_msgs::Twist stop;
   int lastDest = 3;
   flipbot2_base::BotGoalResult result_;
+  boost::mutex BotInteruptMutex;
   /**
    * @brief converts Quaternion to euler angles
    *
@@ -71,14 +73,19 @@ public:
     as_.shutdown();
     pub_cmdVel.shutdown();
   }
-  bool servCallback(flipbot2_base::BotInteruptRequest &req,flipbot2_base::BotInteruptResponse &res) { 
-        if(req.pause == 1){ 
-                ROS_INFO("Stoping the robot");
-        }
-        else{
-                ROS_INFO("Invalied bot interupt");
-        }
-          return true; }
+  bool servCallback(flipbot2_base::BotInteruptRequest &req,
+                    flipbot2_base::BotInteruptResponse &res) {
+    if (req.pause == 1) {
+      pub_cmdVel.publish(stop);
+      BotInteruptMutex.lock();
+      pub_cmdVel.publish(stop); // additional stop just for safety
+      ROS_INFO("Stoping the robot");
+    }
+    if (req.pause == 0) {
+      BotInteruptMutex.unlock();
+    }
+    return true;
+  }
   void executeCB(const flipbot2_base::BotGoalGoalConstPtr &goal) {
     ros::Rate loop_rate(20);
     bool success = true;
@@ -110,7 +117,9 @@ public:
                goalPoint.point);
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
+        BotInteruptMutex.lock();
         pub_cmdVel.publish(cmd_msg);
+        BotInteruptMutex.unlock();
         if (inTolerance()) {
           pub_cmdVel.publish(stop);
           break;
