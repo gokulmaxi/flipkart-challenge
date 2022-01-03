@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cmath>
 #include <exception>
+#include <flipbot2_base/BotGoalFeedback.h>
 #include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/BotInterupt.h>
 #include <flipbot2_base/BotInteruptRequest.h>
@@ -38,6 +39,7 @@ private:
   geometry_msgs::Twist stop;
   int lastDest = 3;
   flipbot2_base::BotGoalResult result_;
+  flipbot2_base::BotGoalFeedback feedback_;
   boost::mutex BotInteruptMutex;
   /**
    * @brief converts Quaternion to euler angles
@@ -63,7 +65,7 @@ public:
     transformPtr = _transformPtr;
     angularPulse = _config->angular_pulse;
     this->config = _config;
-    //! TODO find a way to assign zeros at declaration
+    //! @TODO find a way to assign zeros at declaration
     stop.linear.x = 0;
     stop.linear.y = 0;
     stop.angular.z = 0;
@@ -105,14 +107,16 @@ public:
     auto hashFound = umap.find(goalId);
     std::vector<Goal> waypoints = hashFound->second;
     for (Goal goalPoint : waypoints) {
-
       if (as_.isPreemptRequested() || !ros::ok()) {
         ROS_INFO("%s: Preempted", action_name_.c_str());
         // set the action state to preempted
         as_.setPreempted();
         break;
       }
+
       this->setGoal(goalPoint);
+      feedback_.axis = goalPoint.axis;
+      as_.publishFeedback(feedback_);
       ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
                goalPoint.point);
       while (!inTolerance()) {
@@ -194,6 +198,12 @@ public:
     }
     return _twist;
   }
+  
+  /**
+   * @brief finds the current induct point of the robot
+   *
+   * @return current in point
+   */
   int findInduct() {
     if (abs(transformPtr->transform.translation.y - yPoint[4]) < 0.3) {
       return 1;
@@ -202,6 +212,12 @@ public:
     }
     return 0;
   }
+
+  /**
+   * @brief finds the nearest induct point from current position 
+   *
+   * @return nearest induct point to the robot
+   */
   int findNearInduct() {
     if (transformPtr->transform.translation.y < yPoint[6])
       return 1;
@@ -209,6 +225,14 @@ public:
       return 2;
     }
   }
+
+  /**
+   * @brief util function to convert axis enum to string
+   *
+   * @param _axis enum of the axis
+   *
+   * @return  string of the given enum
+   */
   char axisToString(Axis _axis) {
     if (_axis == x)
       return 'x';

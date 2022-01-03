@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 import sys
 class color_bridge:
     def __init__(self,bot_no) -> None:
-        self.pub = rospy.Publisher('flipkart'+str(bot_no)+"/dest", Int64, queue_size=10)
+        self.pub = rospy.Publisher('dest', Int64, queue_size=10)
         self.rate = rospy.Rate(10) # 10hz
         self.client_ip = "192.168.0.172"
         self.mqtt_client = mqtt.Client()
@@ -14,7 +14,6 @@ class color_bridge:
         self.mqtt_client.on_message = self.callback
         self.mqtt_client.loop_forever()
     def callback(self, c, i, msg):
-        print("executing callback")
         self.pub.publish(int(msg.payload))
 
 if __name__ == '__main__':

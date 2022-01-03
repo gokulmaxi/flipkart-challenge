@@ -18,10 +18,10 @@ left_two_index = {7, 8, 9}
 class actionclient:
 
     def __init__(self,bot_no):
-        self.client = actionlib.SimpleActionClient('flipbot'+str(bot_no), BotGoalAction)
-        self.pub_servo = rospy.Publisher('flipbot'+str(bot_no)+'/servo', String, queue_size=10)
-        self.pub_colorReq= rospy.Publisher('flipbot'+str(bot_no)+'/colorReq', String, queue_size=10)
-        rospy.Subscriber("flipbot"+str(bot_no)+"/dest", Int64, self.callback)
+        self.client = actionlib.SimpleActionClient("bot1", BotGoalAction)
+        self.pub_servo = rospy.Publisher('servo', String, queue_size=10)
+        self.pub_colorReq= rospy.Publisher('colorReq', String, queue_size=10)
+        rospy.Subscriber("dest", Int64, self.callback)
         self.client.wait_for_server()
         self.callbackCalled = False
         self.feedback = BotGoalFeedback()

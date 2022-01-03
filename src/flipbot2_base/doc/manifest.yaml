@@ -1,0 +1,22 @@
+actions:
+- BotGoal
+authors: ''
+brief: ''
+bugtracker: ''
+depends:
+- catkin
+- actionlib_msgs
+- message_generation
+- dynamic_reconfigure
+- message_runtime
+- roscpp
+- rospy
+description: The flipbot2_base package
+license: TODO
+maintainers: gokul <gokul@todo.todo>
+msgs: []
+package_type: package
+repo_url: ''
+srvs:
+- BotInterupt
+url: ''
