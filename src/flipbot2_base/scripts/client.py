@@ -37,7 +37,7 @@ class actionclient:
         self.servopush = self.servodir()
         rospy.loginfo("Actuating servo in %i",self.servopush)
         self.pub_servo.publish(str(self.servopush))
-        sleep(0.5)
+        sleep(1.5)
         self.client.send_goal(BotGoalGoal(index=-1 * int(data.data)))
         self.client.wait_for_result()
         self.callbackCalled = False

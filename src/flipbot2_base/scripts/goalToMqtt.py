@@ -50,17 +50,17 @@ def callback(data,args):
         rospy.logwarn(data.angular.z)
 def callback_servo(data,args):
     bot_index = args
-    jsonData = {"angular":0,"linear_x":0,"linear_y":0,"servo":data.data,"colorRequest":0}
+    jsonData = {"angular":0,"linear_x":0,"linear_y":0,"servo":data.data}
     jsonEncoded = json.dumps(jsonData)
     (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
     rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonEncoded,bot_index)
 
 def callback_color(data,args):
     bot_index = args
-    jsonData = {"angular":0,"linear_x":0,"linear_y":0,"servo":0,"colorRequest":1}
-    jsonEncoded = json.dumps(jsonData)
-    (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonEncoded,bot_index)
+    # jsonData = {"angular":0,"linear_x":0,"linear_y":0,"servo":0,"colorRequest":1}
+    # jsonEncoded = json.dumps(jsonData)
+    # (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
+    # rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonEncoded,bot_index)
 def listener(bot_no):
 
     rospy.init_node('listener_mqtt')

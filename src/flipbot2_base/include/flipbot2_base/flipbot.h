@@ -152,6 +152,7 @@ public:
     /* distance = std::sqrt(pow((start - end), 2)); */
     if (goal.axis == x)
       _distance =
+              
           xPoint[goal.point - 1] - transformPtr->transform.translation.x;
     if (goal.axis == y)
       _distance =
