@@ -33,10 +33,11 @@ private:
   std::string action_name_;
   geometry_msgs::Twist cmd_msg;
   ros::Publisher pub_cmdVel =
-      nh_.advertise<geometry_msgs::Twist>("flipbot1/cmd_vel", 1000);
+      nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
   ros::ServiceServer service = nh_.advertiseService(
-      "add_two_ints", &VelocityController::servCallback, this);
+      "botStop", &VelocityController::servCallback, this);
   geometry_msgs::Twist stop;
+  geometry_msgs::Twist prevMessage;
   int lastDest = 3;
   flipbot2_base::BotGoalResult result_;
   flipbot2_base::BotGoalFeedback feedback_;
@@ -69,6 +70,7 @@ public:
     stop.linear.x = 0;
     stop.linear.y = 0;
     stop.angular.z = 0;
+    prevMessage = stop;
     as_.start();
   }
   ~VelocityController() {
@@ -113,7 +115,6 @@ public:
         as_.setPreempted();
         break;
       }
-
       this->setGoal(goalPoint);
       feedback_.axis = goalPoint.axis;
       as_.publishFeedback(feedback_);
@@ -122,7 +123,11 @@ public:
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
         BotInteruptMutex.lock();
+        /* if(prevMessage != cmd_msg){  // to reduce redundant message */
+        ROS_WARN("Publishing velocity");       // the opposite of yaw error
         pub_cmdVel.publish(cmd_msg);
+        prevMessage = cmd_msg;
+        /* } */
         BotInteruptMutex.unlock();
         if (inTolerance()) {
           pub_cmdVel.publish(stop);
@@ -150,11 +155,11 @@ public:
   double euclidianDistance() {
     double _distance = 0.0;
     /* distance = std::sqrt(pow((start - end), 2)); */
-    if (goal.axis == x)
+    if (goal.axis == x || goal.axis == cx)
       _distance =
               
           xPoint[goal.point - 1] - transformPtr->transform.translation.x;
-    if (goal.axis == y)
+    if (goal.axis == y || goal.axis == cy)
       _distance =
           yPoint[goal.point - 1] - transformPtr->transform.translation.y;
     return _distance;
@@ -175,11 +180,11 @@ public:
   }
   geometry_msgs::Twist calculateVelocity() {
     geometry_msgs::Twist _twist;
-    if (goal.axis == x) {
+    if (goal.axis == x || goal.axis == cx) {
       double _linearVel = euclidianDistance() * config->proportional_control;
       _twist.linear.x = _linearVel;
     }
-    if (goal.axis == y) {
+    if (goal.axis == y || goal.axis == cy) {
       double _linearVel = euclidianDistance();
       _twist.linear.y = _linearVel;
     }
@@ -235,7 +240,7 @@ public:
    * @return  string of the given enum
    */
   char axisToString(Axis _axis) {
-    if (_axis == x)
+    if (_axis == x || _axis == cx)
       return 'x';
     else
       return 'y';

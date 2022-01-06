@@ -23,9 +23,9 @@ int main(int argc, char **argv) {
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config> server;
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config>::CallbackType f;
   f = boost::bind(&dynamicConfigureCb, _1, _2);
-  boost::thread thread_b(updateTransform, &transformStamped, 1);
+  boost::thread thread_b(updateTransform, &transformStamped, atoi(argv[1]));
   server.setCallback(f);
-  VelocityController controller(&transformStamped, &configGlobal, "flipbot1/bot1");
+  VelocityController controller(&transformStamped, &configGlobal, "bot1");
   ros::Rate loop_rate(20);
   ros::waitForShutdown();
   return 0;
