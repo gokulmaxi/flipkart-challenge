@@ -4,7 +4,7 @@
 #include "ros/service_client.h"
 #include "std_msgs/String.h"
 #include <tf2_ros/transform_listener.h>
-#include "flipbot2_base/BotInterupt.h"
+#include "flipbot2_msg/BotInterupt.h"
 geometry_msgs::TransformStamped transformMsg;
 /**
  * @brief updates the transform of the robot.Intentionally created to run as
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "collsionDetector");
   ros::NodeHandle n;
   ros::AsyncSpinner spinner(4);
-  ros::ServiceClient client = n.serviceClient<flipbot2_base::BotInterupt>("collision_detector");
+  ros::ServiceClient client = n.serviceClient<flipbot2_msg::BotInterupt>("collision_detector");
   spinner.start();
   boost::thread thread_a(updateTransform, &transformMsg, 1, 2);
   ros::Rate loop_rate(10);

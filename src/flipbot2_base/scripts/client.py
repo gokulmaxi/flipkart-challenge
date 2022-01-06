@@ -3,10 +3,10 @@
 import json
 import rospy
 import actionlib
-from flipbot2_base.msg import BotGoalAction
-from flipbot2_base.msg import BotGoalFeedback
-from flipbot2_base.msg import BotGoalResult
-from flipbot2_base.msg import BotGoalGoal
+from flipbot2_msg.msg import BotGoalAction
+from flipbot2_msg.msg import BotGoalFeedback
+from flipbot2_msg.msg import BotGoalResult
+from flipbot2_msg.msg import BotGoalGoal
 from rospy.timer import sleep
 from std_msgs.msg import Int64
 from std_msgs.msg import String

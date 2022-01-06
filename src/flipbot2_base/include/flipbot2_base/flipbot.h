@@ -1,4 +1,4 @@
-#include "flipbot2_base/BotGoalAction.h"
+#include "flipbot2_msg/BotGoalAction.h"
 #include "geometry_msgs/TransformStamped.h"
 #include "geometry_msgs/Twist.h"
 #include "goalConst.h"
@@ -10,11 +10,11 @@
 #include <algorithm>
 #include <cmath>
 #include <exception>
-#include <flipbot2_base/BotGoalFeedback.h>
-#include <flipbot2_base/BotGoalGoal.h>
-#include <flipbot2_base/BotInterupt.h>
-#include <flipbot2_base/BotInteruptRequest.h>
-#include <flipbot2_base/BotInteruptResponse.h>
+#include <flipbot2_msg/BotGoalFeedback.h>
+#include <flipbot2_msg/BotGoalGoal.h>
+#include <flipbot2_msg/BotInterupt.h>
+#include <flipbot2_msg/BotInteruptRequest.h>
+#include <flipbot2_msg/BotInteruptResponse.h>
 #include <flipbot2_base/flipbot2Config.h>
 #include <string>
 #include <strings.h>
@@ -29,7 +29,7 @@ private:
   flipbot2_base::flipbot2Config *config;
   geometry_msgs::TransformStamped *transformPtr;
   ros::NodeHandle nh_;
-  actionlib::SimpleActionServer<flipbot2_base::BotGoalAction> as_;
+  actionlib::SimpleActionServer<flipbot2_msg::BotGoalAction> as_;
   std::string action_name_;
   geometry_msgs::Twist cmd_msg;
   ros::Publisher pub_cmdVel =
@@ -39,8 +39,8 @@ private:
   geometry_msgs::Twist stop;
   geometry_msgs::Twist prevMessage;
   int lastDest = 3;
-  flipbot2_base::BotGoalResult result_;
-  flipbot2_base::BotGoalFeedback feedback_;
+  flipbot2_msg::BotGoalResult result_;
+  flipbot2_msg::BotGoalFeedback feedback_;
   boost::mutex BotInteruptMutex;
   /**
    * @brief converts Quaternion to euler angles
@@ -77,8 +77,8 @@ public:
     as_.shutdown();
     pub_cmdVel.shutdown();
   }
-  bool servCallback(flipbot2_base::BotInteruptRequest &req,
-                    flipbot2_base::BotInteruptResponse &res) {
+  bool servCallback(flipbot2_msg::BotInteruptRequest &req,
+                    flipbot2_msg::BotInteruptResponse &res) {
     if (req.pause == 1) {
       pub_cmdVel.publish(stop);
       BotInteruptMutex.lock();
@@ -90,7 +90,7 @@ public:
     }
     return true;
   }
-  void executeCB(const flipbot2_base::BotGoalGoalConstPtr &goal) {
+  void executeCB(const flipbot2_msg::BotGoalGoalConstPtr &goal) {
     ros::Rate loop_rate(20);
     bool success = true;
     int induct;
