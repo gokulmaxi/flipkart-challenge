@@ -10,12 +10,12 @@
 #include <algorithm>
 #include <cmath>
 #include <exception>
+#include <flipbot2_base/flipbot2Config.h>
 #include <flipbot2_msg/BotGoalFeedback.h>
 #include <flipbot2_msg/BotGoalGoal.h>
 #include <flipbot2_msg/BotInterupt.h>
 #include <flipbot2_msg/BotInteruptRequest.h>
 #include <flipbot2_msg/BotInteruptResponse.h>
-#include <flipbot2_base/flipbot2Config.h>
 #include <string>
 #include <strings.h>
 #include <tf/tf.h>
@@ -34,8 +34,8 @@ private:
   geometry_msgs::Twist cmd_msg;
   ros::Publisher pub_cmdVel =
       nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
-  ros::ServiceServer service = nh_.advertiseService(
-      "botStop", &VelocityController::servCallback, this);
+  ros::ServiceServer service =
+      nh_.advertiseService("botStop", &VelocityController::servCallback, this);
   geometry_msgs::Twist stop;
   geometry_msgs::Twist prevMessage;
   int lastDest = 3;
@@ -116,13 +116,16 @@ public:
         break;
       }
       this->setGoal(goalPoint);
-      feedback_.axis = goalPoint.axis;
-      as_.publishFeedback(feedback_);
       ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
                goalPoint.point);
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
         BotInteruptMutex.lock();
+        feedback_.axis = axisToString(goalPoint.axis);
+        feedback_.point = goalPoint.point;
+        feedback_.xVel = cmd_msg.linear.x;
+        feedback_.yVel = cmd_msg.linear.x;
+        as_.publishFeedback(feedback_);
         pub_cmdVel.publish(cmd_msg);
         BotInteruptMutex.unlock();
         if (inTolerance()) {
@@ -151,16 +154,16 @@ public:
   double euclidianDistance() {
     double _distance = 0.0;
     /* distance = std::sqrt(pow((start - end), 2)); */
-    if (goal.axis == x )
+    if (goal.axis == x)
       _distance =
           xPoint[goal.point - 1] - transformPtr->transform.translation.x;
-    if (goal.axis == cx )
+    if (goal.axis == cx)
       _distance =
           cxPoint[goal.point - 1] - transformPtr->transform.translation.x;
-    if (goal.axis == y )
+    if (goal.axis == y)
       _distance =
           yPoint[goal.point - 1] - transformPtr->transform.translation.y;
-    if (goal.axis == cy )
+    if (goal.axis == cy)
       _distance =
           cyPoint[goal.point - 1] - transformPtr->transform.translation.y;
     return _distance;
@@ -205,7 +208,7 @@ public:
     }
     return _twist;
   }
-  
+
   /**
    * @brief finds the current induct point of the robot
    *
@@ -221,7 +224,7 @@ public:
   }
 
   /**
-   * @brief finds the nearest induct point from current position 
+   * @brief finds the nearest induct point from current position
    *
    * @return nearest induct point to the robot
    */

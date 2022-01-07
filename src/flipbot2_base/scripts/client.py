@@ -4,7 +4,6 @@ import json
 import rospy
 import actionlib
 from flipbot2_msg.msg import BotGoalAction
-from flipbot2_msg.msg import BotGoalFeedback
 from flipbot2_msg.msg import BotGoalResult
 from flipbot2_msg.msg import BotGoalGoal
 from rospy.timer import sleep
@@ -24,7 +23,6 @@ class actionclient:
         rospy.Subscriber("dest", Int64, self.callback)
         self.client.wait_for_server()
         self.callbackCalled = False
-        self.feedback = BotGoalFeedback()
     def callback(self,data:Int64):
         self.callbackCalled = True
         rospy.loginfo("Sending Goal")
