@@ -123,11 +123,7 @@ public:
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
         BotInteruptMutex.lock();
-        /* if(prevMessage != cmd_msg){  // to reduce redundant message */
-        ROS_WARN("Publishing velocity");       // the opposite of yaw error
         pub_cmdVel.publish(cmd_msg);
-        prevMessage = cmd_msg;
-        /* } */
         BotInteruptMutex.unlock();
         if (inTolerance()) {
           pub_cmdVel.publish(stop);
@@ -155,13 +151,18 @@ public:
   double euclidianDistance() {
     double _distance = 0.0;
     /* distance = std::sqrt(pow((start - end), 2)); */
-    if (goal.axis == x || goal.axis == cx)
+    if (goal.axis == x )
       _distance =
-              
           xPoint[goal.point - 1] - transformPtr->transform.translation.x;
-    if (goal.axis == y || goal.axis == cy)
+    if (goal.axis == cx )
+      _distance =
+          cxPoint[goal.point - 1] - transformPtr->transform.translation.x;
+    if (goal.axis == y )
       _distance =
           yPoint[goal.point - 1] - transformPtr->transform.translation.y;
+    if (goal.axis == cy )
+      _distance =
+          cyPoint[goal.point - 1] - transformPtr->transform.translation.y;
     return _distance;
   }
   /**

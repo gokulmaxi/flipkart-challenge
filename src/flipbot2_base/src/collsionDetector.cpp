@@ -1,10 +1,14 @@
+#include "flipbot2_msg/BotGoalAction.h"
+#include <actionlib/client/simple_action_client.h>
+#include <actionlib/client/terminal_state.h>
+#include "flipbot2_msg/BotInterupt.h"
 #include "geometry_msgs/TransformStamped.h"
 #include "ros/console_backend.h"
 #include "ros/ros.h"
 #include "ros/service_client.h"
 #include "std_msgs/String.h"
+#include <string>
 #include <tf2_ros/transform_listener.h>
-#include "flipbot2_msg/BotInterupt.h"
 geometry_msgs::TransformStamped transformMsg;
 /**
  * @brief updates the transform of the robot.Intentionally created to run as
@@ -30,15 +34,30 @@ void updateTransform(geometry_msgs::TransformStamped *_transformstamped, int id,
   }
 }
 int main(int argc, char **argv) {
+  bool messagePassed = false;
   ros::init(argc, argv, "collsionDetector");
   ros::NodeHandle n;
+  flipbot2_msg::BotInterupt interuptData;
   ros::AsyncSpinner spinner(4);
-  ros::ServiceClient client = n.serviceClient<flipbot2_msg::BotInterupt>("collision_detector");
   spinner.start();
+  ros::ServiceClient client =
+      n.serviceClient<flipbot2_msg::BotInterupt>("collision_detector");
+  actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac("flipbot"+(std::string)argv[1]+"bot1", true);
+  actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac1("flipbot"+(std::string)argv[2]+"bot1", true);
   boost::thread thread_a(updateTransform, &transformMsg, 1, 2);
   ros::Rate loop_rate(10);
+  ROS_INFO("Waiting for bot %s action server to start.",argv[1]);
+  ac.waitForServer(); // will wait for infinite time
+  ROS_INFO("Waiting for bot %s action server to start.",argv[2]);
+  ac.waitForServer(); // will wait for infinite time
   while (ros::ok()) {
-    if(transformMsg.transform.translation.x < 0.2){}
+    while (transformMsg.transform.translation.x < 0.2) {
+      if (!messagePassed) {
+        interuptData.request.pause = 1;
+        client.call(interuptData);
+        messagePassed = true;
+      }
+    }
     loop_rate.sleep();
   }
   return 0;

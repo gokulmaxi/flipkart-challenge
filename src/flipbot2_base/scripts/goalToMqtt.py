@@ -45,7 +45,7 @@ def callback(data,args):
     jsonData = {"angular": velocity_list[0],"linear_x":velocity_list[1],"linear_y":velocity_list[2],"servo":0}#,"pwm3":velocity_list[2],"pwm4":velocity_list[3]}
     jsonEncoded = json.dumps(jsonData)
     (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonData,bot_index)
+    # rospy.loginfo(rospy.get_caller_id() + "I heard %s and published to %d", jsonData,bot_index)
     if(data.angular.z != 0):
         rospy.logwarn(data.angular.z)
 def callback_servo(data,args):
