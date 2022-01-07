@@ -35,15 +35,15 @@ void updateTransform(geometry_msgs::TransformStamped *_transformstamped, int id,
 }
 int main(int argc, char **argv) {
   bool messagePassed = false;
-  ros::init(argc, argv, "collsionDetector");
+  ros::init(argc, argv, "collsionDetector"+(std::string)argv[1]+"_"+(std::string)argv[2]);
   ros::NodeHandle n;
   flipbot2_msg::BotInterupt interuptData;
   ros::AsyncSpinner spinner(4);
   spinner.start();
   ros::ServiceClient client =
       n.serviceClient<flipbot2_msg::BotInterupt>("collision_detector");
-  actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac("flipbot"+(std::string)argv[1]+"bot1", true);
-  actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac1("flipbot"+(std::string)argv[2]+"bot1", true);
+  actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac("flipbot"+(std::string)argv[1]+"/bot1", true);
+  actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac1("flipbot"+(std::string)argv[2]+"/bot1", true);
   boost::thread thread_a(updateTransform, &transformMsg, 1, 2);
   ros::Rate loop_rate(10);
   ROS_INFO("Waiting for bot %s action server to start.",argv[1]);
