@@ -7,6 +7,7 @@
 #include <math.h>
 #include <Wire.h>
 
+int wifiled = 5;
 
 Servo servo;
 
@@ -39,7 +40,7 @@ int value = 0;
 const char *device_name = "ESP32";
 const char *ssid = "IA Lab";
 const char *password = "rosdeveloper";
-const char *mqtt_server = "192.168.0.172";
+const char *mqtt_server = "192.168.0.163";
 
 //util functions
 bool eq(int n, int *x, int *y, int tolerance)
@@ -89,6 +90,8 @@ void setupLedc()
 
     pinMode(motor4Pin1, OUTPUT);
     pinMode(motor4Pin2, OUTPUT);
+
+    pinMode(wifiled, OUTPUT);
 }
 
 void setup_wifi()
@@ -101,18 +104,20 @@ void setup_wifi()
     // int attempts = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
-        delay(500);
-        //  attempts++;
-        //  if(attempts > 3){
-        //    ESP.restart();}
-
+        digitalWrite(wifiled , HIGH);
+        delay(1000);
+        digitalWrite(wifiled,LOW);
+        delay(1000);
+        
         Serial.print(".");
     }
+
+    digitalWrite(wifiled , HIGH);
 
     Serial.println("");
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+    Serial.println(mqtt_server);
 }
 
 
@@ -125,7 +130,7 @@ void reconnect()
         if (client.connect(device_name))
         {
             Serial.println("connected");
-            client.subscribe("flipkart/bot1");
+            client.subscribe("flipkart/bot3");
         }
         else
         {
