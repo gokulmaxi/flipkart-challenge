@@ -26,5 +26,7 @@ gz sdf -p d435.urdf > d435.sdf         # urdf to sdf
 
 ## Links
 - [xacro conditional](https://get-help.robotigniteacademy.com/t/conditional-block-for-params-on-macro-xacro/3095) 
-##TODO
+## Round 2 overview
+![round2overview](./assets/rosgraph.png) 
+## TODO
 -  odom publisher not working

@@ -15,7 +15,7 @@ geometry_msgs::Twist stop;
 void dynamicConfigureCb(flipbot2_base::flipbot2Config config, uint32_t level);
 int main(int argc, char **argv) {
   // node and other initialisation
-  ros::init(argc, argv, "talker");
+  ros::init(argc, argv, "goal_action_server");
   configGlobal.Linear_tolerance = *linear_tolerance;
   configGlobal.proportional_control = *linear_constant;
   ros::AsyncSpinner spinner(4);
@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config> server;
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config>::CallbackType f;
   f = boost::bind(&dynamicConfigureCb, _1, _2);
-  boost::thread thread_b(updateTransform, &transformStamped, 1);
+  boost::thread thread_b(updateTransform, &transformStamped, atoi(argv[1]));
   server.setCallback(f);
   VelocityController controller(&transformStamped, &configGlobal, "bot1");
   ros::Rate loop_rate(20);

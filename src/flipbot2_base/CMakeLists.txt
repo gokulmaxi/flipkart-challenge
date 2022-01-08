@@ -15,6 +15,10 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   dynamic_reconfigure
   actionlib_msgs
+  actionlib
+  message_generation
+  genmsg
+  flipbot2_msg
 )
 
 ## System dependencies are found with CMake's conventions
@@ -59,27 +63,29 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Generate services in the 'srv' folder
 # add_service_files(
+#   DIRECTORY srv
 #   FILES
-#   Service1.srv
-#   Service2.srv
+#   BotInterupt.srv
+# #   Service1.srv
+# #   Service2.srv
 # )
-
-## Generate actions in the 'action' folder
-add_action_files(
-  FILES
-  BotGoal.action
-#   Action1.action
-#   Action2.action
-)
+# 
+# ## Generate actions in the 'action' folder
+# add_action_files(
+#   FILES
+#   BotGoal.action
+# #   Action1.action
+# #   Action2.action
+# )
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
-  actionlib_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+#   actionlib_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -217,6 +223,6 @@ add_executable(tftwist src/tfLookupTwist.cpp)
 target_link_libraries(tftwist ${catkin_LIBRARIES})
 add_executable(movetogoal src/moveToGoal.cpp)
 target_link_libraries(movetogoal ${catkin_LIBRARIES})
-add_dependencies(movetogoal ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+add_dependencies(movetogoal ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg flipbot2_msg_generate_messages_cpp)
 add_executable(collsion_detector src/collsionDetector.cpp)
 target_link_libraries(collsion_detector ${catkin_LIBRARIES})

@@ -1,48 +1,51 @@
 #! /usr/bin/python3
 
 import json
-import flipbot2_base
 import rospy
 import actionlib
-from flipbot2_base.msg import BotGoalAction
-from flipbot2_base.msg import BotGoalFeedback
-from flipbot2_base.msg import BotGoalResult
-from flipbot2_base.msg import BotGoalGoal
-import paho.mqtt.client as mqtt
-
+from flipbot2_msg.msg import BotGoalAction
+from flipbot2_msg.msg import BotGoalResult
+from flipbot2_msg.msg import BotGoalGoal
+from rospy.timer import sleep
+from std_msgs.msg import Int64
+from std_msgs.msg import String
+import sys
 right_one_index = {1, 2, 3}
 left_two_index = {7, 8, 9}
 
 
 class actionclient:
 
-    def __init__(self):
-        self.result = BotGoalResult()
-        self.client = actionlib.SimpleActionClient('bot1', BotGoalAction)
-        self.client_ip = "192.168.0.172"
-        self.mqtt_client = mqtt.Client()
-        self.mqtt_client.connect(self.client_ip)
-        self.mqtt_client.subscribe("flipkart/color1")
-        self.mqtt_client.on_message = self.callback
+    def __init__(self,bot_no):
+        self.client = actionlib.SimpleActionClient("bot1", BotGoalAction)
+        self.pub_servo = rospy.Publisher('servo', String, queue_size=10)
+        self.pub_colorReq= rospy.Publisher('colorReq', String, queue_size=10)
+        rospy.Subscriber("dest", Int64, self.callback)
         self.client.wait_for_server()
-        self.mqtt_client.loop_forever()
-
-    def callback(self, c, i, msg):
-        self.goal = BotGoalGoal(index=int(msg.payload))
-        print(int(msg.payload))
+        self.callbackCalled = False
+    def callback(self,data:Int64):
+        self.callbackCalled = True
+        rospy.loginfo("Sending Goal")
+        self.goal = BotGoalGoal(index=int(data.data))
         self.client.send_goal(self.goal)
         self.client.wait_for_result()
-        self.clientResult = self.client.get_result()
+        self.result= self.client.get_result()
+        rospy.loginfo("got result")
+        sleep(0.5)
         self.servopush = self.servodir()
-        self.jsonData = {"angular": 0, "linear_x": 0,
-                         "linear_y": 0, "servo": self.servopush}
-        self.jsonEncoded = json.dumps(self.jsonData)
-        self.mqtt_client.publish("flipkart/bot"+str(1), self.jsonEncoded, qos=0)
-        self.client.send_goal(BotGoalGoal(index=-1 * int(msg.payload)))
+        rospy.loginfo("Actuating servo in %i",self.servopush)
+        self.pub_servo.publish(str(self.servopush))
+        sleep(1.5)
+        self.client.send_goal(BotGoalGoal(index=-1 * int(data.data)))
         self.client.wait_for_result()
-
+        self.callbackCalled = False
+    def clientRoutine(self):
+        while not rospy.is_shutdown():
+            while not self.callbackCalled:
+                rospy.loginfo("waiting for color data")
+                self.pub_colorReq.publish("1")
+                rospy.sleep(3)
     def servodir(self):
-
         if(self.result.inductIndex == 1):
             if self.result.destIndex in right_one_index:
                 return 1
@@ -55,6 +58,8 @@ class actionclient:
                 return -1
 
 if __name__ == "__main__":
-    rospy.init_node('client')
-    ac = actionclient()
+    rospy.init_node('client'+str(sys.argv[1]))
+    rospy.loginfo("Init client node "+ sys.argv[1])
+    ac = actionclient(int(sys.argv[1]))
+    ac.clientRoutine()
     rospy.spin()

@@ -1,4 +1,4 @@
-#include "flipbot2_base/BotGoalAction.h"
+#include "flipbot2_msg/BotGoalAction.h"
 #include "geometry_msgs/TransformStamped.h"
 #include "geometry_msgs/Twist.h"
 #include "goalConst.h"
@@ -10,10 +10,16 @@
 #include <algorithm>
 #include <cmath>
 #include <exception>
-#include <flipbot2_base/BotGoalGoal.h>
 #include <flipbot2_base/flipbot2Config.h>
+#include <flipbot2_msg/BotGoalFeedback.h>
+#include <flipbot2_msg/BotGoalGoal.h>
+#include <flipbot2_msg/BotInterupt.h>
+#include <flipbot2_msg/BotInteruptRequest.h>
+#include <flipbot2_msg/BotInteruptResponse.h>
 #include <string>
+#include <strings.h>
 #include <tf/tf.h>
+#include <unistd.h>
 class VelocityController {
 private:
   /* double *linearTolerance; */
@@ -23,14 +29,19 @@ private:
   flipbot2_base::flipbot2Config *config;
   geometry_msgs::TransformStamped *transformPtr;
   ros::NodeHandle nh_;
-  actionlib::SimpleActionServer<flipbot2_base::BotGoalAction> as_;
+  actionlib::SimpleActionServer<flipbot2_msg::BotGoalAction> as_;
   std::string action_name_;
   geometry_msgs::Twist cmd_msg;
   ros::Publisher pub_cmdVel =
-      nh_.advertise<geometry_msgs::Twist>("flipbot1/cmd_vel", 1000);
+      nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
+  ros::ServiceServer service =
+      nh_.advertiseService("botStop", &VelocityController::servCallback, this);
   geometry_msgs::Twist stop;
+  geometry_msgs::Twist prevMessage;
   int lastDest = 3;
-  flipbot2_base::BotGoalResult result_;
+  flipbot2_msg::BotGoalResult result_;
+  flipbot2_msg::BotGoalFeedback feedback_;
+  boost::mutex BotInteruptMutex;
   /**
    * @brief converts Quaternion to euler angles
    *
@@ -55,17 +66,31 @@ public:
     transformPtr = _transformPtr;
     angularPulse = _config->angular_pulse;
     this->config = _config;
-    //! TODO find a way to assign zeros at declaration
+    //! @TODO find a way to assign zeros at declaration
     stop.linear.x = 0;
     stop.linear.y = 0;
     stop.angular.z = 0;
+    prevMessage = stop;
     as_.start();
   }
   ~VelocityController() {
     as_.shutdown();
     pub_cmdVel.shutdown();
   }
-  void executeCB(const flipbot2_base::BotGoalGoalConstPtr &goal) {
+  bool servCallback(flipbot2_msg::BotInteruptRequest &req,
+                    flipbot2_msg::BotInteruptResponse &res) {
+    if (req.pause == 1) {
+      pub_cmdVel.publish(stop);
+      BotInteruptMutex.lock();
+      pub_cmdVel.publish(stop); // additional stop just for safety
+      ROS_INFO("Stoping the robot");
+    }
+    if (req.pause == 0) {
+      BotInteruptMutex.unlock();
+    }
+    return true;
+  }
+  void executeCB(const flipbot2_msg::BotGoalGoalConstPtr &goal) {
     ros::Rate loop_rate(20);
     bool success = true;
     int induct;
@@ -84,7 +109,6 @@ public:
     auto hashFound = umap.find(goalId);
     std::vector<Goal> waypoints = hashFound->second;
     for (Goal goalPoint : waypoints) {
-
       if (as_.isPreemptRequested() || !ros::ok()) {
         ROS_INFO("%s: Preempted", action_name_.c_str());
         // set the action state to preempted
@@ -92,27 +116,29 @@ public:
         break;
       }
       this->setGoal(goalPoint);
-      ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis), goalPoint.point);
+      ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
+               goalPoint.point);
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
+        BotInteruptMutex.lock();
+        feedback_.axis = axisToString(goalPoint.axis);
+        feedback_.point = goalPoint.point;
+        feedback_.xVel = cmd_msg.linear.x;
+        feedback_.yVel = cmd_msg.linear.x;
+        as_.publishFeedback(feedback_);
         pub_cmdVel.publish(cmd_msg);
+        BotInteruptMutex.unlock();
         if (inTolerance()) {
           pub_cmdVel.publish(stop);
           break;
         }
-      if (as_.isPreemptRequested() || !ros::ok()) {
-        ROS_INFO("%s: Preempted", action_name_.c_str());
-        // set the action state to preempted
-        as_.setPreempted();
-        break;
-      }
         loop_rate.sleep();
       }
       lastDest = goal->index;
       pub_cmdVel.publish(stop);
     }
-    result_.destIndex = induct;
-    result_.inductIndex = goal->index;
+    result_.destIndex = goal->index;
+    result_.inductIndex = induct;
 
     as_.setSucceeded(result_);
   }
@@ -131,9 +157,15 @@ public:
     if (goal.axis == x)
       _distance =
           xPoint[goal.point - 1] - transformPtr->transform.translation.x;
+    if (goal.axis == cx)
+      _distance =
+          cxPoint[goal.point - 1] - transformPtr->transform.translation.x;
     if (goal.axis == y)
       _distance =
           yPoint[goal.point - 1] - transformPtr->transform.translation.y;
+    if (goal.axis == cy)
+      _distance =
+          cyPoint[goal.point - 1] - transformPtr->transform.translation.y;
     return _distance;
   }
   /**
@@ -152,11 +184,11 @@ public:
   }
   geometry_msgs::Twist calculateVelocity() {
     geometry_msgs::Twist _twist;
-    if (goal.axis == x) {
+    if (goal.axis == x || goal.axis == cx) {
       double _linearVel = euclidianDistance() * config->proportional_control;
       _twist.linear.x = _linearVel;
     }
-    if (goal.axis == y) {
+    if (goal.axis == y || goal.axis == cy) {
       double _linearVel = euclidianDistance();
       _twist.linear.y = _linearVel;
     }
@@ -166,7 +198,7 @@ public:
         /* _twist.linear.y = 0; */
         _twist.angular.z =
             quatToyaw() * config->angular_constant; // to make the robot turn
-                                                    // the opposite of yaw error
+        ROS_WARN("Out of angular tolerance");       // the opposite of yaw error
         angularPulse = 0;
       } else {
         angularPulse++;
@@ -176,6 +208,12 @@ public:
     }
     return _twist;
   }
+
+  /**
+   * @brief finds the current induct point of the robot
+   *
+   * @return current in point
+   */
   int findInduct() {
     if (abs(transformPtr->transform.translation.y - yPoint[4]) < 0.3) {
       return 1;
@@ -184,6 +222,12 @@ public:
     }
     return 0;
   }
+
+  /**
+   * @brief finds the nearest induct point from current position
+   *
+   * @return nearest induct point to the robot
+   */
   int findNearInduct() {
     if (transformPtr->transform.translation.y < yPoint[6])
       return 1;
@@ -191,8 +235,16 @@ public:
       return 2;
     }
   }
+
+  /**
+   * @brief util function to convert axis enum to string
+   *
+   * @param _axis enum of the axis
+   *
+   * @return  string of the given enum
+   */
   char axisToString(Axis _axis) {
-    if (_axis == x)
+    if (_axis == x || _axis == cx)
       return 'x';
     else
       return 'y';

@@ -8,3 +8,6 @@ int32 destIndex
 ---
 #feedback
 string axis
+int32 point
+float64 xVel
+float64 yVel
