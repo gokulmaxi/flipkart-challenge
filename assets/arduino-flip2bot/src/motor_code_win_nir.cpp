@@ -16,22 +16,10 @@ void setup()
 
   setupLedc();
 
-  while (as7341.begin() != 0)
-  {
-    Serial.println("IIC init failed, please check if the wire connection is correct");
-    delay(1000);
-  }
-  as7341.enableLed(true);
-
-  as7341.controlLed(1);
-
   servo.attach(15); //D4
   servo.write(90);
 
   Serial.begin(115200);
-
-  // testing
-  Serial.print("Testing DC Motor...");
 
   setup_wifi();
   client.setServer(mqtt_server, 1883);
@@ -50,20 +38,22 @@ void callback(char *topic, byte *message, unsigned int length)
   }
   Serial.println();
 
-  if (String(topic) == "flipkart/bot1")
-  {
-    //    Serial.print("Changing output to ");
-    if (messageTemp == "message")
-    {
-      client.publish("flipkart/bot1", "Message Received at ESP32");
+  // if (String(topic) == "flipkart/bot1")
+  // {
+  //   //    Serial.print("Changing output to ");
+  //   if (messageTemp == "message")
+  //   {
+  //     client.publish("flipkart/bot1", "Message Received at ESP32");
 
-      //      Serial.println("on");
-    }
-    else if (messageTemp == "off")
-    {
-      Serial.println("off");
-    }
-  }
+  //     //      Serial.println("on");
+  //   }
+  //   else if (messageTemp == "off")
+  //   {
+  //     Serial.println("off");
+  //   }
+  // }
+  // client.subscribe("flipkart/colorRequest");
+
   Serial.println();
   StaticJsonDocument<256> doc;
   deserializeJson(doc, message);
@@ -72,9 +62,8 @@ void callback(char *topic, byte *message, unsigned int length)
   int linear_y = doc["linear_y"];
   int servo_data = doc["servo"];
 
-  Serial.println(angular);
-  Serial.println(linear_x);
-  Serial.println(linear_y);
+  // int cube = doc["colorRequest"];
+
   // Angular left
 
   if (angular == 1)
@@ -216,97 +205,6 @@ void callback(char *topic, byte *message, unsigned int length)
   }
 }
 
-int color()
-{
-  DFRobot_AS7341::sModeOneData_t data1;
-  DFRobot_AS7341::sModeTwoData_t data2;
-
-  //Start spectrum measurement
-  //Channel mapping mode: 1.eF1F4ClearNIR,2.eF5F8ClearNIR
-  as7341.startMeasure(as7341.eF1F4ClearNIR);
-  //Read the value of sensor data channel 0~5, under eF1F4ClearNIR
-  data1 = as7341.readSpectralDataOne();
-
-  as7341.startMeasure(as7341.eF5F8ClearNIR);
-  //Read the value of sensor data channel 0~5, under eF5F8ClearNIR
-  data2 = as7341.readSpectralDataTwo();
-
-  int curr[] = {data1.ADF1, data1.ADF2, data1.ADF3, data1.ADF4, data2.ADF5, data2.ADF6, data2.ADF7, data2.ADF8};
-
-  if (eq(8, red_array, curr, 50))
-  {
-    // Serial.println("RED ");
-    // client.publish("flipkart/color1", "1");
-    int colorvalue = 1;
-    return colorvalue;
-    
-  }
-  else if (eq(8, green_array, curr, 50))
-  {
-    // Serial.println("GREEN");
-    // client.publish("flipkart/color1", "2");
-        int colorvalue = 2;
-    return colorvalue;
-  }
-  else if (eq(8, dark_blue, curr, 20))
-  {
-    // Serial.println("DARKBLUE");
-    // client.publish("flipkart/color1", "3");
-        int colorvalue = 3;
-    return colorvalue;
-  }
-  else if (eq(8, yellow, curr, 50))
-  {
-    // Serial.println("YELLOW");
-    // client.publish("flipkart/color1", "4");
-        int colorvalue = 4;
-    return colorvalue;
-  }
-  else if (eq(8, violet, curr, 90))
-  {
-    // Serial.println("VIOLET");
-    // client.publish("flipkart/color1", "5");
-        int colorvalue = 5;
-    return colorvalue;
-  }
-  else if (eq(8, brown, curr, 50))
-  {
-    // Serial.println("BROWN");
-    // client.publish("flipkart/color1", "6");
-        int colorvalue = 6;
-    return colorvalue;
-  }
-  else if (eq(8, white, curr, 100))
-  {
-    Serial.println("WHITE");
-    // client.publish("flipkart/color1", "7");
-        int colorvalue = 7;
-    return colorvalue;
-  }
-  else if (eq(8, pink, curr, 50))
-  {
-    // Serial.println("PINK");
-    // client.publish("flipkart/color1", "8");
-        int colorvalue = 8;
-    return colorvalue;
-  }
-  else if (eq(8, orange, curr, 70))
-  {
-    // Serial.println("ORANGE");
-    // client.publish("flipkart/color1", "9");
-        int colorvalue = 9;
-    return colorvalue;
-  }
-
-  else
-  {
-    Serial.println("No Cube detected");
-    return 0;
-  }
-
-
-}
-
 void loop()
 {
   if (!client.connected())
@@ -314,33 +212,6 @@ void loop()
     reconnect();
   }
   client.loop();
-  // color();
 
-  DFRobot_AS7341::sModeOneData_t data1;
-  DFRobot_AS7341::sModeTwoData_t data2;
-
-  data1 = as7341.readSpectralDataOne();
-  int nearIR = data1.ADNIR;
-
-  if (nearIR >= 168 && nearIR <=190)
-  {
-
-    if (colorpub)
-    {
-
-      colorvalue = color();
-
-      Serial.println(colorvalue);
-
-      colorvalue.toCharArray(colors , colorvalue.length() + 1);
-
-      client.publish("flipkart/color1", colors);
-
-      colorpub = false;
-    }
-  }
-  else
-  {
-    colorpub = true;
-  }
+  digitalWrite(wifiled, HIGH);
 }
