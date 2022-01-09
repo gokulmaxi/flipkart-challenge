@@ -11,7 +11,7 @@
     <arg name="camera_info" default="/camera/camera_info" />
     <arg name="tf_prefix" default="marker_id" />
     <arg name="show_detections" default="true" />
-    <arg name="marker_size" default="0.13" doc="length of the physical marker's side in meters"/>
+    <arg name="marker_size" default="0.11" doc="length of the physical marker's side in meters"/>
     <arg name="dictionary_name" default="DICT_4X4_100" />
     <arg name="blur_window_size" default="5" />
     <arg name="num_detected" default="25" /><!-- 0: do not use it, -->
