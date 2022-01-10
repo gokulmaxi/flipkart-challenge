@@ -68,31 +68,7 @@ void callback(char *topic, byte *message, unsigned int length)
 
   if (angular == 1)
   {
-    if (abs(linear_x) == 1)
-    {
-      ledcWrite(ledChannel, 0);
-      ledcWrite(ledChannel1, angularPwm);
-
-      ledcWrite(ledChannel2, angularPwm);
-      ledcWrite(ledChannel3, 0);
-      delay(50);
-      allHalt();
-    }
     if (abs(linear_y) == 1)
-    {
-      ledcWrite(ledChannel4, 0);
-      ledcWrite(ledChannel5, angularPwm);
-
-      ledcWrite(ledChannel6, angularPwm);
-      ledcWrite(ledChannel7, 0);
-      delay(50);
-      allHalt();
-    }
-  }
-
-  if (angular == -1)
-  {
-    if (abs(linear_x) == 1)
     {
       ledcWrite(ledChannel, angularPwm);
       ledcWrite(ledChannel1, 0);
@@ -102,7 +78,31 @@ void callback(char *topic, byte *message, unsigned int length)
       delay(50);
       allHalt();
     }
+    if (abs(linear_x) == 1)
+    {
+      ledcWrite(ledChannel4, 0);
+      ledcWrite(ledChannel5, angularPwm);
+      ledcWrite(ledChannel6, angularPwm);
+      ledcWrite(ledChannel7, 0);
+      delay(50);
+      allHalt();
+    }
+  }
+
+  if (angular == -1)
+  {
     if (abs(linear_y) == 1)
+    {
+
+      ledcWrite(ledChannel, 0);
+      ledcWrite(ledChannel1, angularPwm);
+
+      ledcWrite(ledChannel2, angularPwm);
+      ledcWrite(ledChannel3, 0);
+      delay(50);
+      allHalt();
+    }
+    if (abs(linear_x) == 1)
     {
       ledcWrite(ledChannel4, angularPwm);
       ledcWrite(ledChannel5, 0);
@@ -123,7 +123,7 @@ void callback(char *topic, byte *message, unsigned int length)
 
     //forward
 
-    if (linear_x == 1)
+    if (linear_y == 1)
     {
       ledcWrite(ledChannel, 0);
       ledcWrite(ledChannel1, 0);
@@ -139,7 +139,7 @@ void callback(char *topic, byte *message, unsigned int length)
     }
 
     //backward
-    if (linear_x == -1)
+    if (linear_y == -1)
     {
       ledcWrite(ledChannel, 0);
       ledcWrite(ledChannel1, 0);
@@ -154,7 +154,7 @@ void callback(char *topic, byte *message, unsigned int length)
       ledcWrite(ledChannel7, linearPwm);
     }
 
-    if (linear_y == 1)
+    if (linear_x == -1)
     {
       ledcWrite(ledChannel, linearPwm);
       ledcWrite(ledChannel1, 0);
@@ -169,7 +169,7 @@ void callback(char *topic, byte *message, unsigned int length)
       ledcWrite(ledChannel7, 0);
     }
 
-    if (linear_y == -1)
+    if (linear_x == 1)
     {
       ledcWrite(ledChannel, 0);
       ledcWrite(ledChannel1, linearPwm);

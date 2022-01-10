@@ -37,7 +37,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 char msg[50];
 int value = 0;
-const char *device_name = "ESP32-bot3"; //Change for each bot......(IMPORTANT)
+const char *device_name = "ESP32-bot1"; //Change for each bot......(IMPORTANT)
 const char *ssid = "IA Lab";
 const char *password = "rosdeveloper";
 const char *mqtt_server = "192.168.0.172";
@@ -131,7 +131,7 @@ void reconnect()
         {
             Serial.println("connected");
             //TODO - Use a variable to change topic and Device name
-            client.subscribe("flipkart/bot3"); //Change for each bot (IMPORTANT) -- Including Device name
+            client.subscribe("flipkart/bot1"); //Change for each bot (IMPORTANT) -- Including Device name
         }
         else
         {
