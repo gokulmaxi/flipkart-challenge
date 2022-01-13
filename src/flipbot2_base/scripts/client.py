@@ -10,8 +10,8 @@ from rospy.timer import sleep
 from std_msgs.msg import Int64
 from std_msgs.msg import String
 import sys
-right_one_index = {1, 2, 3}
-left_two_index = {7, 8, 9}
+right_one_index = {1, 4, 7}
+left_two_index = {2,3,5,6, 8, 9}
 
 
 class actionclient:
@@ -46,16 +46,14 @@ class actionclient:
                 self.pub_colorReq.publish("1")
                 rospy.sleep(3)
     def servodir(self):
-        if(self.result.inductIndex == 1):
-            if self.result.destIndex in right_one_index:
-                return 1
-            else:
-                return -1
-        if(self.result.inductIndex == 2):
-            if self.result.destIndex in left_two_index:
-                return 1
-            else:
-                return -1
+        if self.result.destIndex in right_one_index:
+            return 1
+        else:
+            return -1
+        if self.result.destIndex in left_two_index:
+            return 1
+        else:
+            return -1
 
 if __name__ == "__main__":
     rospy.init_node('client'+str(sys.argv[1]))
