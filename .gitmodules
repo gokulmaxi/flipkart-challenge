@@ -16,3 +16,6 @@
 [submodule "src/flipbot_deps/aruco_detector_ocv"]
 	path = src/flipbot_deps/aruco_detector_ocv
 	url = https://github.com/CesMak/aruco_detector_ocv.git
+[submodule "src/flipbot_deps/flipkart2_gui"]
+	path = src/flipbot_deps/flipkart2_gui
+	url = https://github.com/Yasvanth-S/flipkart2_gui.git
