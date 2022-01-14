@@ -3,6 +3,7 @@
 #include "geometry_msgs/Twist.h"
 #include "goalConst.h"
 #include "math.h"
+#include "ros/rate.h"
 #include "ros/ros.h"
 #include "tf2_ros/buffer.h"
 #include "tf2_ros/transform_listener.h"
@@ -108,6 +109,7 @@ public:
     ROS_INFO("Executin plan from %s", goalId.c_str());
     auto hashFound = umap.find(goalId);
     std::vector<Goal> waypoints = hashFound->second;
+    int i = 0;
     for (Goal goalPoint : waypoints) {
       if (as_.isPreemptRequested() || !ros::ok()) {
         ROS_INFO("%s: Preempted", action_name_.c_str());
@@ -116,6 +118,20 @@ public:
         break;
       }
       this->setGoal(goalPoint);
+      if(i == 2 && goal->index > 0){
+        ros::param::set("/induct"+std::to_string(induct)+"_occupancy", 0);
+      }
+      if (goalPoint.checkPoint == 1) {  // TO CHECK OCCUPANY IN INDUCT ZONES
+        int value;
+        ROS_INFO("Checkpoint reached checking for occupancy in %d",induct);
+        while(ros::param::get("/induct"+std::to_string(induct)+"_occupancy", value)) {
+                if(value==0){
+                        break;
+                }
+                ros::Rate(0.5).sleep();
+        }
+        ros::param::set("/induct"+std::to_string(induct)+"_occupancy", 1);
+      }
       ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
                goalPoint.point);
       while (!inTolerance()) {
@@ -136,6 +152,7 @@ public:
       }
       lastDest = goal->index;
       pub_cmdVel.publish(stop);
+      i++;
     }
     result_.destIndex = goal->index;
     result_.inductIndex = induct;

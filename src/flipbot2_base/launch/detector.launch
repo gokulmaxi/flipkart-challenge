@@ -86,5 +86,5 @@
    <group if="$(arg use_rviz)" >
         <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find aruco_detector_ocv)/config/aruco_opencv.rviz"/>
 </group>
-<node pkg="tf2_ros" type="static_transform_publisher" name="usbcamstatictf" args="-1.8 1.6 3.62 3.14 -3.14 0 world usb_cam"/>
+<node pkg="tf2_ros" type="static_transform_publisher" name="usbcamstatictf" args="-1.8 1.6 3.62 3.14 -3.14 0 usb_cam world"/>
 </launch>

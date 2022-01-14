@@ -12,15 +12,18 @@ class Goal
 public:
   Axis axis;
   int point;
+  int checkPoint;
   Goal()
   {
     axis = x;
     point = 0;
+    checkPoint =0;
   }
-  Goal(Axis _axis, float _point)
+  Goal(Axis _axis, float _point,int _checkPoint=0)
   {
     axis = _axis;
     point = _point;
+    checkPoint = _checkPoint;
   }
 };
 const double inductX = 0.2;
@@ -52,25 +55,25 @@ std::vector<Goal> two_seven_waypoint = { Goal(cx, 1),Goal(cy, 3),Goal(cx, 2),Goa
 std::vector<Goal> two_eight_waypoint = { Goal(cx, 1),Goal(cy, 3),Goal(cx, 2),Goal(y, 11), Goal(x, 6)};
 std::vector<Goal> two_nine_waypoint =  { Goal(cx, 1),Goal(cy, 3),Goal(cx, 3),Goal(y, 11),Goal(x, 10)};
 //waypoints from  goals to  induct one
-std::vector<Goal> r_one_one_waypoint =   {Goal(cx,2),Goal(cy, 1),Goal(cx,1),Goal(y, 5),Goal(x, 15)};
-std::vector<Goal> r_one_two_waypoint =   {Goal(cx,2),Goal(cy, 1),Goal(cx,1),Goal(y, 5),Goal(x, 15)};
-std::vector<Goal> r_one_three_waypoint = {Goal(cx,3),Goal(cy, 1),Goal(cx,1),Goal(y, 5),Goal(x, 15)};
-std::vector<Goal> r_one_four_waypoint =  { Goal(cx, 2),Goal(cy, 2),Goal(cx, 1),Goal(y, 5),Goal(x, 15)};
-std::vector<Goal> r_one_five_waypoint =  { Goal(cx, 2),Goal(cy, 2),Goal(cx, 1),Goal(y, 5),Goal(x, 15)};
-std::vector<Goal> r_one_six_waypoint =   { Goal(cx, 3),Goal(cy, 2),Goal(cx, 1),Goal(y, 5),Goal(x, 15)};
-std::vector<Goal> r_one_seven_waypoint = { Goal(cx, 2),Goal(cy,2),Goal(cx, 1),Goal(y, 5),Goal(x,15)};
-std::vector<Goal> r_one_eight_waypoint = { Goal(cx, 2),Goal(cy,2),Goal(cx, 1),Goal(y, 5),Goal(x,15)};
-std::vector<Goal> r_one_nine_waypoint =  { Goal(cx, 3),Goal(cy,2),Goal(cx, 1),Goal(y,5),Goal(x, 15)};
+std::vector<Goal> r_one_one_waypoint =   {Goal(cx,2),Goal(cy, 1),Goal(cx,1),Goal(y, 5,1),Goal(x, 15)};
+std::vector<Goal> r_one_two_waypoint =   {Goal(cx,2),Goal(cy, 1),Goal(cx,1),Goal(y, 5,1),Goal(x, 15)};
+std::vector<Goal> r_one_three_waypoint = {Goal(cx,3),Goal(cy, 1),Goal(cx,1),Goal(y, 5,1),Goal(x, 15)};
+std::vector<Goal> r_one_four_waypoint =  { Goal(cx, 2),Goal(cy, 2),Goal(cx, 1),Goal(y, 5,1),Goal(x, 15)};
+std::vector<Goal> r_one_five_waypoint =  { Goal(cx, 2),Goal(cy, 2),Goal(cx, 1,1),Goal(y, 5,1),Goal(x, 15)};
+std::vector<Goal> r_one_six_waypoint =   { Goal(cx, 3),Goal(cy, 2),Goal(cx, 1,1),Goal(y, 5,1),Goal(x, 15)};
+std::vector<Goal> r_one_seven_waypoint = { Goal(cx, 2),Goal(cy,2),Goal(cx, 1),Goal(y, 5,1),Goal(x,15)};
+std::vector<Goal> r_one_eight_waypoint = { Goal(cx, 2),Goal(cy,2),Goal(cx, 1),Goal(y, 5,1),Goal(x,15)};
+std::vector<Goal> r_one_nine_waypoint =  { Goal(cx, 3),Goal(cy,2),Goal(cx, 1),Goal(y,5,1),Goal(x, 15)};
 //waypoints from goals to induct two
-std::vector<Goal> r_two_one_waypoint =   { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10),Goal(x,15)};
-std::vector<Goal> r_two_two_waypoint =   { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10),Goal(x,15)};
-std::vector<Goal> r_two_three_waypoint = { Goal(cx, 3),Goal(cy,4),Goal(cx,1),Goal(y, 10),Goal(x,15)};
-std::vector<Goal> r_two_four_waypoint =  { Goal(cx, 2),Goal(cy,4),Goal(cx,1),Goal(y, 10),Goal(x, 15)};
-std::vector<Goal> r_two_five_waypoint =  { Goal(cx, 2),Goal(cy,4),Goal(cx,1),Goal(y, 10),Goal(x, 15)};
-std::vector<Goal> r_two_six_waypoint =   { Goal(cx, 3),Goal(cy,4),Goal(cx, 1),Goal(y, 10),Goal(x, 15)};
-std::vector<Goal> r_two_seven_waypoint = { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10),Goal(x, 15)};
-std::vector<Goal> r_two_eight_waypoint = { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10),Goal(x, 15)};
-std::vector<Goal> r_two_nine_waypoint =  { Goal(cx, 3),Goal(cy,4),Goal(cx, 1),Goal(y, 10),Goal(x, 15)};
+std::vector<Goal> r_two_one_waypoint =   { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10,1),Goal(x,15)};
+std::vector<Goal> r_two_two_waypoint =   { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10,1),Goal(x,15)};
+std::vector<Goal> r_two_three_waypoint = { Goal(cx, 3),Goal(cy,4),Goal(cx,1),Goal(y, 10,1),Goal(x,15)};
+std::vector<Goal> r_two_four_waypoint =  { Goal(cx, 2),Goal(cy,4),Goal(cx,1),Goal(y, 10,1),Goal(x, 15)};
+std::vector<Goal> r_two_five_waypoint =  { Goal(cx, 2),Goal(cy,4),Goal(cx,1),Goal(y, 10,1),Goal(x, 15)};
+std::vector<Goal> r_two_six_waypoint =   { Goal(cx, 3),Goal(cy,4),Goal(cx, 1),Goal(y, 10,1),Goal(x, 15)};
+std::vector<Goal> r_two_seven_waypoint = { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10,1),Goal(x, 15)};
+std::vector<Goal> r_two_eight_waypoint = { Goal(cx, 2),Goal(cy,4),Goal(cx, 1),Goal(y, 10,1),Goal(x, 15)};
+std::vector<Goal> r_two_nine_waypoint =  { Goal(cx, 3),Goal(cy,4),Goal(cx, 1),Goal(y, 10,1),Goal(x, 15)};
 std::unordered_map<std::string, std::vector<Goal>> umap = {
         {"1_1",one_one_waypoint},
         {"1_2",one_two_waypoint},

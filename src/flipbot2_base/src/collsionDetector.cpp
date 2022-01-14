@@ -10,6 +10,7 @@
 #include "std_msgs/String.h"
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
+#include <cstdlib>
 #include <string>
 #include <tf2_ros/transform_listener.h>
 #include <unistd.h>
@@ -74,7 +75,8 @@ int main(int argc, char **argv) {
       "flipbot" + bot1 + "/bot1", true);
   actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac1(
       "flipbot" + bot2 + "/bot1", true);
-  boost::thread thread_a(updateTransform, &transformMsg, 1, 2);
+  boost::thread thread_a(updateTransform, &transformMsg, stoi(bot1),
+                         stoi(bot2));
   ros::Rate loop_rate(5);
   ROS_INFO("Waiting for bot %s action server to start.", argv[1]);
   /* ac.waitForServer(); // will wait for infinite time */
@@ -99,20 +101,22 @@ int main(int argc, char **argv) {
           ROS_INFO("back collsion detected \n stoping %s", bot2.c_str());
           client2.call(interuptData);
         }
-      }
-      while (true) {
-        // do nothing until the distance is greater in any axis
-        ROS_INFO("y - %lf",transformMsg.transform.translation.y);
-        if (fabs(transformMsg.transform.translation.y) > 0.25)
-          break;
-        ros::Rate(0.5).sleep();
-      }
-      if (inFront) {
-        ROS_INFO("Resuming %s", bot1.c_str());
-        client1.call(interuptData);
-      } else {
-        ROS_INFO("Resuming %s", bot2.c_str());
-        client2.call(interuptData);
+
+        while (true) {
+          // do nothing until the distance is greater in any axis
+          ROS_INFO("y - %lf", transformMsg.transform.translation.y);
+          if (fabs(transformMsg.transform.translation.y) > 0.25 ||
+              fabs(transformMsg.transform.translation.x) > 0.35)
+            break;
+          ros::Rate(0.5).sleep();
+        }
+        if (inFront) {
+          ROS_INFO("Resuming %s", bot1.c_str());
+          client1.call(interuptResumeData);
+        } else {
+          ROS_INFO("Resuming %s", bot2.c_str());
+          client2.call(interuptResumeData);
+        }
       }
     }
     loop_rate.sleep();
