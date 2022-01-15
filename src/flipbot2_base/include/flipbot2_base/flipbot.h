@@ -111,6 +111,7 @@ public:
     std::vector<Goal> waypoints = hashFound->second;
     int i = 0;
     for (Goal goalPoint : waypoints) {
+      scanf("enter to start");
       if (as_.isPreemptRequested() || !ros::ok()) {
         ROS_INFO("%s: Preempted", action_name_.c_str());
         // set the action state to preempted
@@ -118,19 +119,20 @@ public:
         break;
       }
       this->setGoal(goalPoint);
-      if(i == 2 && goal->index > 0){
-        ros::param::set("/induct"+std::to_string(induct)+"_occupancy", 0);
+      if (i == 2 && goal->index > 0) {
+        ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 0);
       }
-      if (goalPoint.checkPoint == 1) {  // TO CHECK OCCUPANY IN INDUCT ZONES
+      if (goalPoint.checkPoint == 1) { // TO CHECK OCCUPANY IN INDUCT ZONES
         int value;
-        ROS_INFO("Checkpoint reached checking for occupancy in %d",induct);
-        while(ros::param::get("/induct"+std::to_string(induct)+"_occupancy", value)) {
-                if(value==0){
-                        break;
-                }
-                ros::Rate(0.5).sleep();
+        ROS_INFO("Checkpoint reached checking for occupancy in %d", induct);
+        while (ros::param::get(
+            "/induct" + std::to_string(induct) + "_occupancy", value)) {
+          if (value == 0) {
+            break;
+          }
+          ros::Rate(0.5).sleep();
         }
-        ros::param::set("/induct"+std::to_string(induct)+"_occupancy", 1);
+        ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 1);
       }
       ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
                goalPoint.point);
@@ -152,6 +154,7 @@ public:
       }
       lastDest = goal->index;
       pub_cmdVel.publish(stop);
+      ROS_INFO("X - %lf Y - %lf",transformPtr->transform.translation.x,transformPtr->transform.translation.y);
       i++;
     }
     result_.destIndex = goal->index;
