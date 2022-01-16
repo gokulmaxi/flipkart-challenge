@@ -21,7 +21,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         try:
             trans = tfBuffer.lookup_transform(
-                'usb_cam',bot_id, rospy.Time())
+                'world',bot_id, rospy.Time())
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
             rate.sleep()
             continue
