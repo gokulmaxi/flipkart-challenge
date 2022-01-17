@@ -14,6 +14,11 @@ def sign_of(value):
         return 0
     else:
         return 1
+def velocity_converter(value):
+    if abs(value) < 0.9:
+        return 2
+    else:
+        return 1
 
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     if(value == 0):
@@ -21,17 +26,15 @@ def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
     leftSpan = leftMax - leftMin
     rightSpan = rightMax - rightMin
-
     # Convert the left range into a 0-1 range (float)
     valueScaled = float(value - leftMin) / float(leftSpan)
-
     # Convert the 0-1 range into a value in the right range.
     return rightMin + (valueScaled * rightSpan)
 def omniwheel_velocity(l_x,l_y,a_z):
 
-    w_1p = -1 * sign_of(a_z)
-    w_2p = 1 * sign_of(l_x)
-    w_3p = 1 * sign_of(l_y)
+    w_1p = 0
+    w_2p = 1 * sign_of(l_x) 
+    w_3p = 1 * sign_of(l_y) 
     return [w_1p,w_2p,w_3p]
 def on_publish(client, userdata, mid):
     midx= mid  #do nothing

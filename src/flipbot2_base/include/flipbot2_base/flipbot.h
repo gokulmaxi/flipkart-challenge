@@ -111,7 +111,6 @@ public:
     std::vector<Goal> waypoints = hashFound->second;
     int i = 0;
     for (Goal goalPoint : waypoints) {
-      scanf("enter to start");
       if (as_.isPreemptRequested() || !ros::ok()) {
         ROS_INFO("%s: Preempted", action_name_.c_str());
         // set the action state to preempted
@@ -142,7 +141,7 @@ public:
         feedback_.axis = axisToString(goalPoint.axis);
         feedback_.point = goalPoint.point;
         feedback_.xVel = cmd_msg.linear.x;
-        feedback_.yVel = cmd_msg.linear.x;
+        feedback_.yVel = cmd_msg.linear.y;
         as_.publishFeedback(feedback_);
         pub_cmdVel.publish(cmd_msg);
         BotInteruptMutex.unlock();
@@ -176,16 +175,16 @@ public:
     /* distance = std::sqrt(pow((start - end), 2)); */
     if (goal.axis == x)
       _distance =
-          xPoint[goal.point - 1] - transformPtr->transform.translation.x;
+          xPoint[goal.point - 1] - transformPtr->transform.translation.x - config->linear_offset_x;
     if (goal.axis == cx)
       _distance =
-          cxPoint[goal.point - 1] - transformPtr->transform.translation.x;
+          cxPoint[goal.point - 1] - transformPtr->transform.translation.x - config->linear_offset_x;
     if (goal.axis == y)
       _distance =
-          yPoint[goal.point - 1] - transformPtr->transform.translation.y;
+          yPoint[goal.point - 1] - transformPtr->transform.translation.y- config->linear_offset_y;
     if (goal.axis == cy)
       _distance =
-          cyPoint[goal.point - 1] - transformPtr->transform.translation.y;
+          cyPoint[goal.point - 1] - transformPtr->transform.translation.y- config->linear_offset_y;
     return _distance;
   }
   /**
@@ -196,7 +195,7 @@ public:
    * @return: bool
    */
   bool inTolerance() {
-    if (abs(euclidianDistance()) < config->Linear_tolerance) {
+    if (abs(euclidianDistance())  < config->Linear_tolerance) {
       return true;
     } else {
       return false;
@@ -218,7 +217,6 @@ public:
         /* _twist.linear.y = 0; */
         _twist.angular.z =
             quatToyaw() * config->angular_constant; // to make the robot turn
-        ROS_WARN("Out of angular tolerance");       // the opposite of yaw error
         angularPulse = 0;
       } else {
         angularPulse++;

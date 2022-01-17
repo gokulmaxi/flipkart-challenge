@@ -5,7 +5,7 @@
                 <node pkg="flipbot2_base" type="client.py" name="goal_client" args="$(arg bot_no)" output="screen" />
                 <node pkg="flipbot2_base" type="color_bridge.py" name="color_client" args="$(arg bot_no)" output="screen" />
                 <node pkg="flipbot2_base" type="movetogoal" name="movetogoal" args="$(arg bot_no)" output="screen" />
-                <node pkg="flipbot2_base" type="tf2pose1.py" name="tf2pose" args="$(arg bot_no)" output="screen" />
+                <node pkg="flipbot2_base" type="tf2Pose.py" name="tf2pose" args="$(arg bot_no)" output="screen" />
         </group>
 
 </launch>
