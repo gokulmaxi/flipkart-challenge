@@ -10,9 +10,9 @@
 #include <SPI.h>
 
 //Todo Change Device name, topic, destination topic according to bot number.
-char device_name[] = "ESP32-bot1";
-char device_topic[] = "flipkart/bot1";
-char destination_topic[] = "flipkart/color1";
+char device_name[] = "ESP32-bot2";
+char device_topic[] = "flipkart/bot2";
+char destination_topic[] = "flipkart/color2";
 
 void callback(char *topic, byte *message, unsigned int length);
 
@@ -20,28 +20,29 @@ int wifiled = 5;
 
 const int angularPwm = 180;
 const int linearPwm = 200;
+const int lineargoalPwm = 180;
 
 Servo servo;
 
 //Retriving Color from RGB data from TCS3475 RGB sensor
 
-int red[] = {94, 69, 82};
+int red[] = {127, 85, 85};
 
-int green[] = {28, 90, 94};
+int green[] = {36, 100, 77};
 
-int dark_blue[] = {31, 83, 113};
+int dark_blue[] = {31, 74, 121};
 
-int yellow[] = {74, 74, 64};
+int yellow[] = {91, 85, 50};
 
-int violet[] = {40, 77, 111};
+int violet[] = {58, 80, 102};
 
-int brown[] = {65, 82, 85};
+int brown[] = {85, 85, 56};
 
-int white[] = {66, 96, 65};
+int white[] = {73, 94, 59};
 
 int pink[] = {97, 59, 89};
 
-int orange[] = {182, 36, 36};
+int orange[] = {191, 31, 31};
 
 // Networking Credentials
 
@@ -139,7 +140,7 @@ void reconnect()
         {
             Serial.println("connected");
             client.subscribe(device_topic);
-            Serial.print(device_topic);
+            Serial.println(device_topic);
         }
         else
         {
@@ -161,47 +162,48 @@ int color()
 
     tcs.getRGB(&r, &g, &b);
 
-    delay(50);
-
-    int currentRGB[] = {int(r), int(g), int(b)};
+    delay(100);
 
     Serial.println(int(r));
     Serial.println(int(g));
     Serial.println(int(b));
+    Serial.println("-------------------------------------");
 
-    if (eq(2, red, currentRGB, 5))
+    int currentRGB[] = {int(r), int(g), int(b)};
+
+    if (eq(2, red, currentRGB, 10))
     {
         return 1; // PUNE
     }
-    else if (eq(2, green, currentRGB, 5))
+    else if (eq(2, green, currentRGB, 20))
     {
         return 2; // AMEMDABAD
     }
-    else if (eq(2, dark_blue, currentRGB, 5))
+    else if (eq(2, dark_blue, currentRGB, 10))
     {
         return 3; // JAIPUR
     }
-    else if (eq(2, yellow, currentRGB, 5))
+    else if (eq(2, yellow, currentRGB, 10))
     {
         return 4; // CHENNAI
     }
-    else if (eq(2, violet, currentRGB, 5))
+    else if (eq(2, violet, currentRGB, 10))
     {
         return 5; // BENGALURU
     }
-    else if (eq(2, brown, currentRGB, 5))
+    else if (eq(2, brown, currentRGB, 10))
     {
         return 6; // HYDERABAD
     }
-    else if (eq(2, white, currentRGB, 5))
+    else if (eq(2, white, currentRGB, 10))
     {
         return 7; // MUMBAI
     }
-    else if (eq(2, pink, currentRGB, 5))
+    else if (eq(2, pink, currentRGB, 10))
     {
         return 8; // DELHI
     }
-    else if (eq(2, orange, currentRGB, 5))
+    else if (eq(2, orange, currentRGB, 10))
     {
         return 9; //KOLKATA
     }
