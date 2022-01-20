@@ -75,14 +75,14 @@ int main(int argc, char **argv) {
       "flipbot" + bot1 + "/bot1", true);
   actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac1(
       "flipbot" + bot2 + "/bot1", true);
-  boost::thread thread_a(updateTransform, &transformMsg, stoi(bot1),
-                         stoi(bot2));
   ros::Rate loop_rate(5);
   ROS_INFO("Waiting for bot %s action server to start.", argv[1]);
-  /* ac.waitForServer(); // will wait for infinite time */
+  ac.waitForServer(); // will wait for infinite time
   ROS_INFO("Waiting for bot %s action server to start.", argv[2]);
-  /* ac.waitForServer(); // will wait for infinite time */
-  ROS_INFO("Starting collsion detectsion");
+  ac.waitForServer(); // will wait for infinite time
+  ROS_INFO("Starting collsion detectsion for %s , %s",bot1.c_str(),bot2.c_str());
+  boost::thread thread_a(updateTransform, &transformMsg, stoi(bot1),
+                         stoi(bot2));
   ros::Subscriber bot1Feedback =
       n.subscribe("flipbot" + bot1 + "/bot1", 1000, callback1);
   ros::Duration(1).sleep();

@@ -1,6 +1,3 @@
 <launch>
-    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_1" args = "1" output="screen" />
-    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_2" args = "2" output="screen" />
-    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_3" args = "3" output="screen" />
-    <node pkg="flipbot2_base" type="tf2Pose1.py" name="flipbot_tf_listener_4" args = "4" output="screen" />
+
 </launch>

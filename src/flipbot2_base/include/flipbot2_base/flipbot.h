@@ -118,19 +118,20 @@ public:
         break;
       }
       this->setGoal(goalPoint);
-      if(i == 2 && goal->index > 0){
-        ros::param::set("/induct"+std::to_string(induct)+"_occupancy", 0);
+      if (i == 2 && goal->index > 0) {
+        ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 0);
       }
-      if (goalPoint.checkPoint == 1) {  // TO CHECK OCCUPANY IN INDUCT ZONES
+      if (goalPoint.checkPoint == 1) { // TO CHECK OCCUPANY IN INDUCT ZONES
         int value;
-        ROS_INFO("Checkpoint reached checking for occupancy in %d",induct);
-        while(ros::param::get("/induct"+std::to_string(induct)+"_occupancy", value)) {
-                if(value==0){
-                        break;
-                }
-                ros::Rate(0.5).sleep();
+        ROS_INFO("Checkpoint reached checking for occupancy in %d", induct);
+        while (ros::param::get(
+            "/induct" + std::to_string(induct) + "_occupancy", value)) {
+          if (value == 0) {
+            break;
+          }
+          ros::Rate(0.5).sleep();
         }
-        ros::param::set("/induct"+std::to_string(induct)+"_occupancy", 1);
+        ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 1);
       }
       ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
                goalPoint.point);
@@ -140,7 +141,7 @@ public:
         feedback_.axis = axisToString(goalPoint.axis);
         feedback_.point = goalPoint.point;
         feedback_.xVel = cmd_msg.linear.x;
-        feedback_.yVel = cmd_msg.linear.x;
+        feedback_.yVel = cmd_msg.linear.y;
         as_.publishFeedback(feedback_);
         pub_cmdVel.publish(cmd_msg);
         BotInteruptMutex.unlock();
@@ -152,6 +153,7 @@ public:
       }
       lastDest = goal->index;
       pub_cmdVel.publish(stop);
+      ROS_INFO("X - %lf Y - %lf",transformPtr->transform.translation.x,transformPtr->transform.translation.y);
       i++;
     }
     result_.destIndex = goal->index;
@@ -173,16 +175,16 @@ public:
     /* distance = std::sqrt(pow((start - end), 2)); */
     if (goal.axis == x)
       _distance =
-          xPoint[goal.point - 1] - transformPtr->transform.translation.x;
+          xPoint[goal.point - 1] - transformPtr->transform.translation.x - config->linear_offset_x;
     if (goal.axis == cx)
       _distance =
-          cxPoint[goal.point - 1] - transformPtr->transform.translation.x;
+          cxPoint[goal.point - 1] - transformPtr->transform.translation.x - config->linear_offset_x;
     if (goal.axis == y)
       _distance =
-          yPoint[goal.point - 1] - transformPtr->transform.translation.y;
+          yPoint[goal.point - 1] - transformPtr->transform.translation.y- config->linear_offset_y;
     if (goal.axis == cy)
       _distance =
-          cyPoint[goal.point - 1] - transformPtr->transform.translation.y;
+          cyPoint[goal.point - 1] - transformPtr->transform.translation.y- config->linear_offset_y;
     return _distance;
   }
   /**
@@ -193,7 +195,7 @@ public:
    * @return: bool
    */
   bool inTolerance() {
-    if (abs(euclidianDistance()) < config->Linear_tolerance) {
+    if (abs(euclidianDistance())  < config->Linear_tolerance) {
       return true;
     } else {
       return false;
@@ -215,7 +217,6 @@ public:
         /* _twist.linear.y = 0; */
         _twist.angular.z =
             quatToyaw() * config->angular_constant; // to make the robot turn
-        ROS_WARN("Out of angular tolerance");       // the opposite of yaw error
         angularPulse = 0;
       } else {
         angularPulse++;
