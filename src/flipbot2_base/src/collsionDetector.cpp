@@ -27,15 +27,20 @@ boost::mutex bot2Mutex;
  * @param _transformstamped pointer to the transform message
  */
 void updateTransform(geometry_msgs::TransformStamped *_transformstamped, int id,
-                     int id2) {
+                     int id2)
+{
   tf2_ros::Buffer tfBuffer;
   tf2_ros::TransformListener tfListener(tfBuffer);
-  while (ros::ok()) {
-    try {
+  while (ros::ok())
+  {
+    try
+    {
       *_transformstamped = tfBuffer.lookupTransform(
           "marker_id" + std::to_string(id), "marker_id" + std::to_string(id2),
           ros::Time(0));
-    } catch (tf2::TransformException &ex) {
+    }
+    catch (tf2::TransformException &ex)
+    {
       ROS_WARN("%s", ex.what());
       ros::Duration(0.5).sleep();
       continue;
@@ -43,17 +48,20 @@ void updateTransform(geometry_msgs::TransformStamped *_transformstamped, int id,
   }
 }
 bool sgn(double val) { return (0 > val); }
-void callback1(const flipbot2_msg::BotGoalActionFeedbackConstPtr &message) {
+void callback1(const flipbot2_msg::BotGoalActionFeedbackConstPtr &message)
+{
   bot1Mutex.lock();
   bot1_feedback = message->feedback;
   bot1Mutex.unlock();
 }
-void callback2(const flipbot2_msg::BotGoalActionFeedbackConstPtr &message) {
+void callback2(const flipbot2_msg::BotGoalActionFeedbackConstPtr &message)
+{
   bot2Mutex.lock();
   bot2_feedback = message->feedback;
   bot2Mutex.unlock();
 }
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   std::string bot1 = (std::string)argv[1];
   std::string bot2 = (std::string)argv[2];
   bool messagePassed = false;
@@ -80,45 +88,67 @@ int main(int argc, char **argv) {
   ac.waitForServer(); // will wait for infinite time
   ROS_INFO("Waiting for bot %s action server to start.", argv[2]);
   ac.waitForServer(); // will wait for infinite time
-  ROS_INFO("Starting collsion detectsion for %s , %s",bot1.c_str(),bot2.c_str());
+  ROS_INFO("Starting collsion detectsion for %s , %s", bot1.c_str(), bot2.c_str());
   boost::thread thread_a(updateTransform, &transformMsg, stoi(bot1),
                          stoi(bot2));
   ros::Subscriber bot1Feedback =
-      n.subscribe("flipbot" + bot1 + "/bot1", 1000, callback1);
+      n.subscribe("flipbot" + bot1 + "/bot1/feedback", 1000, callback1);
+  ros::Subscriber bot2Feedback =
+      n.subscribe("flipbot" + bot2 + "/bot1/feedback", 1000, callback2);
   ros::Duration(1).sleep();
-  while (ros::ok()) {
-    if (abs(transformMsg.transform.translation.y) < 0.2) {
+  while (ros::ok())
+  {
+    if (abs(transformMsg.transform.translation.y) < 0.2)
+    {
       // check if two bots are perpendicular in x axis (less than size
       // of box[15cm] with offset)
-      ROS_INFO_NAMED(bot1, "y axis aligned");
-      bool inFront = sgn(transformMsg.transform.translation.x);
-      if (abs(transformMsg.transform.translation.x) < 0.3) {
-        ROS_INFO_NAMED(bot1, "collsion detected in x axis");
-        if (inFront) {
-          ROS_INFO("front collsion detected \n stoping %s", bot1.c_str());
-          client1.call(interuptData);
-        } else {
-          ROS_INFO("back collsion detected \n stoping %s", bot2.c_str());
-          client2.call(interuptData);
-        }
+      if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
+      {
+        bool inFront = sgn(transformMsg.transform.translation.x);
+        if (abs(transformMsg.transform.translation.x) < 0.3)
+        {
+          ROS_INFO_NAMED(bot1, "collsion detected in x axis");
+          if (inFront)
+          {
+            ROS_INFO("front collsion detected \n stoping %s", bot1.c_str());
+            client1.call(interuptData);
+          }
+          else
+          {
+            ROS_INFO("back collsion detected \n stoping %s", bot2.c_str());
+            client2.call(interuptData);
+          }
 
-        while (true) {
-          // do nothing until the distance is greater in any axis
-          ROS_INFO("y - %lf", transformMsg.transform.translation.y);
-          if (fabs(transformMsg.transform.translation.y) > 0.25 ||
-              fabs(transformMsg.transform.translation.x) > 0.35)
-            break;
-          ros::Rate(0.5).sleep();
-        }
-        if (inFront) {
-          ROS_INFO("Resuming %s", bot1.c_str());
-          client1.call(interuptResumeData);
-        } else {
-          ROS_INFO("Resuming %s", bot2.c_str());
-          client2.call(interuptResumeData);
+          while (true)
+          {
+            // do nothing until the distance is greater in any axis
+            ROS_INFO("y - %lf", transformMsg.transform.translation.y);
+            if (fabs(transformMsg.transform.translation.y) > 0.25 ||
+                fabs(transformMsg.transform.translation.x) > 0.35)
+              break;
+            ros::Rate(0.5).sleep();
+          }
+          if (inFront)
+          {
+            ROS_INFO("Resuming %s", bot1.c_str());
+            client1.call(interuptResumeData);
+          }
+          else
+          {
+            ROS_INFO("Resuming %s", bot2.c_str());
+            client2.call(interuptResumeData);
+          }
         }
       }
     }
+    if (bot1_feedback.axis == "y" && bot2_feedback.axis == "y")
+    {
+      if (bot1_feedback.point == bot2_feedback.point)
+      {
+        ROS_INFO("same pointed detected");
+      }
+    }
+
     loop_rate.sleep();
   }
   return 0;

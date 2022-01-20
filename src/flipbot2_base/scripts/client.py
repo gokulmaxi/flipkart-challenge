@@ -9,6 +9,7 @@ from flipbot2_msg.msg import BotGoalGoal
 from rospy.timer import sleep
 from std_msgs.msg import Int64
 from std_msgs.msg import String
+from geometry_msgs.msg import Twist
 import sys
 right_one_index = {1, 4, 7}
 left_two_index = {2,3,5,6, 8, 9}
@@ -20,6 +21,9 @@ class actionclient:
         self.client = actionlib.SimpleActionClient("bot1", BotGoalAction)
         self.pub_servo = rospy.Publisher('servo', String, queue_size=10)
         self.pub_colorReq= rospy.Publisher('colorReq', String, queue_size=10)
+        self.pub_cmd = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+        self.cmd_vel = Twist()
+        self.stop = Twist()
         rospy.Subscriber("dest", Int64, self.callback)
         self.client.wait_for_server()
         self.callbackCalled = False
@@ -36,6 +40,10 @@ class actionclient:
         rospy.loginfo("Actuating servo in %i",self.servopush)
         self.pub_servo.publish(str(self.servopush))
         sleep(1.5)
+        self.cmd_vel.linear.x = self.servopush
+        self.pub_cmd.publish(self.cmd_vel)
+        sleep(1.0)
+        self.pub_cmd.publish(self.stop)
         self.client.send_goal(BotGoalGoal(index=-1 * int(data.data)))
         self.client.wait_for_result()
         self.callbackCalled = False

@@ -86,6 +86,12 @@ public:
       pub_cmdVel.publish(stop); // additional stop just for safety
       ROS_INFO("Stoping the robot");
     }
+    if (req.pause == 2) {
+      pub_cmdVel.publish(stop);
+      BotInteruptMutex.lock();
+      pub_cmdVel.publish(stop); // additional stop just for safety
+      ROS_INFO("Stoping the robot");
+    }
     if (req.pause == 0) {
       BotInteruptMutex.unlock();
     }
@@ -137,12 +143,12 @@ public:
                goalPoint.point);
       while (!inTolerance()) {
         cmd_msg = calculateVelocity();
-        BotInteruptMutex.lock();
         feedback_.axis = axisToString(goalPoint.axis);
         feedback_.point = goalPoint.point;
         feedback_.xVel = cmd_msg.linear.x;
         feedback_.yVel = cmd_msg.linear.y;
         as_.publishFeedback(feedback_);
+        BotInteruptMutex.lock();
         pub_cmdVel.publish(cmd_msg);
         BotInteruptMutex.unlock();
         if (inTolerance()) {
