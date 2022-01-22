@@ -159,7 +159,8 @@ public:
       }
       lastDest = goal->index;
       pub_cmdVel.publish(stop);
-      ROS_INFO("X - %lf Y - %lf",transformPtr->transform.translation.x,transformPtr->transform.translation.y);
+      ROS_INFO("X - %lf Y - %lf", transformPtr->transform.translation.x,
+               transformPtr->transform.translation.y);
       i++;
     }
     result_.destIndex = goal->index;
@@ -180,17 +181,21 @@ public:
     double _distance = 0.0;
     /* distance = std::sqrt(pow((start - end), 2)); */
     if (goal.axis == x)
-      _distance =
-          xPoint[goal.point - 1] - transformPtr->transform.translation.x - config->linear_offset_x;
+      _distance = xPoint[goal.point - 1] -
+                  transformPtr->transform.translation.x -
+                  config->linear_offset_x;
     if (goal.axis == cx)
-      _distance =
-          cxPoint[goal.point - 1] - transformPtr->transform.translation.x - config->linear_offset_x;
+      _distance = cxPoint[goal.point - 1] -
+                  transformPtr->transform.translation.x -
+                  config->linear_offset_x;
     if (goal.axis == y)
-      _distance =
-          yPoint[goal.point - 1] - transformPtr->transform.translation.y- config->linear_offset_y;
+      _distance = yPoint[goal.point - 1] -
+                  transformPtr->transform.translation.y -
+                  config->linear_offset_y;
     if (goal.axis == cy)
-      _distance =
-          cyPoint[goal.point - 1] - transformPtr->transform.translation.y- config->linear_offset_y;
+      _distance = cyPoint[goal.point - 1] -
+                  transformPtr->transform.translation.y -
+                  config->linear_offset_y;
     return _distance;
   }
   /**
@@ -201,7 +206,7 @@ public:
    * @return: bool
    */
   bool inTolerance() {
-    if (abs(euclidianDistance())  < config->Linear_tolerance) {
+    if (abs(euclidianDistance()) < config->Linear_tolerance) {
       return true;
     } else {
       return false;
@@ -253,6 +258,7 @@ public:
    * @return nearest induct point to the robot
    */
   int findNearInduct() {
+
     if (transformPtr->transform.translation.y < yPoint[6])
       return 1;
     else {

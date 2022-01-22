@@ -47,6 +47,7 @@ class actionclient:
         self.client.send_goal(BotGoalGoal(index=-1 * int(data.data)))
         self.client.wait_for_result()
         self.callbackCalled = False
+        sleep(1.0)
     def clientRoutine(self):
         while not rospy.is_shutdown():
             while not self.callbackCalled:

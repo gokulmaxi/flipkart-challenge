@@ -1,14 +1,14 @@
 <launch>
-        <include file="$(find flipbot2_base)/launch/bot.launch">
-                <arg name="bot_no" value="1" /> 
-        </include>
+        <!-- <include file="$(find flipbot2_base)/launch/bot.launch"> -->
+        <!--         <arg name="bot_no" value="1" />  -->
+        <!-- </include> -->
         <include file="$(find flipbot2_base)/launch/bot.launch">
                 <arg name="bot_no" value="2" /> 
         </include> 
         <include file="$(find flipbot2_base)/launch/bot.launch">
                 <arg name="bot_no" value="3" /> 
         </include>
-        <!-- <include file="$(find flipbot2_base)/launch/bot.launch"> -->
-        <!--         <arg name="bot_no" value="4" />  -->
-        <!-- </include> -->
+        <include file="$(find flipbot2_base)/launch/bot.launch">
+                <arg name="bot_no" value="4" /> 
+        </include>
 </launch>
