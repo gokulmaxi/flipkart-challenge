@@ -61,6 +61,7 @@ add_service_files(
   srv
   FILES
   BotInterupt.srv
+  PackageDetail.srv
 #   Service2.srv
 )
 
