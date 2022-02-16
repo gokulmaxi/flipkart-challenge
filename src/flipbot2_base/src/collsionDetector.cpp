@@ -70,12 +70,12 @@ int main(int argc, char **argv)
   ros::Duration(1).sleep();
   while (ros::ok())
   {
-    if (abs(transformMsg.transform.translation.y) < 0.2)
+    if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
     {
-      // check if two bots are perpendicular in x axis (less than size
-      // of box[15cm] with offset)
-      if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
+      if (abs(transformMsg.transform.translation.y) < 0.2)
       {
+        // check if two bots are perpendicular in x axis (less than size
+        // of box[15cm] with offset)
         bool inFront = sgn(transformMsg.transform.translation.x);
         if (abs(transformMsg.transform.translation.x) < 0.3)
         {
@@ -113,15 +113,92 @@ int main(int argc, char **argv)
         }
       }
     }
+
+    // Y - axis collision detector
+
     if (bot1_feedback.axis == "y" && bot2_feedback.axis == "y")
     {
-      if (bot1_feedback.point == bot2_feedback.point)
-      {
-        ROS_INFO("same pointed detected");
-      }
-    }
 
-    loop_rate.sleep();
+      bool bot1_Direction = sgn(bot1_feedback.yVel);
+      bool bot2_Direction = sgn(bot2_feedback.yVel);
+
+      bool Direction = (bot1_Direction && bot2_Direction); // Return 1 if moving away from origin, 0 if moving towards origin
+
+      if (abs(transformMsg.transform.translation.x < 0.2))
+      {
+        if (abs(transformMsg.transform.translation.y < 0.2))
+        {
+          bool inFront = sgn(transformMsg.transform.translation.y);
+          ROS_INFO_NAMED(bot1, "Collission detected in y axis");
+
+          if (Direction) // Bots moving away from Origin
+          {
+            if (inFront)
+            {
+              ROS_INFO("Front collision detected \n stopping %s", bot1.c_str());
+              client1.call(interuptData);
+            }
+            else
+            {
+              ROS_INFO("Back collision detected \n stopping %s", bot2.c_str());
+              client2.call(interuptData);
+            }
+            while (true)
+            {
+              // Do nothing until distance is greater in any axis
+              if (fabs(transformMsg.transform.translation.x) > 0.20 || fabs(transformMsg.transform.translation.y > 0.20))
+              {
+                break;
+                ros::Rate(0.5).sleep();
+              }
+            }
+            if (inFront)
+            {
+              ROS_INFO("Resuming %s", bot1.c_str());
+              client1.call(interuptResumeData);
+            }
+            else
+            {
+              ROS_INFO("Resuming %s", bot2.c_str());
+              client2.call(interuptResumeData);
+            }
+          }
+          else
+          {
+            if (inFront)
+            {
+              ROS_INFO("Front collision detected \n stopping %s", bot2.c_str());
+              client2.call(interuptData);
+            }
+            else
+            {
+              ROS_INFO("Back collision detected \n stopping %s", bot1.c_str());
+              client1.call(interuptData);
+            }
+            while (true)
+            {
+              // Do nothing until distance is greater in any axis
+              if (fabs(transformMsg.transform.translation.x) > 0.20 || fabs(transformMsg.transform.translation.y > 0.20))
+              {
+                break;
+                ros::Rate(0.5).sleep();
+              }
+            }
+            if (inFront)
+            {
+              ROS_INFO("Resuming %s", bot2.c_str());
+              client2.call(interuptResumeData);
+            }
+            else
+            {
+              ROS_INFO("Resuming %s", bot1.c_str());
+              client1.call(interuptResumeData);
+            }
+          }
+        }
+      }
+      loop_rate.sleep();
+    }
+    return 0;
   }
-  return 0;
 }
