@@ -39,4 +39,11 @@ void updateTransformWorld(geometry_msgs::TransformStamped *_transformstamped, in
     }
   }
 }
+/**
+ * @brief gets the sign of the value
+ *
+ * @param val
+ *
+ * @return returns true if val is negative
+ */
 bool sgn(double val) { return (0 > val); }

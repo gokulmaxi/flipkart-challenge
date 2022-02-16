@@ -11,6 +11,7 @@ def package_server():
     induct2_data = pd.read_csv('/home/gokul/projects/ros/flipkart-challenge/src/flipbot2_base/data/data.csv',usecols = ['induct2_shipment','induct2_package'])
     induct1_iterator= induct1_data.itertuples()
     induct1_iterator= induct2_data.itertuples()
+    server_1 = rospy.Service('add_two_ints', AddTwoInts, handle_add_two_ints)
     # for index,rows in data.iterrows():
     #     print(rows[1])
     #     print(rows[0])

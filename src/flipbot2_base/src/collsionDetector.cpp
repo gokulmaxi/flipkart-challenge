@@ -70,12 +70,12 @@ int main(int argc, char **argv)
   ros::Duration(1).sleep();
   while (ros::ok())
   {
-    if (abs(transformMsg.transform.translation.y) < 0.2)
+    if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
     {
-      // check if two bots are perpendicular in x axis (less than size
-      // of box[15cm] with offset)
-      if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
+      if (abs(transformMsg.transform.translation.y) < 0.2)
       {
+        // check if two bots are perpendicular in x axis (less than size
+        // of box[15cm] with offset)
         bool inFront = sgn(transformMsg.transform.translation.x);
         if (abs(transformMsg.transform.translation.x) < 0.3)
         {
@@ -115,9 +115,10 @@ int main(int argc, char **argv)
     }
     if (bot1_feedback.axis == "y" && bot2_feedback.axis == "y")
     {
-      if (bot1_feedback.point == bot2_feedback.point)
+      bool inFront = sgn(transformMsg.transform.translation.y);
+      if (abs(transformMsg.transform.translation.y) < 0.2)
       {
-        ROS_INFO("same pointed detected");
+        ROS_INFO("Collision detected in y axis");
       }
     }
 
