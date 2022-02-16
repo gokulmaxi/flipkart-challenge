@@ -3,4 +3,5 @@ int32 bot_no
 int32 bot_induct
 ---
 int32 destination
+string destString
 string packageId

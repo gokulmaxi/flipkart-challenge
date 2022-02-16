@@ -4,5 +4,5 @@
         <!-- <node pkg="flipbot2_base" type="collsion_detector" name="collision_detector_1_4" args="1 4" output="screen" />  -->
         <node pkg="flipbot2_base" type="collsion_detector" name="collision_detector_2_3" args="2 3" output="screen" />
         <node pkg="flipbot2_base" type="collsion_detector" name="collision_detector_2_4" args="2 4" output="screen" />
-        <node pkg="flipbot2_base" type="collsion_detector" name="collision_detector_3_4" args="3 4" output="screen" />
+        <!-- <node pkg="flipbot2_base" type="collsion_detector" name="collision_detector_3_4" args="3 4" output="screen" /> -->
 </launch>
