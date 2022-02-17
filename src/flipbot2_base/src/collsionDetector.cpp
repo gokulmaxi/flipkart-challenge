@@ -118,7 +118,7 @@ int main(int argc, char **argv)
       bool inFront = sgn(transformMsg.transform.translation.y);
       if (abs(transformMsg.transform.translation.y) < 0.2)
       {
-        ROS_INFO("Collision detected in y axis");
+        ROS_INFO("Collision detected in Y-axis");
       }
     }
 
