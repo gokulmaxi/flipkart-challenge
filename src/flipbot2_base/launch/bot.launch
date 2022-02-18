@@ -1,9 +1,10 @@
 <launch>
         <arg name="bot_no" default="1" />
+        <arg name="package_method" default="1" />  <!-- 1 - gets color data from given csv 2 - gets color directly from bots -->
         <group ns="flipbot$(arg bot_no)">    
                 <node pkg="flipbot2_base" type="goalToMqtt.py" name="velocity_to_mqtt" args="$(arg bot_no)" output="screen" />
-                <node pkg="flipbot2_base" type="client.py" name="goal_client" args="$(arg bot_no)" output="screen" />
-                <node pkg="flipbot2_base" type="color_bridge.py" name="color_client" args="$(arg bot_no)" output="screen" />
+                <node pkg="flipbot2_base" type="client.py" name="goal_client" args="$(arg bot_no) " output="screen" />
+                <node pkg="flipbot2_base" type="color_bridge.py" name="color_client" args="$(arg bot_no) $(arg package_method)" output="screen" />
                 <node pkg="flipbot2_base" type="movetogoal" name="movetogoal" args="$(arg bot_no)" output="screen" />
                 <node pkg="flipbot2_base" type="tf2Pose.py" name="tf2pose" args="$(arg bot_no)" output="screen" />
         </group>

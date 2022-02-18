@@ -17,11 +17,12 @@ def request_handler(req):
         res.destination = dest_dict.get(data_tup[2])
         res.destString = data_tup[2]
         res.packageId = data_tup[1]
+    print(res.destString)
     return res
 def package_server():
     rospy.init_node('package_server', anonymous=True)
     rate = rospy.Rate(10)
-    server = rospy.Service('add_two_ints', PackageDetail, request_handler)
+    server = rospy.Service('package_server', PackageDetail, request_handler)
     rospy.spin()
     # for index,rows in data.iterrows():
     #     print(rows[1])

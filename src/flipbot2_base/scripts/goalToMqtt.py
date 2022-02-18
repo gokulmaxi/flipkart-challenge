@@ -52,18 +52,18 @@ def callback_servo(data,args):
     jsonEncoded = json.dumps(jsonData)
     (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
 
-def callback_color(data,args):
-    bot_index = args
-    jsonData = {"angular":0,"linear_x":0,"linear_y":0,"servo":0,"colorRequest":1}
-    jsonEncoded = json.dumps(jsonData)
-    (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
+# def callback_color(data,args):
+#     bot_index = args
+#     jsonData = {"angular":0,"linear_x":0,"linear_y":0,"servo":0,"colorRequest":1}
+#     jsonEncoded = json.dumps(jsonData)
+#     (rc, mid) = client.publish("flipkart/bot"+str(bot_index), jsonEncoded, qos=0)
 def listener(bot_no):
 
     rospy.init_node('listener_mqtt')
     rospy.loginfo(bot_no)
     rospy.Subscriber("/flipbot"+str(bot_no)+"/cmd_vel", Twist, callback,bot_no)
     rospy.Subscriber("/flipbot"+str(bot_no)+"/servo", String, callback_servo,bot_no)
-    rospy.Subscriber("/flipbot"+str(bot_no)+"/colorReq", String, callback_color,bot_no)
+    # rospy.Subscriber("/flipbot"+str(bot_no)+"/colorReq", String, callback_color,bot_no)
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 

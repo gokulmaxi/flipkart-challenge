@@ -124,15 +124,16 @@ int main(int argc, char **argv)
 
       bool Direction = (bot1_Direction && bot2_Direction); // Return 1 if moving away from origin, 0 if moving towards origin
 
-      if (abs(transformMsg.transform.translation.x < 0.2))
+      if (abs(transformMsg.transform.translation.x < 0.15))
       {
-        if (abs(transformMsg.transform.translation.y < 0.2))
+        if (abs(transformMsg.transform.translation.y < 0.10))
         {
           bool inFront = sgn(transformMsg.transform.translation.y);
           ROS_INFO_NAMED(bot1, "Collission detected in y axis");
 
           if (Direction) // Bots moving away from Origin
           {
+            ROS_INFO("Both in negative");
             if (inFront)
             {
               ROS_INFO("Front collision detected \n stopping %s", bot1.c_str());
@@ -149,8 +150,8 @@ int main(int argc, char **argv)
               if (fabs(transformMsg.transform.translation.x) > 0.20 || fabs(transformMsg.transform.translation.y > 0.20))
               {
                 break;
-                ros::Rate(0.5).sleep();
               }
+              ros::Rate(0.5).sleep();
             }
             if (inFront)
             {
@@ -165,6 +166,7 @@ int main(int argc, char **argv)
           }
           else
           {
+            ROS_INFO("Both in positive");
             if (inFront)
             {
               ROS_INFO("Front collision detected \n stopping %s", bot2.c_str());
@@ -199,6 +201,6 @@ int main(int argc, char **argv)
       }
       loop_rate.sleep();
     }
-    return 0;
   }
+  return 0;
 }
