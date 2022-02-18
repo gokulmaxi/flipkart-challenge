@@ -69,7 +69,10 @@ class actionclient:
                         self.rate.sleep()
                         continue
                     
-                    if 
+                    if(abs(trans.transform.translation.x - 1.018) < 0.3):
+                        self.pub_colorReq.publish(1)
+                    elif(abs(trans.transform.translation.y - 1.773) < 0.3):
+                        self.pub_colorReq.publish(2)
 
     def servodir(self):
         if self.result.destIndex in right_one_index:
