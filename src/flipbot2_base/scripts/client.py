@@ -52,9 +52,11 @@ class actionclient:
         sleep(1.0)
     def clientRoutine(self):
         while not rospy.is_shutdown():
+        control_bit=rosparam.get("bot_control")
+        if(control_bit == 1):
             while not self.callbackCalled:
                 rospy.loginfo("waiting for color data")
-                if(self.result.inductIndex != 0)
+                if(self.result.inductIndex != 0):
                     self.pub_colorReq.publish(self.result.inductIndex)
                     rospy.sleep(3)
                 else:
