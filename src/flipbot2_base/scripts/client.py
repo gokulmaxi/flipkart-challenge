@@ -12,15 +12,15 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 import sys
 right_one_index = {1, 4, 7}
-left_two_index = {2,3,5,6, 8, 9}
+left_two_index = {2, 3, 5, 6, 8, 9}
 
 
 class actionclient:
-    def __init__(self,bot_no):
+    def __init__(self, bot_no):
         self.client = actionlib.SimpleActionClient("bot1", BotGoalAction)
         self.bot_no = bot_no
         self.pub_servo = rospy.Publisher('servo', String, queue_size=10)
-        self.pub_colorReq= rospy.Publisher('colorReq', Int64, queue_size=0)
+        self.pub_colorReq = rospy.Publisher('colorReq', Int64, queue_size=0)
         self.pub_cmd = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         self.result = BotGoalResult()
         self.cmd_vel = Twist()
@@ -28,17 +28,18 @@ class actionclient:
         rospy.Subscriber("dest", Int64, self.callback)
         self.client.wait_for_server()
         self.callbackCalled = False
-    def callback(self,data:Int64):
+
+    def callback(self, data: Int64):
         self.callbackCalled = True
         rospy.loginfo("Sending Goal")
         self.goal = BotGoalGoal(index=int(data.data))
         self.client.send_goal(self.goal)
         self.client.wait_for_result()
-        self.result= self.client.get_result()
+        self.result = self.client.get_result()
         rospy.loginfo("got result")
         sleep(0.5)
         self.servopush = self.servodir()
-        rospy.loginfo("Actuating servo in %i",self.servopush)
+        rospy.loginfo("Actuating servo in %i", self.servopush)
         self.pub_servo.publish(str(self.servopush))
         sleep(1.5)
         self.cmd_vel.linear.x = self.servopush
@@ -50,16 +51,25 @@ class actionclient:
         self.result = self.client.get_result()
         self.callbackCalled = False
         sleep(1.0)
+
     def clientRoutine(self):
         while not rospy.is_shutdown():
             while not self.callbackCalled:
                 rospy.loginfo("waiting for color data")
-                if(self.result.inductIndex != 0)
+                if(self.result.inductIndex != 0):
                     self.pub_colorReq.publish(self.result.inductIndex)
                     rospy.sleep(3)
                 else:
                     print("Initating")
                     # TODO code for finding bots index
+                    try:
+                        trans = self.tfBuffer.lookup_transform(
+                            'world', 'marker_id'+str(self.bot_no), rospy.Time())
+                    except (self.tf2_ros.LookupException, self.tf2_ros.ConnectivityException, self.tf2_ros.ExtrapolationException):
+                        self.rate.sleep()
+                        continue
+                    
+                    if 
 
     def servodir(self):
         if self.result.destIndex in right_one_index:
@@ -71,9 +81,10 @@ class actionclient:
         else:
             return -1
 
+
 if __name__ == "__main__":
     rospy.init_node('client'+str(sys.argv[1]))
-    rospy.loginfo("Init client node "+ sys.argv[1])
+    rospy.loginfo("Init client node " + sys.argv[1])
     ac = actionclient(int(sys.argv[1]))
     ac.clientRoutine()
     rospy.spin()
