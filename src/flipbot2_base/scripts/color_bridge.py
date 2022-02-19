@@ -27,7 +27,7 @@ class color_bridge:
         try:
             print("calling package server")
             packageRequest= rospy.ServiceProxy('/package_server', PackageDetail)
-            resp1 = packageRequest(1,1)
+            resp1 = packageRequest(int(self.bot_no),data.data)
             self.pub.publish(resp1.destination)
         except rospy.ServiceException as e:
             print("Service call failed: %s"%e)

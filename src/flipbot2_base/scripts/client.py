@@ -75,11 +75,21 @@ class actionclient:
                             self.rate.sleep()
                             continue
                         # Find Induct and publish
-                        if(abs(trans.transform.translation.x - 1.018) < 0.3):
+                        if(abs(trans.transform.translation.y - 1.018) < 0.3):
                             self.pub_colorReq.publish(1)
+                            self.callbackCalled = True
                         elif(abs(trans.transform.translation.y - 1.773) < 0.3):
                             self.pub_colorReq.publish(2)
-                        self.callbackCalled = True
+                            self.callbackCalled = True
+                        else:
+                            print("not in induct")
+                            self.goal = BotGoalGoal(index=0)
+                            self.client.send_goal(self.goal)
+                            self.client.wait_for_result()
+                            self.result = self.client.get_result()
+                            rospy.loginfo("got result")
+                            sleep(0.5)
+
 
     def servodir(self):
         if self.result.destIndex in right_one_index:

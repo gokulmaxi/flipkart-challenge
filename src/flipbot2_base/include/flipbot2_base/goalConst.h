@@ -55,6 +55,7 @@ std::vector<Goal> two_seven_waypoint = { Goal(cx, 1), Goal(cy, 5), Goal(cx, 2), 
 std::vector<Goal> two_eight_waypoint = { Goal(cx, 1), Goal(cy, 5), Goal(cx, 2), Goal(y, 11), Goal(x, 6)};
 std::vector<Goal> two_nine_waypoint =  { Goal(cx, 1), Goal(cy, 5), Goal(cx, 3), Goal(cy, 6), Goal(x, 10)};
 //waypoints from  goals to  induct one
+std::vector<Goal> r_one_zero_waypoint =  { Goal(cx, 1), Goal(y, 15, 1), Goal(x, 15)};
 std::vector<Goal> r_one_one_waypoint =   { Goal(cy, 1), Goal(cx, 1), Goal(y, 15, 1), Goal(x, 15)};
 std::vector<Goal> r_one_two_waypoint =   { Goal(cy, 1), Goal(cx, 1), Goal(y, 15, 1), Goal(x, 15)};
 std::vector<Goal> r_one_three_waypoint = { Goal(cy, 1), Goal(cx, 1), Goal(y, 15, 1), Goal(x, 15)};
@@ -65,6 +66,7 @@ std::vector<Goal> r_one_seven_waypoint = { Goal(cy, 1), Goal(cx, 1), Goal(y, 15,
 std::vector<Goal> r_one_eight_waypoint = { Goal(cy, 1), Goal(cx, 1), Goal(y, 15, 1), Goal(x, 15)};
 std::vector<Goal> r_one_nine_waypoint =  { Goal(cy, 1), Goal(cx, 1), Goal(y, 15, 1), Goal(x, 15)};
 //waypoints from goals to induct two,,,
+std::vector<Goal> r_two_zero_waypoint =  { Goal(cx, 1), Goal(y, 16, 1), Goal(x, 15)};
 std::vector<Goal> r_two_one_waypoint =   { Goal(cy, 7), Goal(cx, 1), Goal(y, 16, 1), Goal(x, 15)};
 std::vector<Goal> r_two_two_waypoint =   { Goal(cy, 7), Goal(cx, 1), Goal(y, 16, 1), Goal(x, 15)};
 std::vector<Goal> r_two_three_waypoint = { Goal(cy, 7), Goal(cx, 1), Goal(y, 16, 1), Goal(x, 15)};
@@ -94,6 +96,7 @@ std::unordered_map<std::string, std::vector<Goal>> umap = {
     {"2_7", two_seven_waypoint},
     {"2_8", two_eight_waypoint},
     {"2_9", two_nine_waypoint},
+    {"r_1_0", r_one_zero_waypoint},
     {"r_1_1", r_one_one_waypoint},
     {"r_1_2", r_one_two_waypoint},
     {"r_1_3", r_one_three_waypoint},
@@ -103,6 +106,7 @@ std::unordered_map<std::string, std::vector<Goal>> umap = {
     {"r_1_7", r_one_seven_waypoint},
     {"r_1_8", r_one_eight_waypoint},
     {"r_1_9", r_one_nine_waypoint},
+    {"r_2_0", r_two_zero_waypoint},
     {"r_2_1", r_two_one_waypoint},
     {"r_2_2", r_two_two_waypoint},
     {"r_2_3", r_two_three_waypoint},

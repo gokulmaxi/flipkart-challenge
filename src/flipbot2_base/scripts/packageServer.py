@@ -17,7 +17,7 @@ def request_handler(req):
         res.destination = dest_dict.get(data_tup[2])
         res.destString = data_tup[2]
         res.packageId = data_tup[1]
-    print(res.destString)
+    print("bot index - ",str(res.destString),"bot no -"+str(req.bot_no),"from induct",str(req.bot_induct))
     return res
 def package_server():
     rospy.init_node('package_server', anonymous=True)

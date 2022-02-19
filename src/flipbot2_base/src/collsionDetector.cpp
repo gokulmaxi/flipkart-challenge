@@ -124,9 +124,9 @@ int main(int argc, char **argv)
 
       bool Direction = (bot1_Direction && bot2_Direction); // Return 1 if moving away from origin, 0 if moving towards origin
 
-      if (abs(transformMsg.transform.translation.x < 0.15))
+      if (abs(transformMsg.transform.translation.x) < 0.15)
       {
-        if (abs(transformMsg.transform.translation.y < 0.10))
+        if (abs(transformMsg.transform.translation.y) < 0.10)
         {
           bool inFront = sgn(transformMsg.transform.translation.y);
           ROS_INFO_NAMED(bot1, "Collission detected in y axis");

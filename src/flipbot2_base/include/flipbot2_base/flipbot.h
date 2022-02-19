@@ -112,6 +112,10 @@ public:
       goalId = "r_" + std::to_string(induct) + "_" +
                std::to_string(abs(goal->index));
     }
+    if (goal->index == 0) {
+      induct = findNearInduct();
+      goalId = "r_" + std::to_string(induct) + "_0";
+    }
     ROS_INFO("Executin plan from %s", goalId.c_str());
     auto hashFound = umap.find(goalId);
     std::vector<Goal> waypoints = hashFound->second;
