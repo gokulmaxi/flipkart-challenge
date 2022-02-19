@@ -11,6 +11,7 @@ from std_msgs.msg import Int64
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 import sys
+import tf2_ros
 right_one_index = {1, 4, 7}
 left_two_index = {2, 3, 5, 6, 8, 9}
 
@@ -25,6 +26,9 @@ class actionclient:
         self.result = BotGoalResult()
         self.cmd_vel = Twist()
         self.stop = Twist()
+        self.tfBuffer = tf2_ros.Buffer()
+        self.listener = tf2_ros.TransformListener(self.tfBuffer)
+
         rospy.Subscriber("dest", Int64, self.callback)
         self.client.wait_for_server()
         self.callbackCalled = False
@@ -54,12 +58,13 @@ class actionclient:
 
     def clientRoutine(self):
         while not rospy.is_shutdown():
-            control_bit = rospy.g("bot_control")
+            control_bit = rospy.get_param("bot_control")
             if(control_bit == 1):
                 while not self.callbackCalled:
                     rospy.loginfo("waiting for color data")
                     if(self.result.inductIndex != 0):
                         self.pub_colorReq.publish(self.result.inductIndex)
+                        self.callbackCalled = True
                         rospy.sleep(3)
                     else:
                         print("Initating")
@@ -74,6 +79,7 @@ class actionclient:
                             self.pub_colorReq.publish(1)
                         elif(abs(trans.transform.translation.y - 1.773) < 0.3):
                             self.pub_colorReq.publish(2)
+                        self.callbackCalled = True
 
     def servodir(self):
         if self.result.destIndex in right_one_index:
