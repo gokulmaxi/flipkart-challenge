@@ -29,7 +29,6 @@ def package_server():
     #     print(rows[0])
 
 #TODO add a service server to iterators
-
 if __name__ == '__main__':
     try:
         dest_dict = {'Pune':1,"Ahmedabad":2,'Jaipur':3,'Chennai':4,'Bengaluru':5,'Hyderabad':6,'Mumbai':7,'Delhi':8,'Kolkata':9}
