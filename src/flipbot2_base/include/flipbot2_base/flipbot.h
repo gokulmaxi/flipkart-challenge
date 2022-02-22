@@ -94,6 +94,7 @@ public:
     }
     if (req.pause == 0) {
       BotInteruptMutex.unlock();
+      ROS_INFO("Starting the robot");
     }
     return true;
   }
@@ -143,6 +144,14 @@ public:
         }
         ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 1);
       }
+      // induct exit helpers
+      if(goalPoint.axis == px){
+        //goal(py,-1)
+      }
+      else if(goalPoint.axis == py){
+              /* cmd_vel.linear.y = 1 * goalPoint.point; */
+      }
+      else{
       ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
                goalPoint.point);
       while (!inTolerance()) {
@@ -167,10 +176,12 @@ public:
                transformPtr->transform.translation.y);
       i++;
     }
+    }
     result_.destIndex = goal->index;
     result_.inductIndex = induct;
 
     as_.setSucceeded(result_);
+    
   }
   void setGoal(Goal _goal) { this->goal = _goal; }
   /**
@@ -278,7 +289,7 @@ public:
    * @return  string of the given enum
    */
   char axisToString(Axis _axis) {
-    if (_axis == x || _axis == cx)
+    if (_axis == x || _axis == cx || _axis == px)
       return 'x';
     else
       return 'y';

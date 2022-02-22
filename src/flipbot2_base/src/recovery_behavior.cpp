@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
       n.advertise<geometry_msgs::Twist>("flipbot" + bot_no + "/cmd_vel", 1000);
   geometry_msgs::Twist cmd_vel;
   geometry_msgs::Twist stop;
+  int prevAxis = 1;
   prevTransformMsg = transformMsg;
   ros::Duration(3).sleep();
   while (ros::ok()) {
@@ -67,7 +68,7 @@ int main(int argc, char **argv) {
                abs(prevTransformMsg.transform.translation.x -
                    currentTransformMsg.transform.translation.x));
       if (abs(prevTransformMsg.transform.translation.x -
-              currentTransformMsg.transform.translation.x) < 0.05) {
+              currentTransformMsg.transform.translation.x) < 0.03) {
         ROS_INFO("Starting recovery behaviour for X-Axis");
         // TODO Add mutex if error in reading
         if ((transformMsg.transform.translation.y > cyPoint[1] &&
@@ -144,7 +145,6 @@ int main(int argc, char **argv) {
       prevTransformMsg = currentTransformMsg;
       loop_rate.sleep();
     }
-    loop_rate.sleep();
   }
   return 0;
 }
