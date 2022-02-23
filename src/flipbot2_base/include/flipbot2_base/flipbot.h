@@ -21,7 +21,8 @@
 #include <strings.h>
 #include <tf/tf.h>
 #include <unistd.h>
-class VelocityController {
+class VelocityController
+{
 private:
   /* double *linearTolerance; */
   /* double *linearP; */
@@ -48,7 +49,8 @@ private:
    *
    * @return return value of yaw
    */
-  double quatToyaw() {
+  double quatToyaw()
+  {
     tf::Quaternion q(
         transformPtr->transform.rotation.x, transformPtr->transform.rotation.y,
         transformPtr->transform.rotation.z, transformPtr->transform.rotation.w);
@@ -63,7 +65,8 @@ public:
                      flipbot2_base::flipbot2Config *_config, std::string name)
       : as_(nh_, name, boost::bind(&VelocityController::executeCB, this, _1),
             false),
-        action_name_(name) {
+        action_name_(name)
+  {
     transformPtr = _transformPtr;
     angularPulse = _config->angular_pulse;
     this->config = _config;
@@ -74,46 +77,55 @@ public:
     prevMessage = stop;
     as_.start();
   }
-  ~VelocityController() {
+  ~VelocityController()
+  {
     as_.shutdown();
     pub_cmdVel.shutdown();
   }
   bool servCallback(flipbot2_msg::BotInteruptRequest &req,
-                    flipbot2_msg::BotInteruptResponse &res) {
-    if (req.pause == 1) {
+                    flipbot2_msg::BotInteruptResponse &res)
+  {
+    if (req.pause == 1)
+    {
       pub_cmdVel.publish(stop);
       BotInteruptMutex.lock();
       pub_cmdVel.publish(stop); // additional stop just for safety
       ROS_INFO("Stoping the robot");
     }
-    if (req.pause == 2) {
+    if (req.pause == 2)
+    {
       pub_cmdVel.publish(stop);
       BotInteruptMutex.lock();
       pub_cmdVel.publish(stop); // additional stop just for safety
       ROS_INFO("Stoping the robot");
     }
-    if (req.pause == 0) {
+    if (req.pause == 0)
+    {
       BotInteruptMutex.unlock();
       ROS_INFO("Starting the robot");
     }
     return true;
   }
-  void executeCB(const flipbot2_msg::BotGoalGoalConstPtr &goal) {
+  void executeCB(const flipbot2_msg::BotGoalGoalConstPtr &goal)
+  {
     ros::Rate loop_rate(20);
     bool success = true;
     int induct;
     std::string goalId;
     ROS_INFO("got  the goal %i", goal->index);
-    if (goal->index > 0) {
+    if (goal->index > 0)
+    {
       induct = findInduct();
       goalId = std::to_string(induct) + "_" + std::to_string(abs(goal->index));
     }
-    if (goal->index < 0) {
+    if (goal->index < 0)
+    {
       induct = findNearInduct();
       goalId = "r_" + std::to_string(induct) + "_" +
                std::to_string(abs(goal->index));
     }
-    if (goal->index == 0) {
+    if (goal->index == 0)
+    {
       induct = findNearInduct();
       goalId = "r_" + std::to_string(induct) + "_0";
     }
@@ -121,23 +133,29 @@ public:
     auto hashFound = umap.find(goalId);
     std::vector<Goal> waypoints = hashFound->second;
     int i = 0;
-    for (Goal goalPoint : waypoints) {
-      if (as_.isPreemptRequested() || !ros::ok()) {
+    for (Goal goalPoint : waypoints)
+    {
+      if (as_.isPreemptRequested() || !ros::ok())
+      {
         ROS_INFO("%s: Preempted", action_name_.c_str());
         // set the action state to preempted
         as_.setPreempted();
         break;
       }
       this->setGoal(goalPoint);
-      if (i == 2 && goal->index > 0) {
+      if (i == 2 && goal->index > 0)
+      {
         ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 0);
       }
-      if (goalPoint.checkPoint == 1) { // TO CHECK OCCUPANY IN INDUCT ZONES
+      if (goalPoint.checkPoint == 1)
+      { // TO CHECK OCCUPANY IN INDUCT ZONES
         int value;
         ROS_INFO("Checkpoint reached checking for occupancy in %d", induct);
         while (ros::param::get(
-            "/induct" + std::to_string(induct) + "_occupancy", value)) {
-          if (value == 0) {
+            "/induct" + std::to_string(induct) + "_occupancy", value))
+        {
+          if (value == 0)
+          {
             break;
           }
           ros::Rate(0.5).sleep();
@@ -145,43 +163,55 @@ public:
         ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 1);
       }
       // induct exit helpers
-      if(goalPoint.axis == px){
-        //goal(py,-1)
+      if (goalPoint.axis == px)
+      {
+        geometry_msgs::Twist cmd_vel;
+        cmd_vel.linear.x = 1 * goalPoint.point;
+        pub_cmdVel.publish(cmd_vel);
+        ros::Duration(1).sleep();
+        pub_cmdVel.publish(stop);
       }
-      else if(goalPoint.axis == py){
-              /* cmd_vel.linear.y = 1 * goalPoint.point; */
+      else if (goalPoint.axis == py)
+      {
+        geometry_msgs::Twist cmd_vel;
+        cmd_vel.linear.y = 1 * goalPoint.point;
+        pub_cmdVel.publish(cmd_vel);
+        ros::Duration(0.5).sleep();
+        pub_cmdVel.publish(stop);
       }
-      else{
-      ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
-               goalPoint.point);
-      while (!inTolerance()) {
-        cmd_msg = calculateVelocity();
-        feedback_.axis = axisToString(goalPoint.axis);
-        feedback_.point = goalPoint.point;
-        feedback_.xVel = cmd_msg.linear.x;
-        feedback_.yVel = cmd_msg.linear.y;
-        as_.publishFeedback(feedback_);
-        BotInteruptMutex.lock();
-        pub_cmdVel.publish(cmd_msg);
-        BotInteruptMutex.unlock();
-        if (inTolerance()) {
-          pub_cmdVel.publish(stop);
-          break;
+      else
+      {
+        ROS_INFO("Move in %c to point %i", axisToString(goalPoint.axis),
+                 goalPoint.point);
+        while (!inTolerance())
+        {
+          cmd_msg = calculateVelocity();
+          feedback_.axis = axisToString(goalPoint.axis);
+          feedback_.point = goalPoint.point;
+          feedback_.xVel = cmd_msg.linear.x;
+          feedback_.yVel = cmd_msg.linear.y;
+          as_.publishFeedback(feedback_);
+          BotInteruptMutex.lock();
+          pub_cmdVel.publish(cmd_msg);
+          BotInteruptMutex.unlock();
+          if (inTolerance())
+          {
+            pub_cmdVel.publish(stop);
+            break;
+          }
+          loop_rate.sleep();
         }
-        loop_rate.sleep();
+        lastDest = goal->index;
+        pub_cmdVel.publish(stop);
+        ROS_INFO("X - %lf Y - %lf", transformPtr->transform.translation.x,
+                 transformPtr->transform.translation.y);
+        i++;
       }
-      lastDest = goal->index;
-      pub_cmdVel.publish(stop);
-      ROS_INFO("X - %lf Y - %lf", transformPtr->transform.translation.x,
-               transformPtr->transform.translation.y);
-      i++;
-    }
     }
     result_.destIndex = goal->index;
     result_.inductIndex = induct;
 
     as_.setSucceeded(result_);
-    
   }
   void setGoal(Goal _goal) { this->goal = _goal; }
   /**
@@ -192,7 +222,8 @@ public:
    *
    * @return: double
    */
-  double euclidianDistance() {
+  double euclidianDistance()
+  {
     double _distance = 0.0;
     /* distance = std::sqrt(pow((start - end), 2)); */
     if (goal.axis == x)
@@ -220,34 +251,47 @@ public:
    *
    * @return: bool
    */
-  bool inTolerance() {
-    if (abs(euclidianDistance()) < config->Linear_tolerance) {
+  bool inTolerance()
+  {
+    if (abs(euclidianDistance()) < config->Linear_tolerance)
+    {
       return true;
-    } else {
+    }
+    else
+    {
       return false;
     }
   }
-  geometry_msgs::Twist calculateVelocity() {
+  geometry_msgs::Twist calculateVelocity()
+  {
     geometry_msgs::Twist _twist;
-    if (goal.axis == x || goal.axis == cx) {
+    if (goal.axis == x || goal.axis == cx)
+    {
       double _linearVel = euclidianDistance() * config->proportional_control;
       _twist.linear.x = _linearVel;
     }
-    if (goal.axis == y || goal.axis == cy) {
+    if (goal.axis == y || goal.axis == cy)
+    {
       double _linearVel = euclidianDistance();
       _twist.linear.y = _linearVel;
     }
-    if (abs(quatToyaw()) > config->angular_tolerance) {
-      if (angularPulse == config->angular_pulse) {
+    if (abs(quatToyaw()) > config->angular_tolerance)
+    {
+      if (angularPulse == config->angular_pulse)
+      {
         /* _twist.linear.x = 0; */
         /* _twist.linear.y = 0; */
         _twist.angular.z =
             quatToyaw() * config->angular_constant; // to make the robot turn
         angularPulse = 0;
-      } else {
+      }
+      else
+      {
         angularPulse++;
       }
-    } else {
+    }
+    else
+    {
       _twist.angular.z = 0;
     }
     return _twist;
@@ -258,10 +302,14 @@ public:
    *
    * @return current in point
    */
-  int findInduct() {
-    if (abs(transformPtr->transform.translation.y - yPoint[4]) < 0.3) {
+  int findInduct()
+  {
+    if (abs(transformPtr->transform.translation.y - yPoint[4]) < 0.3)
+    {
       return 1;
-    } else if (abs(transformPtr->transform.translation.y - yPoint[9]) < 0.3) {
+    }
+    else if (abs(transformPtr->transform.translation.y - yPoint[9]) < 0.3)
+    {
       return 2;
     }
     return 0;
@@ -272,11 +320,13 @@ public:
    *
    * @return nearest induct point to the robot
    */
-  int findNearInduct() {
+  int findNearInduct()
+  {
 
     if (transformPtr->transform.translation.y < yPoint[6])
       return 1;
-    else {
+    else
+    {
       return 2;
     }
   }
@@ -288,7 +338,8 @@ public:
    *
    * @return  string of the given enum
    */
-  char axisToString(Axis _axis) {
+  char axisToString(Axis _axis)
+  {
     if (_axis == x || _axis == cx || _axis == px)
       return 'x';
     else
@@ -303,14 +354,19 @@ public:
  * @param _transformstamped pointer to the transform message
  */
 void updateTransform(geometry_msgs::TransformStamped *_transformstamped,
-                     int id) {
+                     int id)
+{
   tf2_ros::Buffer tfBuffer;
   tf2_ros::TransformListener tfListener(tfBuffer);
-  while (ros::ok()) {
-    try {
+  while (ros::ok())
+  {
+    try
+    {
       *_transformstamped = tfBuffer.lookupTransform(
           "world", "marker_id" + std::to_string(id), ros::Time(0));
-    } catch (tf2::TransformException &ex) {
+    }
+    catch (tf2::TransformException &ex)
+    {
       ROS_WARN("%s", ex.what());
       ros::Duration(0.5).sleep();
       continue;
