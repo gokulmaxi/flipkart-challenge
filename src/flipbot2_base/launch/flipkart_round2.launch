@@ -10,7 +10,7 @@
                 <arg name="bot_no" value="3" /> 
                 <arg name="package_method" value ="2"/>
         </include>
-        <!-- <include file="$(find flipbot2_base)/launch/bot.launch"> -->
-        <!--         <arg name="bot_no" value="4" />  -->
-        <!-- </include> -->
+        <include file="$(find flipbot2_base)/launch/bot.launch">
+                <arg name="bot_no" value="4" /> 
+        </include>
 </launch>

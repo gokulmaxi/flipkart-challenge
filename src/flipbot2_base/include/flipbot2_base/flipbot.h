@@ -168,7 +168,7 @@ public:
         geometry_msgs::Twist cmd_vel;
         cmd_vel.linear.x = 1 * goalPoint.point;
         pub_cmdVel.publish(cmd_vel);
-        ros::Duration(1).sleep();
+        ros::Duration(1.5).sleep();
         pub_cmdVel.publish(stop);
       }
       else if (goalPoint.axis == py)
@@ -176,7 +176,7 @@ public:
         geometry_msgs::Twist cmd_vel;
         cmd_vel.linear.y = 1 * goalPoint.point;
         pub_cmdVel.publish(cmd_vel);
-        ros::Duration(0.5).sleep();
+        ros::Duration(0.7).sleep();
         pub_cmdVel.publish(stop);
       }
       else

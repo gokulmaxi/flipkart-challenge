@@ -73,14 +73,82 @@ int main(int argc, char **argv) {
                 currentTransformMsg.transform.translation.x) < 0.03) {
           ROS_INFO("Starting recovery behaviour for X-Axis");
           // TODO Add mutex if error in reading
-          if ((transformMsg.transform.translation.y > cyPoint[1] &&
-               currentTransformMsg.transform.translation.y < cyPoint[2]) ||
-              (transformMsg.transform.translation.y > cyPoint[3] &&
-               currentTransformMsg.transform.translation.y < cyPoint[4]) ||
-              (transformMsg.transform.translation.y > cyPoint[5] &&
-               currentTransformMsg.transform.translation.y < cyPoint[6])) {
+          if (bot1_feedback.point == 15) {
+            if (currentTransformMsg.transform.translation.y > yPoint[7] &&
+                currentTransformMsg.transform.translation.y < yPoint[11]) {
+              ROS_INFO("Bot in Induct 2 Zone range");
+              if (currentTransformMsg.transform.translation.y > yPoint[7] &&
+                  currentTransformMsg.transform.translation.y < yPoint[9]) {
+                client.call(interuptData);
+                ros::Duration(0.2).sleep();
+                cmd_vel.linear.x = 0;
+                cmd_vel.linear.y = 1;
+                pub_cmd.publish(cmd_vel);
+                ROS_INFO("Moving in +y - Induct2");
+                ros::Duration(0.4).sleep();
+                pub_cmd.publish(stop);
+                client.call(interuptResumeData);
+              } else if (currentTransformMsg.transform.translation.y >
+                             yPoint[9] &&
+                         currentTransformMsg.transform.translation.y <
+                             yPoint[11]) {
+                client.call(interuptData);
+                ros::Duration(0.2).sleep();
+                cmd_vel.linear.x = 0;
+                cmd_vel.linear.y = -1;
+                pub_cmd.publish(cmd_vel);
+                ROS_INFO("Moving in -y - Induct2");
+                ros::Duration(0.4).sleep();
+                pub_cmd.publish(stop);
+                client.call(interuptResumeData);
+              }
+            } else if (currentTransformMsg.transform.translation.y >
+                           yPoint[2] &&
+                       currentTransformMsg.transform.translation.y <
+                           yPoint[6]) {
+              ROS_INFO("Bot in Induct 1 Zone range");
+              if (currentTransformMsg.transform.translation.y > yPoint[2] &&
+                  currentTransformMsg.transform.translation.y < yPoint[4]) {
+                client.call(interuptData);
+                ros::Duration(0.2).sleep();
+                cmd_vel.linear.x = 0;
+                cmd_vel.linear.y = 1;
+                pub_cmd.publish(cmd_vel);
+                ROS_INFO("Moving in +y - Induct-1 p - %f c - %f a - %f", yPoint[2], currentTransformMsg.transform.translation.y, yPoint[4]);
+                ros::Duration(0.4).sleep();
+                pub_cmd.publish(stop);
+                client.call(interuptResumeData);
+              } else if (currentTransformMsg.transform.translation.y >
+                             yPoint[4] &&
+                         currentTransformMsg.transform.translation.y <
+                             yPoint[6]) {
+                client.call(interuptData);
+                ros::Duration(0.2).sleep();
+                cmd_vel.linear.x = 0;
+                cmd_vel.linear.y = -1;
+                pub_cmd.publish(cmd_vel);
+                ROS_INFO("Moving in -y - Induct-1 p - %f c - %f a - %f", yPoint[3], currentTransformMsg.transform.translation.y, yPoint[6]);
+                ros::Duration(0.4).sleep();
+                pub_cmd.publish(stop);
+                client.call(interuptResumeData);
+              }
+            }
+          } else if ((currentTransformMsg.transform.translation.y >
+                          cyPoint[1] &&
+                      currentTransformMsg.transform.translation.y <
+                          cyPoint[2]) ||
+                     (currentTransformMsg.transform.translation.y >
+                          cyPoint[3] &&
+                      currentTransformMsg.transform.translation.y <
+                          cyPoint[4]) ||
+                     (currentTransformMsg.transform.translation.y >
+                          cyPoint[5] &&
+                      currentTransformMsg.transform.translation.y <
+                          cyPoint[6])) {
             client.call(interuptData);
+            ros::Duration(0.2).sleep();
             cmd_vel.linear.y = 1;
+            cmd_vel.linear.x = 0;
             pub_cmd.publish(cmd_vel);
             ROS_INFO("Moving in +y");
             ros::Duration(1).sleep();
@@ -96,7 +164,9 @@ int main(int argc, char **argv) {
                       currentTransformMsg.transform.translation.y <
                           cyPoint[5])) {
             client.call(interuptData);
+            ros::Duration(0.2).sleep();
             cmd_vel.linear.y = -1;
+            cmd_vel.linear.x = 0;
             pub_cmd.publish(cmd_vel);
             ROS_INFO("Moving in -y");
             ros::Duration(1).sleep();
@@ -104,63 +174,68 @@ int main(int argc, char **argv) {
             client.call(interuptResumeData);
             ros::Duration(1).sleep();
           }
-        } else {
-          /* ROS_INFO("Recovered bot - Moved in Y-Axis"); */
-          prevAxis = 1;
         }
-        prevTransformMsg = currentTransformMsg;
-        loop_rate.sleep();
+      } else {
+        ROS_INFO("changed axis to x");
+        prevAxis = 1;
       }
-      while (bot1cmd_msg.linear.y != 0) {
-        currentTransformMsg = transformMsg;
-        if (prevAxis == 2) {
-          ROS_INFO("transfrom diff = %f velocity %f",
-                   abs(prevTransformMsg.transform.translation.y -
-                       currentTransformMsg.transform.translation.y),
-                   bot1_feedback.yVel);
-          if (abs(prevTransformMsg.transform.translation.y -
-                  currentTransformMsg.transform.translation.y) < 0.05) {
-            ROS_INFO("Starting recovery behaviour for Y-Axis");
-            // TODO Add mutex if error in reading
-            if (currentTransformMsg.transform.translation.x < cxPoint[1] ||
-                (currentTransformMsg.transform.translation.x > cxPoint[2] &&
-                 currentTransformMsg.transform.translation.x < cxPoint[3]) ||
-                (currentTransformMsg.transform.translation.x > cxPoint[4] &&
-                 currentTransformMsg.transform.translation.x < cxPoint[5])) {
-              client.call(interuptData);
-              cmd_vel.linear.x = -1;
-              pub_cmd.publish(cmd_vel);
-              ROS_INFO("Moving in -x");
-              ros::Duration(1).sleep();
-              pub_cmd.publish(stop);
-              client.call(interuptResumeData);
-            } else if ((currentTransformMsg.transform.translation.x >
-                            cxPoint[1] &&
-                        currentTransformMsg.transform.translation.x <
-                            cxPoint[2]) ||
-                       (currentTransformMsg.transform.translation.x >
-                            cxPoint[3] &&
-                        currentTransformMsg.transform.translation.x <
-                            cxPoint[4]) ||
-                       (currentTransformMsg.transform.translation.x >
-                            cxPoint[5] &&
-                        currentTransformMsg.transform.translation.x <
-                            cxPoint[6])) {
-              client.call(interuptData);
-              cmd_vel.linear.x = 1;
-              pub_cmd.publish(cmd_vel);
-              ROS_INFO("Moving in +x");
-              ros::Duration(1).sleep();
-              pub_cmd.publish(stop);
-              client.call(interuptResumeData);
-            }
-          }
-        } else {
-          prevAxis = 2;
-        }
-        prevTransformMsg = currentTransformMsg;
-        loop_rate.sleep();
-      }
+      prevTransformMsg = currentTransformMsg;
+      loop_rate.sleep();
     }
-    return 0;
+    while (bot1cmd_msg.linear.y != 0) {
+      currentTransformMsg = transformMsg;
+      if (prevAxis == 2) {
+        ROS_INFO("transfrom diff = %f velocity %f",
+                 abs(prevTransformMsg.transform.translation.y -
+                     currentTransformMsg.transform.translation.y),
+                 bot1_feedback.yVel);
+        if (abs(prevTransformMsg.transform.translation.y -
+                currentTransformMsg.transform.translation.y) < 0.05) {
+          ROS_INFO("Starting recovery behaviour for Y-Axis");
+          // TODO Add mutex if error in reading
+          if (currentTransformMsg.transform.translation.x < cxPoint[1] ||
+              (currentTransformMsg.transform.translation.x > cxPoint[2] &&
+               currentTransformMsg.transform.translation.x < cxPoint[3]) ||
+              (currentTransformMsg.transform.translation.x > cxPoint[4] &&
+               currentTransformMsg.transform.translation.x < cxPoint[5])) {
+            client.call(interuptData);
+            cmd_vel.linear.x = -1;
+            cmd_vel.linear.y = 0;
+            ros::Duration(0.2).sleep();
+            pub_cmd.publish(cmd_vel);
+            ROS_INFO("Moving in -x");
+            ros::Duration(1).sleep();
+            pub_cmd.publish(stop);
+            client.call(interuptResumeData);
+          } else if ((currentTransformMsg.transform.translation.x >
+                          cxPoint[1] &&
+                      currentTransformMsg.transform.translation.x <
+                          cxPoint[2]) ||
+                     (currentTransformMsg.transform.translation.x >
+                          cxPoint[3] &&
+                      currentTransformMsg.transform.translation.x <
+                          cxPoint[4]) ||
+                     (currentTransformMsg.transform.translation.x >
+                          cxPoint[5] &&
+                      currentTransformMsg.transform.translation.x <
+                          cxPoint[6])) {
+            client.call(interuptData);
+            ros::Duration(0.2).sleep();
+            cmd_vel.linear.x = 1;
+            cmd_vel.linear.y = 0;
+            pub_cmd.publish(cmd_vel);
+            ROS_INFO("Moving in +x");
+            ros::Duration(1).sleep();
+            pub_cmd.publish(stop);
+            client.call(interuptResumeData);
+          }
+        }
+      } else {
+        ROS_INFO("changed axis to y");
+        prevAxis = 2;
+      }
+      prevTransformMsg = currentTransformMsg;
+      loop_rate.sleep();
+    }
   }
+}

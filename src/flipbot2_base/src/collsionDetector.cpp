@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 
       if (abs(transformMsg.transform.translation.x) < 0.15)
       {
-        if (abs(transformMsg.transform.translation.y) < 0.10)
+        if (abs(transformMsg.transform.translation.y) < 0.20)
         {
           bool inFront = sgn(transformMsg.transform.translation.y);
           ROS_INFO_NAMED(bot1, "Collission detected in y axis");
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
             while (true)
             {
               // Do nothing until distance is greater in any axis
-              if (fabs(transformMsg.transform.translation.x) > 0.20 || fabs(transformMsg.transform.translation.y > 0.20))
+              if (fabs(transformMsg.transform.translation.x) > 0.20 || fabs(transformMsg.transform.translation.y > 0.15))
               {
                 break;
               }
