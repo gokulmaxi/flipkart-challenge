@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
   flipbot2_msg::BotInterupt interuptResumeData;
   interuptData.request.pause = 1;
   interuptResumeData.request.pause = 0;
-  ros::AsyncSpinner spinner(4);
+  ros::AsyncSpinner spinner(1);
   spinner.start();
   actionlib::SimpleActionClient<flipbot2_msg::BotGoalAction> ac(
       "flipbot" + bot_no + "/bot1", true);

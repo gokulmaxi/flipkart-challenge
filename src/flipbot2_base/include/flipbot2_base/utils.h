@@ -35,6 +35,7 @@ void updateTransformWorld(geometry_msgs::TransformStamped *_transformstamped, in
     } catch (tf2::TransformException &ex) {
       ROS_WARN("%s", ex.what());
       ros::Duration(0.5).sleep();
+      ros::Rate(4).sleep();
       continue;
     }
   }

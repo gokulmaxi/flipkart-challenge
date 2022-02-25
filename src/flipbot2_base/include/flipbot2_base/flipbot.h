@@ -188,6 +188,8 @@ public:
           cmd_msg = calculateVelocity();
           feedback_.axis = axisToString(goalPoint.axis);
           feedback_.point = goalPoint.point;
+          feedback_.Xpoint = transformPtr->transform.translation.x;
+          
           feedback_.xVel = cmd_msg.linear.x;
           feedback_.yVel = cmd_msg.linear.y;
           as_.publishFeedback(feedback_);

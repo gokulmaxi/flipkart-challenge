@@ -9,5 +9,9 @@ int32 destIndex
 #feedback
 string axis
 int32 point
+string nextAxis
+int32 nextPoint
+int32 Xpoint
+int32 Ypoint
 float64 xVel
 float64 yVel

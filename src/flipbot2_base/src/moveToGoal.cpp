@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "goal_action_server");
   configGlobal.Linear_tolerance = *linear_tolerance;
   configGlobal.proportional_control = *linear_constant;
-  ros::AsyncSpinner spinner(4);
+  ros::AsyncSpinner spinner(2);
   spinner.start();
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config> server;
   dynamic_reconfigure::Server<flipbot2_base::flipbot2Config>::CallbackType f;

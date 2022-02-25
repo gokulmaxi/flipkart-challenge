@@ -45,7 +45,7 @@ int main(int argc, char **argv)
   flipbot2_msg::BotInterupt interuptResumeData;
   interuptData.request.pause = 1;
   interuptResumeData.request.pause = 0;
-  ros::AsyncSpinner spinner(4);
+  ros::AsyncSpinner spinner(1);
   spinner.start();
   ros::ServiceClient client1 =
       n.serviceClient<flipbot2_msg::BotInterupt>("flipbot" + bot1 + "/botStop");
@@ -70,6 +70,7 @@ int main(int argc, char **argv)
   ros::Duration(1).sleep();
   while (ros::ok())
   {
+    
     if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
     {
       if (abs(transformMsg.transform.translation.y) < 0.2)
@@ -116,14 +117,16 @@ int main(int argc, char **argv)
 
     // Y - axis collision detector
 
-    if (bot1_feedback.axis == "y" && bot2_feedback.axis == "y")
+    else if (bot1_feedback.axis == "y" && bot2_feedback.axis == "y")
     {
 
       bool bot1_Direction = sgn(bot1_feedback.yVel);
       bool bot2_Direction = sgn(bot2_feedback.yVel);
 
       bool Direction = (bot1_Direction && bot2_Direction); // Return 1 if moving away from origin, 0 if moving towards origin
+      if(bot1_feedback.point == bot2_feedback.point){
 
+      }
       if (abs(transformMsg.transform.translation.x) < 0.15)
       {
         if (abs(transformMsg.transform.translation.y) < 0.20)

@@ -1,6 +1,6 @@
 
 <launch>
         <node pkg="flipbot2_base" type="recovery_behavior" name="recovery_behaviour_1" args="1" output="screen" />
-        <node pkg="flipbot2_base" type="recovery_behavior" name="recovery_behaviour_3" args="3" output="screen" />
+        <!-- <node pkg="flipbot2_base" type="recovery_behavior" name="recovery_behaviour_3" args="3" output="screen" /> -->
         <node pkg="flipbot2_base" type="recovery_behavior" name="recovery_behaviour_4" args="4" output="screen" />
 </launch>
