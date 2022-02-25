@@ -19,6 +19,9 @@
  
     <param name="induct2_occupancy" value="1" />
     <param name="induct1_occupancy" value="1" />
+
+    <param name="induct2_wait" value="0" />
+    <param name="induct1_wait" value="0" />
    <!--   usb_cam node, as pixel_format use yuyv or mjpeg -->
    <group if="$(arg use_camera)" >
   <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen">

@@ -129,6 +129,8 @@ public:
       induct = findNearInduct();
       goalId = "r_" + std::to_string(induct) + "_0";
     }
+    feedback_.goalPoint = goal->index;
+    feedback_.inductPoint = induct;
     ROS_INFO("Executin plan from %s", goalId.c_str());
     auto hashFound = umap.find(goalId);
     std::vector<Goal> waypoints = hashFound->second;
@@ -154,8 +156,10 @@ public:
         while (ros::param::get(
             "/induct" + std::to_string(induct) + "_occupancy", value))
         {
+          ros::param::set("/induct" + std::to_string(induct) + "_wait", 1);
           if (value == 0)
           {
+            ros::param::set("/induct" + std::to_string(induct) + "_wait", 0);
             break;
           }
           ros::Rate(0.5).sleep();
@@ -176,7 +180,7 @@ public:
         geometry_msgs::Twist cmd_vel;
         cmd_vel.linear.y = 1 * goalPoint.point;
         pub_cmdVel.publish(cmd_vel);
-        ros::Duration(0.7).sleep();
+        ros::Duration(0.5).sleep();
         pub_cmdVel.publish(stop);
       }
       else
@@ -189,7 +193,7 @@ public:
           feedback_.axis = axisToString(goalPoint.axis);
           feedback_.point = goalPoint.point;
           feedback_.Xpoint = transformPtr->transform.translation.x;
-          
+          feedback_.Ypoint = transformPtr->transform.translation.y;
           feedback_.xVel = cmd_msg.linear.x;
           feedback_.yVel = cmd_msg.linear.y;
           as_.publishFeedback(feedback_);

@@ -70,7 +70,7 @@ def listener(bot_no):
 
 client = paho.Client()
 client.on_publish = on_publish
-client.connect("10.10.110.232", 1883)
+client.connect("10.10.160.96", 1883)
 client.loop_start()
 if __name__ == '__main__':
     print("\nName of the bot = flibot", sys.argv[1])
