@@ -377,7 +377,6 @@ int main(int argc, char **argv)
 
       bool bot1_Direction = sgn(bot1_feedback.yVel);
       bool bot2_Direction = sgn(bot2_feedback.yVel);
-
       bool Direction = (bot1_Direction && bot2_Direction); // Return 1 if moving away from origin, 0 if moving towards origin
       if (bot1_feedback.point == bot2_feedback.point)
       {
@@ -456,10 +455,51 @@ int main(int argc, char **argv)
         }
       }
     }
-    else
+    // x --- y Collision
+    else if ((bot1_feedback.axis == "x" && bot2_feedback.axis == "y") || (bot1_feedback.axis == "y" && bot2_feedback.axis == "x"))
     {
+      struct intersectPoint bot1StartPoint, bot1EndPoint, bot2StartPoint, bot2EndPoint;
+      if (bot1_feedback.axis == "x")
+      {
+        bot1StartPoint.x = bot1_feedback.Xpoint + (0.1 * (bot1_feedback.xVel < 0) ? 1 : -1); // to compensate negative errors
+        bot1StartPoint.y = bot1_feedback.Ypoint;
+        bot1EndPoint.x = bot1_feedback.Xpoint + (0.3 * (bot1_feedback.xVel < 0) ? -1 : 1);
+        bot1EndPoint.y = bot1_feedback.Ypoint;
+      }
+      else if (bot1_feedback.axis == "y")
+      {
+        bot1StartPoint.x = bot1_feedback.Xpoint; // to compensate negative errors
+        bot1StartPoint.y = bot1_feedback.Ypoint + (0.1 * (bot1_feedback.yVel < 0) ? 1 : -1);
+        bot1EndPoint.x = bot1_feedback.Xpoint;
+        bot1EndPoint.y = bot1_feedback.Ypoint + (0.3 * (bot1_feedback.yVel < 0) ? -1 : 1);
+      }
+      if (bot2_feedback.axis == "x")
+      {
+        bot2StartPoint.x = bot2_feedback.Xpoint + (0.1 * (bot2_feedback.xVel < 0) ? 1 : -1); // to compensate negative errors
+        bot2StartPoint.y = bot2_feedback.Ypoint;
+        bot2EndPoint.x = bot2_feedback.Xpoint + (0.3 * (bot1_feedback.xVel < 0) ? -1 : 1);
+        bot2EndPoint.y = bot2_feedback.Ypoint;
+      }
+      else if (bot2_feedback.axis == "y")
+      {
+        bot2StartPoint.x = bot2_feedback.Xpoint; // to compensate negative errors
+        bot2StartPoint.y = bot2_feedback.Ypoint + (0.1 * (bot2_feedback.yVel < 0) ? 1 : -1);
+        bot1EndPoint.x = bot1_feedback.Xpoint;
+        bot1EndPoint.y = bot1_feedback.Ypoint + (0.3 * (bot1_feedback.yVel < 0) ? -1 : 1);
+      }
+      // check for intersection
+      if (doIntersect(bot1StartPoint, bot1EndPoint, bot2StartPoint, bot2EndPoint))
+      {
+        ROS_INFO("x - y intersection found - stoping bot %s", bot1.c_str());
+        client1.call(interuptData);
+        while (abs(transformMsg.transform.translation.x) < 0.3 && abs(transformMsg.transform.translation.y < 0.3))
+        {
+          /* Nothing to do here ;) */
+        }
+        ROS_INFO("x - y intersection cleared - starting bot %s",bot1.c_str());
+        client1.call(interuptResumeData);
+      }
     }
-
     loop_rate.sleep();
   }
   return 0;
