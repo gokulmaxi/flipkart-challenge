@@ -1,16 +1,21 @@
 <launch>
+        <param name="induct2_occupancy" value="1" />
+        <param name="induct1_occupancy" value="1" />
+
+        <param name="induct2_wait" value="0" />
+        <param name="induct1_wait" value="0" />
         <include file="$(find flipbot2_base)/launch/bot.launch">
-                <arg name="bot_no" value="1" /> 
-                <arg name="package_method" value ="2"/>
+                <arg name="bot_no" value="1" />
+                <arg name="package_method" value="2" />
         </include>
-        <!-- <include file="$(find flipbot2_base)/launch/bot.launch"> -->
-        <!--         <arg name="bot_no" value="2" />  -->
-        <!-- </include>  -->
+        <include file="$(find flipbot2_base)/launch/bot.launch">
+                <arg name="bot_no" value="2" />
+        </include>
         <!-- <include file="$(find flipbot2_base)/launch/bot.launch">
                 <arg name="bot_no" value="3" /> 
                 <arg name="package_method" value ="2"/>
         </include> -->
         <include file="$(find flipbot2_base)/launch/bot.launch">
-                <arg name="bot_no" value="4" /> 
+                <arg name="bot_no" value="4" />
         </include>
 </launch>

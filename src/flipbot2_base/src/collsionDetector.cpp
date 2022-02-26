@@ -1,3 +1,5 @@
+#include "flipbot2_base/goalConst.h"
+#include "flipbot2_base/utils.h"
 #include "flipbot2_msg/BotGoalAction.h"
 #include "flipbot2_msg/BotGoalActionFeedback.h"
 #include "flipbot2_msg/BotGoalFeedback.h"
@@ -14,8 +16,6 @@
 #include <string>
 #include <tf2_ros/transform_listener.h>
 #include <unistd.h>
-#include "flipbot2_base/goalConst.h"
-#include "flipbot2_base/utils.h"
 geometry_msgs::TransformStamped transformMsg;
 flipbot2_msg::BotGoalFeedback bot1_feedback;
 flipbot2_msg::BotGoalFeedback bot2_feedback;
@@ -61,7 +61,8 @@ int main(int argc, char **argv)
   ac.waitForServer(); // will wait for infinite time
   ROS_INFO("Waiting for bot %s action server to start.", argv[2]);
   ac.waitForServer(); // will wait for infinite time
-  ROS_INFO("Starting collsion detectsion for %s , %s", bot1.c_str(), bot2.c_str());
+  ROS_INFO("Starting collsion detectsion for %s , %s", bot1.c_str(),
+           bot2.c_str());
   boost::thread thread_a(updateTransform, &transformMsg, stoi(bot1),
                          stoi(bot2));
   ros::Subscriber bot1Feedback =
@@ -73,14 +74,33 @@ int main(int argc, char **argv)
   {
     int value1;
     int value2;
-    ros::param::get(
-        "/induct1_wait", value1);
-    ros::param::get(
-        "/induct2_wait", value2);
+    ros::param::get("/induct1_wait", value1);
+    ros::param::get("/induct2_wait", value2);
     // +Y  -Y Collision
-    if ((bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 4) || (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 5) ||
+    if ((bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 4) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 5) ||
         (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 5) ||
-        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 4))
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 4) ||
+        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 8) ||
+        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 2) ||
+        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 7) ||
+        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 1) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 8) ||
+        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 4) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 7) ||
+        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 4) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 7) ||
+        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 5) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 8) ||
+        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 5) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 2) ||
+        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 4) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 1) ||
+        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 4) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 2) ||
+        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 5) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 1) ||
+        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 5))
     {
       if (bot1_feedback.Xpoint >= xPoint[1])
       {
@@ -89,7 +109,8 @@ int main(int argc, char **argv)
         {
         }
         client2.call(interuptData);
-        while ((bot1_feedback.Ypoint > yPoint[4]) && (bot1_feedback.Ypoint < yPoint[10]))
+        while ((bot1_feedback.Ypoint > yPoint[4]) &&
+               (bot1_feedback.Ypoint < yPoint[10]))
         {
         }
         ROS_INFO("Resumed client 2");
@@ -103,7 +124,8 @@ int main(int argc, char **argv)
         {
         }
         client1.call(interuptData);
-        while ((bot2_feedback.Ypoint > yPoint[4]) && (bot2_feedback.Ypoint < yPoint[10]))
+        while ((bot2_feedback.Ypoint > yPoint[4]) &&
+               (bot2_feedback.Ypoint < yPoint[10]))
         {
         }
         ROS_INFO("Resumed client 1");
@@ -122,7 +144,8 @@ int main(int argc, char **argv)
           ROS_INFO("Moved the bot - 1");
           client1.call(interuptData);
           ROS_INFO("Stoping the bot");
-          while ((bot2_feedback.Ypoint > yPoint[4]) && (bot2_feedback.Ypoint < yPoint[10]))
+          while ((bot2_feedback.Ypoint > yPoint[4]) &&
+                 (bot2_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
@@ -138,7 +161,8 @@ int main(int argc, char **argv)
           ROS_INFO("Moved the bot - 2");
           client2.call(interuptData);
           ROS_INFO("Stoping the bot");
-          while ((bot1_feedback.Ypoint > yPoint[4]) && (bot1_feedback.Ypoint < yPoint[10]))
+          while ((bot1_feedback.Ypoint > yPoint[4]) &&
+                 (bot1_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
@@ -158,11 +182,13 @@ int main(int argc, char **argv)
           }
           ROS_INFO("Moved the bot - 3");
           client1.call(interuptData);
-          while ((bot2_feedback.Ypoint > yPoint[4]) && (bot2_feedback.Ypoint < yPoint[10]))
+          while ((bot2_feedback.Ypoint > yPoint[4]) &&
+                 (bot2_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
-          ROS_INFO("Resuming the bot - Collision avoided %f", transformMsg.transform.translation.y);
+          ROS_INFO("Resuming the bot - Collision avoided %f",
+                   transformMsg.transform.translation.y);
           client1.call(interuptResumeData);
         }
         else if (bot2_feedback.inductPoint == 2)
@@ -173,16 +199,20 @@ int main(int argc, char **argv)
           }
           ROS_INFO("Moved the bot - 4");
           client2.call(interuptData);
-          while ((bot1_feedback.Ypoint > yPoint[4]) && (bot1_feedback.Ypoint < yPoint[10]))
+          while ((bot1_feedback.Ypoint > yPoint[4]) &&
+                 (bot1_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
-          ROS_INFO("Resuming the bot - Collision avoided %f", transformMsg.transform.translation.y);
+          ROS_INFO("Resuming the bot - Collision avoided %f",
+                   transformMsg.transform.translation.y);
           client2.call(interuptResumeData);
         }
       }
     }
-    else if (bot1_feedback.goalPoint == 6 && bot2_feedback.goalPoint == 6)
+    else if ((bot1_feedback.goalPoint == 6 && bot2_feedback.goalPoint == 6) ||
+             (bot1_feedback.goalPoint == 3 && bot2_feedback.goalPoint == 9) ||
+             (bot1_feedback.goalPoint == 9 && bot2_feedback.goalPoint == 3))
     {
       if (bot1_feedback.Xpoint >= xPoint[6])
       {
@@ -191,7 +221,8 @@ int main(int argc, char **argv)
         {
         }
         client2.call(interuptData);
-        while ((bot1_feedback.Ypoint > yPoint[4]) && (bot1_feedback.Ypoint < yPoint[10]))
+        while ((bot1_feedback.Ypoint > yPoint[4]) &&
+               (bot1_feedback.Ypoint < yPoint[10]))
         {
         }
         ROS_INFO("Resumed client 2 for goal 6");
@@ -204,7 +235,8 @@ int main(int argc, char **argv)
         {
         }
         client1.call(interuptData);
-        while ((bot2_feedback.Ypoint > yPoint[4]) && (bot2_feedback.Ypoint < yPoint[10]))
+        while ((bot2_feedback.Ypoint > yPoint[4]) &&
+               (bot2_feedback.Ypoint < yPoint[10]))
         {
         }
         ROS_INFO("Resumed client 1 for goal 6");
@@ -222,7 +254,8 @@ int main(int argc, char **argv)
           ROS_INFO("Moved the bot - 1(Goal 6)");
           client1.call(interuptData);
           ROS_INFO("Stoping the bot");
-          while ((bot2_feedback.Ypoint > yPoint[4]) && (bot2_feedback.Ypoint < yPoint[10]))
+          while ((bot2_feedback.Ypoint > yPoint[4]) &&
+                 (bot2_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
@@ -238,7 +271,8 @@ int main(int argc, char **argv)
           ROS_INFO("Moved the bot - 2(goal 6)");
           client2.call(interuptData);
           ROS_INFO("Stoping the bot");
-          while ((bot1_feedback.Ypoint > yPoint[4]) && (bot1_feedback.Ypoint < yPoint[10]))
+          while ((bot1_feedback.Ypoint > yPoint[4]) &&
+                 (bot1_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
@@ -258,11 +292,13 @@ int main(int argc, char **argv)
           }
           ROS_INFO("Moved the bot - 3 (Goal 6)");
           client1.call(interuptData);
-          while ((bot2_feedback.Ypoint > yPoint[4]) && (bot2_feedback.Ypoint < yPoint[10]))
+          while ((bot2_feedback.Ypoint > yPoint[4]) &&
+                 (bot2_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
-          ROS_INFO("Resuming the bot - Collision avoided %f", transformMsg.transform.translation.y);
+          ROS_INFO("Resuming the bot - Collision avoided %f",
+                   transformMsg.transform.translation.y);
           client1.call(interuptResumeData);
         }
         else if (bot2_feedback.inductPoint == 2)
@@ -273,11 +309,13 @@ int main(int argc, char **argv)
           }
           ROS_INFO("Moved the bot - 4(Goal 6)");
           client2.call(interuptData);
-          while ((bot1_feedback.Ypoint > yPoint[4]) && (bot1_feedback.Ypoint < yPoint[10]))
+          while ((bot1_feedback.Ypoint > yPoint[4]) &&
+                 (bot1_feedback.Ypoint < yPoint[10]))
           {
             // ROS_INFO("Within Colliding zone");
           }
-          ROS_INFO("Resuming the bot - Collision avoided %f", transformMsg.transform.translation.y);
+          ROS_INFO("Resuming the bot - Collision avoided %f",
+                   transformMsg.transform.translation.y);
           client2.call(interuptResumeData);
         }
       }
@@ -285,14 +323,16 @@ int main(int argc, char **argv)
 
     // X- Axis collision
 
-    else if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
+    if (bot1_feedback.axis == "x" && bot2_feedback.axis == "x")
     {
       bool bot1_Direction = sgn(bot1_feedback.xVel);
       bool bot2_Direction = sgn(bot2_feedback.xVel);
 
-      bool Direction = (bot1_Direction && bot2_Direction); // Retrun 1 if both are moving away from origin
-                                                           // 0 if moving towards origin
-      if (abs(transformMsg.transform.translation.y) < 0.2)
+      bool Direction =
+          (bot1_Direction &&
+           bot2_Direction); // Retrun 1 if both are moving away from origin
+                            // 0 if moving towards origin
+      if (abs(transformMsg.transform.translation.y) < 0.10)
       {
         // check if two bots are perpendicular in x axis (less than size
         // of box[15cm] with offset)
@@ -316,7 +356,7 @@ int main(int argc, char **argv)
             while (true)
             {
               // do nothing until the distance is greater in any axis
-              ROS_INFO("y - %lf", transformMsg.transform.translation.y);
+              // ROS_INFO("y - %lf", transformMsg.transform.translation.y);
               if (fabs(transformMsg.transform.translation.y) > 0.25 ||
                   fabs(transformMsg.transform.translation.x) > 0.35)
                 break;
@@ -349,7 +389,7 @@ int main(int argc, char **argv)
             while (true)
             {
               // do nothing until the distance is greater in any axis
-              ROS_INFO("y - %lf", transformMsg.transform.translation.y);
+              // ROS_INFO("y - %lf", transformMsg.transform.translation.y);
               if (fabs(transformMsg.transform.translation.y) > 0.25 ||
                   fabs(transformMsg.transform.translation.x) > 0.35)
                 break;
@@ -372,18 +412,19 @@ int main(int argc, char **argv)
 
     // Y - axis collision detector
 
-    else if (bot1_feedback.axis == "y" && bot2_feedback.axis == "y")
+    if (bot1_feedback.axis == "y" && bot2_feedback.axis == "y")
     {
+      ROS_INFO("( Y , Y");
 
       bool bot1_Direction = sgn(bot1_feedback.yVel);
       bool bot2_Direction = sgn(bot2_feedback.yVel);
-      bool Direction = (bot1_Direction && bot2_Direction); // Return 1 if moving away from origin, 0 if moving towards origin
-      if (bot1_feedback.point == bot2_feedback.point)
-      {
-      }
+      bool Direction = (bot1_Direction &&
+                        bot2_Direction); // Return 1 if moving away from origin,
+                                         // 0 if moving towards origin
       if (abs(transformMsg.transform.translation.x) < 0.15)
       {
-        if (abs(transformMsg.transform.translation.y) < 0.20)
+        ROS_INFO("Withing x zone");
+        if (abs(transformMsg.transform.translation.y) < 0.35)
         {
           bool inFront = sgn(transformMsg.transform.translation.y);
           ROS_INFO_NAMED(bot1, "Collission detected in y axis");
@@ -404,7 +445,8 @@ int main(int argc, char **argv)
             while (true)
             {
               // Do nothing until distance is greater in any axis
-              if (fabs(transformMsg.transform.translation.x) > 0.25 || fabs(transformMsg.transform.translation.y > 0.35))
+              if (fabs(transformMsg.transform.translation.x) > 0.25 ||
+                  fabs(transformMsg.transform.translation.y > 0.35))
               {
                 break;
               }
@@ -437,7 +479,8 @@ int main(int argc, char **argv)
             while (true)
             {
               // Do nothing until distance is greater in any axis
-              if (fabs(transformMsg.transform.translation.x) > 0.20 || fabs(transformMsg.transform.translation.y > 0.20))
+              if (fabs(transformMsg.transform.translation.x) > 0.20 ||
+                  fabs(transformMsg.transform.translation.y > 0.20))
                 break;
               ros::Rate(0.5).sleep();
             }
@@ -456,47 +499,209 @@ int main(int argc, char **argv)
       }
     }
     // x --- y Collision
-    else if ((bot1_feedback.axis == "x" && bot2_feedback.axis == "y") || (bot1_feedback.axis == "y" && bot2_feedback.axis == "x"))
+    /* else if ((bot1_feedback.axis == "x" && bot2_feedback.axis == "y ") ||
+       (bot1_feedback.axis == "y" && bot2_feedback.axis == "x")) */
+    else if (false)
     {
-      struct intersectPoint bot1StartPoint, bot1EndPoint, bot2StartPoint, bot2EndPoint;
-      if (bot1_feedback.axis == "x")
+      // struct intersectPoint bot1StartPoint, bot1EndPoint, bot2StartPoint,
+      // bot2EndPoint; if (bot1_lfeedback.axis == "x")
+      // {
+      //   float dir = (bot1_lfeedback.xVel < 0) ? 1 : -1;
+      //   bot1StartPoint.x = bot1_lfeedback.Xpoint + (0.1 * dir); // to
+      //   compensate negative errors bot1StartPoint.y = bot1_lfeedback.Ypoint;
+      //   bot1EndPoint.x = bot1_lfeedback.Xpoint + 0.3 * ((bot1_lfeedback.xVel
+      //   < 0) ? -1 : 1); bot1EndPoint.y = bot1_lfeedback.Ypoint;
+      // }
+      // else if (bot1_lfeedback.axis == "y")
+      // {
+      //   bot1StartPoint.x = bot1_lfeedback.Xpoint; // to compensate negative
+      //   errors bot1StartPoint.y = bot1_lfeedback.Ypoint + 0.1 *
+      //   ((bot1_lfeedback.yVel < 0) ? 1 : -1); bot1EndPoint.x =
+      //   bot1_lfeedback.Xpoint; bot1EndPoint.y = bot1_lfeedback.Ypoint + 0.3 *
+      //   ((bot1_feedback.yVel < 0) ? -1 : 1);
+      // }
+      // if (bot2_lfeedback.axis == "x")
+      // {
+      //   bot2StartPoint.x = bot2_lfeedback.Xpoint + 0.1 *
+      //   ((bot2_lfeedback.xVel < 0) ? 1 : -1); // to compensate negative
+      //   errors bot2StartPoint.y = bot2_lfeedback.Ypoint; bot2EndPoint.x =
+      //   bot2_lfeedback.Xpoint + 0.3 * ((bot2_lfeedback.xVel < 0) ? -1 : 1);
+      //   bot2EndPoint.y = bot2_lfeedback.Ypoint;
+      // }
+      // else if (bot2_lfeedback.axis == "y")
+      // {
+      //   bot2StartPoint.x = bot2_lfeedback.Xpoint; // to compensate negative
+      //   errors bot2StartPoint.y = bot2_lfeedback.Ypoint + 0.1 *
+      //   ((bot2_lfeedback.yVel < 0) ? 1 : -1); bot2EndPoint.x =
+      //   bot2_lfeedback.Xpoint; bot2EndPoint.y = bot2_lfeedback.Ypoint + 0.3 *
+      //   ((bot2_feedback.yVel < 0) ? -1 : 1);
+      // }
+      // // check for intersection
+      // if (doIntersect(bot1StartPoint, bot2StartPoint, bot1EndPoint,
+      // bot2EndPoint))
+      // {
+      //   ROS_INFO("x - y intersection found - stoping bot %s", bot1.c_str());
+      //   ROS_INFO("s- p1 %f p2 %f p3 %f p4 %f", bot1StartPoint.x,
+      //   bot1StartPoint.y, bot2StartPoint.x, bot2StartPoint.y); ROS_INFO("e-
+      //   p1 %f p2 %f p3 %f p4 %f", bot1EndPoint.x, bot1EndPoint.y,
+      //   bot2EndPoint.x, bot2EndPoint.y); client1.call(interuptData); while
+      //   (abs(transformMsg.transform.translation.x) < 0.4 &&
+      //   abs(transformMsg.transform.translation.y < 0.4))
+      //   {
+      //     /* Nothing to do here ;) */
+      //   }
+      //   ROS_INFO("x - y intersection cleared - starting bot %s ",
+      //   bot1.c_str()); client1.call(interuptResumeData);
+      // }
+      ROS_INFO("( X , Y");
+      if ((bot1_feedback.xVel > 0 && bot2_feedback.yVel < 0))
       {
-        bot1StartPoint.x = bot1_feedback.Xpoint + (0.1 * (bot1_feedback.xVel < 0) ? 1 : -1); // to compensate negative errors
-        bot1StartPoint.y = bot1_feedback.Ypoint;
-        bot1EndPoint.x = bot1_feedback.Xpoint + (0.3 * (bot1_feedback.xVel < 0) ? -1 : 1);
-        bot1EndPoint.y = bot1_feedback.Ypoint;
-      }
-      else if (bot1_feedback.axis == "y")
-      {
-        bot1StartPoint.x = bot1_feedback.Xpoint; // to compensate negative errors
-        bot1StartPoint.y = bot1_feedback.Ypoint + (0.1 * (bot1_feedback.yVel < 0) ? 1 : -1);
-        bot1EndPoint.x = bot1_feedback.Xpoint;
-        bot1EndPoint.y = bot1_feedback.Ypoint + (0.3 * (bot1_feedback.yVel < 0) ? -1 : 1);
-      }
-      if (bot2_feedback.axis == "x")
-      {
-        bot2StartPoint.x = bot2_feedback.Xpoint + (0.1 * (bot2_feedback.xVel < 0) ? 1 : -1); // to compensate negative errors
-        bot2StartPoint.y = bot2_feedback.Ypoint;
-        bot2EndPoint.x = bot2_feedback.Xpoint + (0.3 * (bot1_feedback.xVel < 0) ? -1 : 1);
-        bot2EndPoint.y = bot2_feedback.Ypoint;
-      }
-      else if (bot2_feedback.axis == "y")
-      {
-        bot2StartPoint.x = bot2_feedback.Xpoint; // to compensate negative errors
-        bot2StartPoint.y = bot2_feedback.Ypoint + (0.1 * (bot2_feedback.yVel < 0) ? 1 : -1);
-        bot1EndPoint.x = bot1_feedback.Xpoint;
-        bot1EndPoint.y = bot1_feedback.Ypoint + (0.3 * (bot1_feedback.yVel < 0) ? -1 : 1);
-      }
-      // check for intersection
-      if (doIntersect(bot1StartPoint, bot1EndPoint, bot2StartPoint, bot2EndPoint))
-      {
-        ROS_INFO("x - y intersection found - stoping bot %s", bot1.c_str());
-        client1.call(interuptData);
-        while (abs(transformMsg.transform.translation.x) < 0.3 && abs(transformMsg.transform.translation.y < 0.3))
+        double bot1_fut_Xpoint = (bot1_feedback.Xpoint + 0.30);
+        double bot2_fut_Ypoint = (bot2_feedback.Ypoint - 0.30);
+        if ((abs(bot1_fut_Xpoint - bot2_feedback.Xpoint) < 0.15) &&
+            (abs(bot2_fut_Ypoint - bot1_feedback.Ypoint) < 0.15))
+        // compare x and y
         {
-          /* Nothing to do here ;) */
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision ( +X , -Y");
         }
-        ROS_INFO("x - y intersection cleared - starting bot %s",bot1.c_str());
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y < 0.4))
+        {
+        }
+        ROS_INFO("Collision Avoided");
+        client1.call(interuptResumeData);
+      }
+      else if ((bot1_feedback.xVel < 0 && bot2_feedback.yVel > 0))
+      {
+        double bot1_fut_Xpoint = (bot1_feedback.Xpoint - 0.30);
+        double bot2_fut_Ypoint = (bot2_feedback.Ypoint + 0.30);
+        if ((abs(bot1_fut_Xpoint - bot2_feedback.Xpoint) < 0.15) &&
+            (abs(bot2_fut_Ypoint - bot1_feedback.Ypoint) < 0.15))
+        // compare x and y
+        {
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision ( -X, +Y");
+        }
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y < 0.4))
+        {
+        }
+        ROS_INFO("Collision Avoided");
+        client1.call(interuptResumeData);
+      }
+      //
+      else if ((bot2_feedback.xVel < 0 && bot2_feedback.yVel < 0))
+      {
+        double bot1_fut_Xpoint = (bot1_feedback.Xpoint - 0.30);
+        double bot2_fut_Ypoint = (bot2_feedback.Ypoint - 0.30);
+        if ((abs(bot1_fut_Xpoint - bot2_feedback.Xpoint) < 0.15) &&
+            (abs(bot2_fut_Ypoint - bot1_feedback.Ypoint) < 0.15))
+        // compare x and y
+        {
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision (-X, -Y");
+        }
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y) < 0.4)
+        {
+        }
+        ROS_INFO("Collision Avoided");
+        client1.call(interuptResumeData);
+      }
+      //
+      else if ((bot2_feedback.xVel > 0 && bot2_feedback.yVel > 0))
+      {
+        double bot1_fut_Xpoint = (bot1_feedback.Xpoint + 0.30);
+        double bot2_fut_Ypoint = (bot2_feedback.Ypoint + 0.30);
+        if ((abs(bot1_fut_Xpoint - bot2_feedback.Xpoint) < 0.15) &&
+            (abs(bot2_fut_Ypoint - bot1_feedback.Ypoint) < 0.15))
+        // compare x and y
+        {
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision (+X, +Y");
+        }
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y) < 0.4)
+        {
+        }
+        ROS_INFO("Collision Avoided");
+        client1.call(interuptResumeData);
+      }
+      //
+      else if ((bot1_feedback.yVel > 0 && bot1_feedback.xVel < 0))
+      {
+        double bot1_fut_Ypoint = (bot1_feedback.Ypoint + 0.30);
+        double bot2_fut_Xpoint = (bot2_feedback.Xpoint - 0.30);
+        if ((abs(bot1_fut_Ypoint - bot2_feedback.Ypoint) < 0.15) &&
+            (abs(bot2_fut_Xpoint - bot1_feedback.Xpoint) < 0.15))
+        // compare x and y
+        {
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision (+Y, -X");
+        }
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y) < 0.4)
+        {
+        }
+        ROS_INFO("Collision Avoided");
+        client1.call(interuptResumeData);
+      }
+      //
+      else if ((bot1_feedback.yVel < 0 && bot1_feedback.xVel > 0))
+      {
+        double bot1_fut_Ypoint = (bot1_feedback.Ypoint - 0.30);
+        double bot2_fut_Xpoint = (bot2_feedback.Xpoint + 0.30);
+        if ((abs(bot1_fut_Ypoint - bot2_feedback.Ypoint) < 0.15) &&
+            (abs(bot2_fut_Xpoint - bot1_feedback.Xpoint) < 0.15))
+        // compare x and y
+        {
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision (-Y, +X");
+        }
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y) < 0.4)
+        {
+        }
+        ROS_INFO("Collision Avoided");
+        client1.call(interuptResumeData);
+      }
+      //
+      else if ((bot1_feedback.yVel < 0 && bot1_feedback.xVel < 0))
+      {
+        double bot1_fut_Ypoint = (bot1_feedback.Ypoint - 0.30);
+        double bot2_fut_Xpoint = (bot2_feedback.Xpoint - 0.30);
+        if ((abs(bot1_fut_Ypoint - bot2_feedback.Ypoint) < 0.15) &&
+            (abs(bot2_fut_Xpoint - bot1_feedback.Xpoint) < 0.15))
+        // compare x and y
+        {
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision (-Y, -X");
+        }
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y) < 0.4)
+        {
+        }
+        ROS_INFO("Collision Avoided");
+        client1.call(interuptResumeData);
+      }
+      //
+      else if ((bot1_feedback.yVel > 0 && bot1_feedback.xVel > 0))
+      {
+        double bot1_fut_Ypoint = (bot1_feedback.Ypoint + 0.30);
+        double bot2_fut_Xpoint = (bot2_feedback.Xpoint + 0.30);
+        if ((abs(bot1_fut_Ypoint - bot2_feedback.Ypoint) < 0.15) &&
+            (abs(bot2_fut_Xpoint - bot1_feedback.Xpoint) < 0.15))
+        // compare x and y
+        {
+          client1.call(interuptData);
+          ROS_INFO("Stopped bot - Predicted future collision (+Y, +X");
+        }
+        while (abs(transformMsg.transform.translation.x) < 0.4 &&
+               abs(transformMsg.transform.translation.y) < 0.4)
+        {
+        }
+        ROS_INFO("Collision Avoided");
         client1.call(interuptResumeData);
       }
     }

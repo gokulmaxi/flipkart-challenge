@@ -50,8 +50,8 @@ void updateTransformWorld(geometry_msgs::TransformStamped *_transformstamped, in
 bool sgn(double val) { return (0 > val); }
 struct intersectPoint
 {
-    int x;
-    int y;
+    float x;
+    float y;
 };
  
 // Given three collinear points p, q, r, the function checks if
@@ -74,7 +74,7 @@ int orientation(intersectPoint p, intersectPoint q, intersectPoint r)
 {
     // See https://www.geeksforgeeks.org/orientation-3-ordered-points/
     // for details of below formula.
-    int val = (q.y - p.y) * (r.x - q.x) -
+    float val = (q.y - p.y) * (r.x - q.x) -
               (q.x - p.x) * (r.y - q.y);
  
     if (val == 0) return 0;  // collinear
@@ -88,10 +88,10 @@ bool doIntersect(intersectPoint p1,intersectPoint q1, intersectPoint p2, interse
 {
     // Find the four orientations needed for general and
     // special cases
-    int o1 = orientation(p1, q1, p2);
-    int o2 = orientation(p1, q1, q2);
-    int o3 = orientation(p2, q2, p1);
-    int o4 = orientation(p2, q2, q1);
+    float o1 = orientation(p1, q1, p2);
+    float o2 = orientation(p1, q1, q2);
+    float o3 = orientation(p2, q2, p1);
+    float o4 = orientation(p2, q2, q1);
  
     // General case
     if (o1 != o2 && o3 != o4)

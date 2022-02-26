@@ -8,12 +8,12 @@ from flipbot2_msg.srv import PackageDetail,PackageDetailResponse
 def request_handler(req):
     res = PackageDetailResponse()
     if(req.bot_induct == 1):
-        data_tup = next(induct1_iterator)
+        data_tup = next(induct2_iterator)
         res.destination = dest_dict.get(data_tup[2])
         res.destString = data_tup[2]
         res.packageId = data_tup[1]
     if(req.bot_induct == 2):
-        data_tup = next(induct2_iterator)
+        data_tup = next(induct1_iterator)
         res.destination = dest_dict.get(data_tup[2])
         res.destString = data_tup[2]
         res.packageId = data_tup[1]
