@@ -32,10 +32,10 @@ Kinematics of four wheel omni wheel robot
 	\end{bmatrix}
 	=\frac{1}{R}
 	\begin{bmatrix}
-		\sin(\alpha_1) & \cos(\alpha_1) & R \\
-		\sin(\alpha_2) & \cos(\alpha_2) & R \\
-		\sin(\alpha_3) & \cos(\alpha_2) & R \\
-		\sin(\alpha_4) & \cos(\alpha_2) & R \\
+		\sin(\alpha_1) & \cos(\alpha_1) & L_1 \\
+		\sin(\alpha_2) & \cos(\alpha_2) & L_2 \\
+		\sin(\alpha_3) & \cos(\alpha_2) & L_3 \\
+		\sin(\alpha_4) & \cos(\alpha_2) & L_4 \\
 	\end{bmatrix}
 	\begin{bmatrix}
 		V_x \\
@@ -60,10 +60,10 @@ On equating \ref{kinematics} we get
 		\omega_3 \\
 	\end{bmatrix}
 	= 1/R \begin{bmatrix}
-		V_y + R \theta  \\
-		V_x + R \theta  \\
-		-V_y + R \theta \\
-		-V_x + R \theta \\
+		V_y + L \theta  \\
+		-V_x + L \theta  \\
+		-V_y + L \theta \\
+		V_x + L \theta \\
 	\end{bmatrix}
 \end{equation}
 \section{PID tuning }
