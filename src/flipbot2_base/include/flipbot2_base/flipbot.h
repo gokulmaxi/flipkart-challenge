@@ -155,6 +155,7 @@ public:
           }
           ros::Rate(0.5).sleep();
         }
+        ROS_INFO("Occupying induct %d",induct);
         ros::param::set("/induct" + std::to_string(induct) + "_occupancy", 1);
       }
       // induct exit helpers
@@ -316,6 +317,7 @@ public:
   }
 };
 /**
+ *
  * @brief updates the transform of the robot.Intentionally created to run as
  * thread
  *

@@ -78,10 +78,10 @@ class actionclient:
                             self.rate.sleep()
                             continue
                         # Find Induct and publish
-                        if(abs(trans.transform.translation.y - 1.018) < 0.3):
+                        if(abs(trans.transform.translation.y - 1.376) < 0.3):
                             self.pub_colorReq.publish(1)
                             self.callbackCalled = True
-                        elif(abs(trans.transform.translation.y - 1.773) < 0.3):
+                        elif(abs(trans.transform.translation.y - 2.151 ) < 0.3):
                             self.pub_colorReq.publish(2)
                             self.callbackCalled = True
                         else:

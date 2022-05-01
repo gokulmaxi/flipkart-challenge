@@ -81,26 +81,26 @@ int main(int argc, char **argv)
         (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 5) ||
         (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 5) ||
         (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 4) ||
-        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 8) ||
-        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 2) ||
-        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 7) ||
-        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 1) ||
-        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 8) ||
-        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 4) ||
-        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 7) ||
-        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 4) ||
-        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 7) ||
-        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 5) ||
-        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 8) ||
-        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 5) ||
-        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 2) ||
-        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 4) ||
-        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 1) ||
-        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 4) ||
-        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 2) ||
-        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 5) ||
-        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 1) ||
-        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 5))
+        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 8 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 2 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 7 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 1 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 8 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 4 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 7 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 4 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 7 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 7 && bot2_feedback.goalPoint == 5 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 8 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 8 && bot2_feedback.goalPoint == 5 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 2 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 4 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 4 && bot2_feedback.goalPoint == 1 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 4 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 2 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 2 && bot2_feedback.goalPoint == 5 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 5 && bot2_feedback.goalPoint == 1 && bot2_feedback.inductPoint == 2 && bot1_feedback.inductPoint == 1) ||
+        (bot1_feedback.goalPoint == 1 && bot2_feedback.goalPoint == 5 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint == 1))
     {
       if (bot1_feedback.Xpoint >= xPoint[1])
       {
@@ -211,8 +211,8 @@ int main(int argc, char **argv)
       }
     }
     else if ((bot1_feedback.goalPoint == 6 && bot2_feedback.goalPoint == 6) ||
-             (bot1_feedback.goalPoint == 3 && bot2_feedback.goalPoint == 9) ||
-             (bot1_feedback.goalPoint == 9 && bot2_feedback.goalPoint == 3))
+             (bot1_feedback.goalPoint == 3 && bot2_feedback.goalPoint == 9 && bot1_feedback.inductPoint == 2 && bot2_feedback.inductPoint ==1) ||
+             (bot1_feedback.goalPoint == 9 && bot2_feedback.goalPoint == 3 && bot1_feedback.inductPoint == 1 && bot2_feedback.inductPoint ==2))
     {
       if (bot1_feedback.Xpoint >= xPoint[6])
       {
@@ -332,7 +332,7 @@ int main(int argc, char **argv)
           (bot1_Direction &&
            bot2_Direction); // Retrun 1 if both are moving away from origin
                             // 0 if moving towards origin
-      if (abs(transformMsg.transform.translation.y) < 0.10)
+      if (abs(transformMsg.transform.translation.y) < 0.20)
       {
         // check if two bots are perpendicular in x axis (less than size
         // of box[15cm] with offset)
@@ -424,7 +424,7 @@ int main(int argc, char **argv)
       if (abs(transformMsg.transform.translation.x) < 0.15)
       {
         ROS_INFO("Withing x zone");
-        if (abs(transformMsg.transform.translation.y) < 0.35)
+        if (abs(transformMsg.transform.translation.y) < 0.20)
         {
           bool inFront = sgn(transformMsg.transform.translation.y);
           ROS_INFO_NAMED(bot1, "Collission detected in y axis");

@@ -4,6 +4,9 @@
         <group ns="flipbot$(arg bot_no)">    
                 <param name="bot_control" type="int" value="0"/>
                 <param name="bot_state" type="int" value="0"/>
+                <param name="package_string" type="string" value="0"/>
+                <param name="package_id" type="string" value="0"/>
+                <param name="package_no" type="int" value="0"/>
                 <node pkg="flipbot2_base" type="goalToMqtt.py" name="velocity_to_mqtt" args="$(arg bot_no)" output="screen" />
                 <node pkg="flipbot2_base" type="client.py" name="goal_client" args="$(arg bot_no) " output="screen" />
                 <node pkg="flipbot2_base" type="color_bridge.py" name="color_client" args="$(arg bot_no) $(arg package_method)" output="screen" />
