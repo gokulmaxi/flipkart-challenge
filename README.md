@@ -1,9 +1,20 @@
-# flipkart grid challenge
-Autonomous swarm robots using centralised server and cameras for pose estimation and navigation.These robots can navigate in the given map co-oppertively without any human internvention.
-## Custom Map 
+# Flipkart grid challenge
+Autonomous swarm robots 🤖 using centralised server and cameras for pose estimation and navigation.These robots can navigate in the given map co-oppertively without any human internvention.
+
+## In action 🎬
+https://user-images.githubusercontent.com/59414965/166818389-20eabf92-4f86-454a-8baa-6d14b44bb1da.mp4
+
+
+## image proccesing video 🔥
+https://user-images.githubusercontent.com/59414965/166814504-c7978c31-b833-4a35-ac8d-28a76f8d684c.mp4
+
+
+
+## Custom Map 🗺️
 ![gazebo custom map](./assets/gazebo-custom-map.png) 
 
-## Intel realsense gazebo plugin 
+
+## Intel realsense gazebo plugin 📷
 ```bash
 git submodule add git submodule add https://github.com/issaiass/realsense2_description
 git submodule add https://github.com/issaiass/realsense_gazebo_plugin
