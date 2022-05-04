@@ -1,5 +1,5 @@
 # flipkart grid challenge
-
+Autonomous swarm robots using centralised server and cameras for pose estimation and navigation.These robots can navigate in the given map co-oppertively without any human internvention.
 ## Custom Map 
 ![gazebo custom map](./assets/gazebo-custom-map.png) 
 
