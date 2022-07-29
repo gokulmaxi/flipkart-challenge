@@ -1,3 +1,10 @@
+#forward -------homekey
+#backward-------endkey
+#left-----------insert key
+#right----------page_up key
+#angular_left---delete key
+#angular_right--page_down
+
 import paho.mqtt.client as mqttClient
 import time
 from pynput import keyboard
@@ -37,14 +44,8 @@ def on_press(key):
         # MQTT_MSG=json.dumps({"pwm1": "0","pwm2":  "0","pwm3": "0","pwm4":  "0"})
         if key == key.end:
             MQTT_MSG=json.dumps({"linear_x":"1"})
-            print("Backward")
-        
-        # if key == key.page_up:
-        #     MQTT_MSG=json.dumps({"angular":"1","linear_x":  "1"})
-        # if key == key.page_down:
-        #     MQTT_MSG=json.dumps({"angular":"-1","linear_x":  "1"})
-        
-        
+            print("Backward") 
+
         if key == key.delete:
             MQTT_MSG=json.dumps({"angular":"1","linear_y":  "1"})
         if key == key.page_down:
