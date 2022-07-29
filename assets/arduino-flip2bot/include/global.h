@@ -6,13 +6,13 @@
 #include <math.h>
 #include <Wire.h>
 #include <string.h>
-#include <Adafruit_TCS34725.h>
-#include <SPI.h>
+// #include <Adafruit_TCS34725.h>
+// #include <SPI.h>
 
 //Todo Change Device name, topic, destination topic according to bot number.
-char device_name[] = "ESP32-bot2";
-char device_topic[] = "flipkart/bot2";
-char destination_topic[] = "flipkart/color2";
+char device_name[] = "ESP32-bot3";
+char device_topic[] = "flipkart/bot3";
+// char destination_topic[] = "flipkart/color2";
 
 void callback(char *topic, byte *message, unsigned int length);
 
@@ -24,33 +24,33 @@ const int lineargoalPwm = 180;
 
 Servo servo;
 
-//Retriving Color from RGB data from TCS3475 RGB sensor
+// //Retriving Color from RGB data from TCS3475 RGB sensor
 
-int red[] = {127, 85, 85};
+// int red[] = {127, 85, 85};
 
-int green[] = {36, 100, 77};
+// int green[] = {36, 100, 77};
 
-int dark_blue[] = {31, 74, 121};
+// int dark_blue[] = {31, 74, 121};
 
-int yellow[] = {91, 85, 50};
+// int yellow[] = {91, 85, 50};
 
-int violet[] = {58, 80, 102};
+// int violet[] = {58, 80, 102};
 
-int brown[] = {85, 85, 56};
+// int brown[] = {85, 85, 56};
 
-int white[] = {73, 94, 59};
+// int white[] = {73, 94, 59};
 
-int pink[] = {97, 59, 89};
+// int pink[] = {97, 59, 89};
 
-int orange[] = {191, 31, 31};
+// int orange[] = {191, 31, 31};
 
 // Networking Credentials
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-const char *ssid = "IA Lab";
+const char *ssid = "IA LAB";
 const char *password = "rosdeveloper";
-const char *mqtt_server = "192.168.0.172";
+const char *mqtt_server = "192.168.0.116";
 
 //util compare function
 bool eq(int n, int *x, int *y, int tolerance)
@@ -153,62 +153,62 @@ void reconnect()
 }
 
 //Sorting packages with respect to colors
-int color()
-{   
+// int color()
+// {   
 
-    Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
+//     Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
 
-    float r, g, b;
+//     float r, g, b;
 
-    tcs.getRGB(&r, &g, &b);
+//     tcs.getRGB(&r, &g, &b);
 
-    delay(100);
+//     delay(100);
 
-    Serial.println(int(r));
-    Serial.println(int(g));
-    Serial.println(int(b));
-    Serial.println("-------------------------------------");
+//     Serial.println(int(r));
+//     Serial.println(int(g));
+//     Serial.println(int(b));
+//     Serial.println("-------------------------------------");
 
-    int currentRGB[] = {int(r), int(g), int(b)};
+//     int currentRGB[] = {int(r), int(g), int(b)};
 
-    if (eq(2, red, currentRGB, 10))
-    {
-        return 1; // PUNE
-    }
-    else if (eq(2, green, currentRGB, 20))
-    {
-        return 2; // AMEMDABAD
-    }
-    else if (eq(2, dark_blue, currentRGB, 10))
-    {
-        return 3; // JAIPUR
-    }
-    else if (eq(2, yellow, currentRGB, 10))
-    {
-        return 4; // CHENNAI
-    }
-    else if (eq(2, violet, currentRGB, 10))
-    {
-        return 5; // BENGALURU
-    }
-    else if (eq(2, brown, currentRGB, 10))
-    {
-        return 6; // HYDERABAD
-    }
-    else if (eq(2, white, currentRGB, 10))
-    {
-        return 7; // MUMBAI
-    }
-    else if (eq(2, pink, currentRGB, 10))
-    {
-        return 8; // DELHI
-    }
-    else if (eq(2, orange, currentRGB, 10))
-    {
-        return 9; //KOLKATA
-    }
-    else
-    {
-        return 0;
-    }
-}
+//     if (eq(2, red, currentRGB, 10))
+//     {
+//         return 1; // PUNE
+//     }
+//     else if (eq(2, green, currentRGB, 20))
+//     {
+//         return 2; // AMEMDABAD
+//     }
+//     else if (eq(2, dark_blue, currentRGB, 10))
+//     {
+//         return 3; // JAIPUR
+//     }
+//     else if (eq(2, yellow, currentRGB, 10))
+//     {
+//         return 4; // CHENNAI
+//     }
+//     else if (eq(2, violet, currentRGB, 10))
+//     {
+//         return 5; // BENGALURU
+//     }
+//     else if (eq(2, brown, currentRGB, 10))
+//     {
+//         return 6; // HYDERABAD
+//     }
+//     else if (eq(2, white, currentRGB, 10))
+//     {
+//         return 7; // MUMBAI
+//     }
+//     else if (eq(2, pink, currentRGB, 10))
+//     {
+//         return 8; // DELHI
+//     }
+//     else if (eq(2, orange, currentRGB, 10))
+//     {
+//         return 9; //KOLKATA
+//     }
+//     else
+//     {
+//         return 0;
+//     }
+// }

@@ -11,7 +11,7 @@ void setup()
   servo.attach(15); //D4
   servo.write(90);
 
-  Serial.begin(115200);
+  // Serial.begin(115200);
 
   setup_wifi();
   client.setServer(mqtt_server, 1883);
@@ -26,20 +26,20 @@ void callback(char *topic, byte *message, unsigned int length)
   int linear_x = doc["linear_x"];
   int linear_y = doc["linear_y"];
   int servo_data = doc["servo"];
-  int cube = doc["colorRequest"];
+  // int cube = doc["colorRequest"];
 
-  if (cube == 1)
-  {
-    int colordata = color();
-    Serial.println(colordata);
-    if (colordata != 0)
-    {
-      String returnString = String(colordata);
-      char destination[10];
-      returnString.toCharArray(destination, 10);
-      client.publish(destination_topic, destination);
-    }
-  }
+  // if (cube == 1)
+  // {
+  //   int colordata = color();
+  //   Serial.println(colordata);
+  //   if (colordata != 0)
+  //   {
+  //     String returnString = String(colordata);
+  //     char destination[10];
+  //     returnString.toCharArray(destination, 10);
+  //     client.publish(destination_topic, destination);
+  //   }
+  // }
   //Linear pulse
 
   if (linear_x == 2)
