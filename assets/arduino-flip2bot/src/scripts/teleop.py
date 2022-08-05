@@ -42,28 +42,28 @@ client.loop_start()        #start the loop
 def on_press(key):
     try:
         # MQTT_MSG=json.dumps({"pwm1": "0","pwm2":  "0","pwm3": "0","pwm4":  "0"})
-        if key == key.end:
+        if key == key.delete:
             MQTT_MSG=json.dumps({"linear_x":"1"})
             print("Backward") 
 
-        if key == key.delete:
+        if key == key.insert:
             MQTT_MSG=json.dumps({"angular":"1","linear_y":  "1"})
-        if key == key.page_down:
+        if key == key.page_up:
             MQTT_MSG=json.dumps({"angular":"-1","linear_y":  "1"})
         
-        if key == key.page_up:
+        if key == key.end:
             MQTT_MSG=json.dumps({"linear_y":"1"})
             print("Left")
-        if key == key.insert:
+        if key == key.home:
             MQTT_MSG=json.dumps({"linear_y": "-1"})
             print("right")
-        if key == key.home:
+        if key == key.page_down:
             MQTT_MSG=json.dumps({"linear_x":  "-1"})
             print("up")
-        if key == key.shift:
+        if key == key.shift_r:
             MQTT_MSG=json.dumps({"servo":"1"})
             print("left turn")
-        if key == key.shift_r:
+        if key == key.shift:
             MQTT_MSG=json.dumps({"servo":"-1"})
             print("left turn")
         if key == key.ctrl:
@@ -72,7 +72,7 @@ def on_press(key):
         else:
             print("False")
             
-        client.publish("flipkart/bot3", MQTT_MSG)
+        client.publish("flipkart/bot1", MQTT_MSG)
     except AttributeError:
         print('special key pressed: {0}'.format(
             key))

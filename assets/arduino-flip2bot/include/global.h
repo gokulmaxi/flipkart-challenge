@@ -10,8 +10,8 @@
 // #include <SPI.h>
 
 //Todo Change Device name, topic, destination topic according to bot number.
-char device_name[] = "ESP32-bot3";
-char device_topic[] = "flipkart/bot3";
+char device_name[] = "ESP32-bot1";
+char device_topic[] = "flipkart/bot1";
 // char destination_topic[] = "flipkart/color2";
 
 void callback(char *topic, byte *message, unsigned int length);
